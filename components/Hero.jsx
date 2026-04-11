@@ -3,25 +3,27 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, ShoppingBag, Star, Shield } from "lucide-react";
+import { ArrowRight, ShoppingBag, Star, Shield } from "lucide-react";
 import EbayLogo from "@/components/EbayLogo";
+import ProductImage from "@/components/ProductImage";
 
 const words = ["discover", "collect", "desire", "deserve"];
 
-// Floating product images for the background
 const floatingItems = [
-  { src: "https://picsum.photos/seed/float-headphones/200/200", x: "8%", y: "15%", size: 80, delay: 0 },
-  { src: "https://picsum.photos/seed/float-watch/200/200", x: "85%", y: "20%", size: 70, delay: 0.5 },
-  { src: "https://picsum.photos/seed/float-sneakers/200/200", x: "75%", y: "70%", size: 90, delay: 1 },
-  { src: "https://picsum.photos/seed/float-keyboard/200/200", x: "12%", y: "72%", size: 75, delay: 1.5 },
-  { src: "https://picsum.photos/seed/float-camera/200/200", x: "50%", y: "80%", size: 65, delay: 0.8 },
+  { src: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=60", x: "8%", y: "15%", size: 80, delay: 0 },
+  { src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=60", x: "85%", y: "20%", size: 70, delay: 0.5 },
+  { src: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=60", x: "75%", y: "70%", size: 90, delay: 1 },
+  { src: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=200&q=60", x: "12%", y: "72%", size: 75, delay: 1.5 },
+  { src: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&q=60", x: "50%", y: "82%", size: 65, delay: 0.8 },
 ];
 
 export default function Hero() {
   const [wordIndex, setWordIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    setMounted(true);
     intervalRef.current = setInterval(() => {
       setWordIndex((i) => (i + 1) % words.length);
     }, 2500);
@@ -30,9 +32,8 @@ export default function Hero() {
 
   return (
     <section className="relative flex min-h-[calc(100vh-64px)] items-center justify-center overflow-hidden px-4">
-      {/* Animated background blobs */}
+      {/* Background blobs - eBay brand colors */}
       <div className="pointer-events-none absolute inset-0">
-        {/* eBay brand colors as background blobs */}
         <motion.div
           animate={{ y: [-20, 20, -20], x: [-10, 15, -10] }}
           transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
@@ -51,40 +52,40 @@ export default function Hero() {
         <motion.div
           animate={{ y: [-10, 25, -10] }}
           transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
-          className="absolute right-1/4 top-10 h-[300px] w-[300px] rounded-full bg-[#86b817]/8 blur-[100px]"
+          className="absolute right-1/4 top-10 h-[300px] w-[300px] rounded-full bg-[#86b817]/10 blur-[100px]"
         />
         <div className="particles" />
-        <div className="aurora-bg" />
       </div>
 
       {/* Floating product images */}
-      <div className="pointer-events-none absolute inset-0 hidden lg:block">
-        {floatingItems.map((item, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.15, scale: 1 }}
-            transition={{ delay: item.delay + 0.5, duration: 1 }}
-            className="absolute"
-            style={{ left: item.x, top: item.y }}
-          >
+      {mounted && (
+        <div className="pointer-events-none absolute inset-0 hidden lg:block">
+          {floatingItems.map((item, i) => (
             <motion.div
-              animate={{ y: [-10, 10, -10], rotate: [-3, 3, -3] }}
-              transition={{ repeat: Infinity, duration: 5 + i, ease: "easeInOut" }}
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 0.15, scale: 1 }}
+              transition={{ delay: item.delay + 0.5, duration: 1 }}
+              className="absolute"
+              style={{ left: item.x, top: item.y }}
             >
-              <img
-                src={item.src}
-                alt=""
-                className="rounded-2xl border border-white/10 object-cover shadow-2xl"
-                style={{ width: item.size, height: item.size }}
-                loading="lazy"
-              />
+              <motion.div
+                animate={{ y: [-10, 10, -10], rotate: [-3, 3, -3] }}
+                transition={{ repeat: Infinity, duration: 5 + i, ease: "easeInOut" }}
+              >
+                <ProductImage
+                  src={item.src}
+                  alt=""
+                  className="rounded-2xl border border-white/10 object-cover shadow-2xl"
+                  style={{ width: item.size, height: item.size }}
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
-      {/* Gradient overlay to night */}
+      {/* Gradient to night */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-night" />
 
       <div className="relative z-10 mx-auto max-w-5xl text-center">
@@ -95,11 +96,11 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#f5af02]/30 bg-[#f5af02]/10 px-4 py-1.5 text-xs font-medium text-[#f5af02]"
         >
-          <Sparkles size={12} />
-          The World's Online Marketplace
+          <Star size={12} fill="currentColor" />
+          The World&#39;s Online Marketplace
         </motion.div>
 
-        {/* eBay Logo — large floating */}
+        {/* eBay Logo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -118,15 +119,21 @@ export default function Hero() {
         >
           Everything you{" "}
           <span className="relative inline-block min-w-[180px]">
-            <motion.span
-              key={wordIndex}
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.5 }}
-              className="inline-block bg-gradient-to-r from-[#e53238] via-[#f5af02] to-[#86b817] bg-clip-text text-transparent"
-            >
-              {words[wordIndex]}
-            </motion.span>
+            {mounted ? (
+              <motion.span
+                key={wordIndex}
+                initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.5 }}
+                className="inline-block bg-gradient-to-r from-[#e53238] via-[#f5af02] to-[#86b817] bg-clip-text text-transparent"
+              >
+                {words[wordIndex]}
+              </motion.span>
+            ) : (
+              <span className="inline-block bg-gradient-to-r from-[#e53238] via-[#f5af02] to-[#86b817] bg-clip-text text-transparent">
+                {words[0]}
+              </span>
+            )}
           </span>
           <br />
           <span className="text-white/80">all in one place</span>
@@ -159,10 +166,10 @@ export default function Hero() {
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </Link>
           <Link
-            href="/shop?category=Tech"
-            className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-8 py-4 text-sm font-medium text-white/80 backdrop-blur transition-all hover:border-white/25 hover:bg-white/[0.06]"
+            href="/auctions"
+            className="flex items-center gap-2 rounded-full border border-[#e53238]/30 bg-[#e53238]/10 px-8 py-4 text-sm font-medium text-[#e53238] transition-all hover:bg-[#e53238]/20"
           >
-            Browse Categories
+            Live Auctions
           </Link>
         </motion.div>
 

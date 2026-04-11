@@ -82,6 +82,8 @@ export default function CartDrawer() {
                             src={item.image}
                             alt={item.name}
                             className="h-16 w-16 rounded-lg object-cover"
+                            loading="lazy"
+                            onError={(e) => { e.target.style.background = '#0d1020'; }}
                           />
                           <div className="flex-1 min-w-0">
                             <p className="truncate text-sm font-medium">{item.name}</p>
