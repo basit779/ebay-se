@@ -3,17 +3,19 @@
 import Link from "next/link";
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { ShoppingCart, Heart, Star, Eye } from "lucide-react";
+import { ShoppingCart, Heart, Star, Eye, Gavel } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
+import ProductImage from "@/components/ProductImage";
 
 const badgeColors = {
   "Best Seller": "from-neon-amber to-orange-500",
   New: "from-neon-emerald to-emerald-600",
   Sale: "from-neon-rose to-rose-600",
   Hot: "from-orange-500 to-red-500",
-  Limited: "from-neon-purple to-purple-700"
+  Limited: "from-neon-purple to-purple-700",
+  Auction: "from-[#e53238] to-[#c62828]"
 };
 
 export default function ProductCard({ product, index = 0 }) {
@@ -21,6 +23,8 @@ export default function ProductCard({ product, index = 0 }) {
   const { toggle, isWishlisted } = useWishlist();
   const { addToast } = useToast();
   const cardRef = useRef(null);
+
+  const isAuction = product.auction;
 
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
@@ -34,6 +38,7 @@ export default function ProductCard({ product, index = 0 }) {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (isAuction) return;
     addToCart(product);
     addToast(`${product.name} added to cart`, "success");
   };
@@ -64,17 +69,17 @@ export default function ProductCard({ product, index = 0 }) {
       {/* Image */}
       <Link href={`/product/${product.id}`} className="block">
         <div className="relative overflow-hidden">
-          <motion.img
+          <ProductImage
             src={product.image}
             alt={product.name}
             className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-110"
-            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-night/80 via-night/20 to-transparent" />
 
           {/* Badge */}
           {product.badge && (
             <span className={`absolute left-3 top-3 rounded-full bg-gradient-to-r ${badgeColors[product.badge] || badgeColors.New} px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-lg`}>
+              {product.badge === "Auction" && <Gavel size={10} className="mr-1 inline" />}
               {product.badge}
             </span>
           )}
@@ -101,11 +106,19 @@ export default function ProductCard({ product, index = 0 }) {
           </div>
 
           {/* Sale price tag */}
-          {product.originalPrice && (
+          {product.originalPrice && !isAuction && (
             <div className="absolute bottom-3 left-3">
               <span className="rounded-lg bg-neon-rose/90 px-2 py-1 text-xs font-bold text-white">
                 -{Math.round((1 - product.price / product.originalPrice) * 100)}%
               </span>
+            </div>
+          )}
+
+          {/* Auction bid count */}
+          {isAuction && (
+            <div className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-lg bg-[#e53238]/90 px-2 py-1">
+              <Gavel size={10} className="text-white" />
+              <span className="text-xs font-bold text-white">{product.bidCount} bids</span>
             </div>
           )}
         </div>
@@ -132,24 +145,43 @@ export default function ProductCard({ product, index = 0 }) {
         </h3>
 
         <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
-            <p className="text-lg font-bold text-neon-cyan">${product.price}</p>
-            {product.originalPrice && (
-              <p className="text-xs text-white/30 line-through">${product.originalPrice}</p>
-            )}
-          </div>
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={handleAddToCart}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-neon-purple/30 bg-neon-purple/10 text-neon-purple transition-all hover:bg-neon-purple/20 hover:shadow-purple"
-          >
-            <ShoppingCart size={15} />
-          </motion.button>
+          {isAuction ? (
+            <div>
+              <p className="text-[10px] font-medium text-[#e53238]">Current Bid</p>
+              <p className="text-lg font-bold text-white">${product.currentBid.toLocaleString()}</p>
+            </div>
+          ) : (
+            <div className="flex items-baseline gap-2">
+              <p className="text-lg font-bold text-neon-cyan">${product.price}</p>
+              {product.originalPrice && (
+                <p className="text-xs text-white/30 line-through">${product.originalPrice}</p>
+              )}
+            </div>
+          )}
+
+          {isAuction ? (
+            <Link
+              href={`/product/${product.id}`}
+              className="flex h-9 items-center gap-1.5 rounded-xl border border-[#e53238]/30 bg-[#e53238]/10 px-3 text-xs font-semibold text-[#e53238] transition-all hover:bg-[#e53238]/20"
+            >
+              <Gavel size={13} /> Bid
+            </Link>
+          ) : (
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={handleAddToCart}
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-neon-purple/30 bg-neon-purple/10 text-neon-purple transition-all hover:bg-neon-purple/20 hover:shadow-purple"
+            >
+              <ShoppingCart size={15} />
+            </motion.button>
+          )}
         </div>
       </div>
 
-      {/* Hover glow border */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 ring-neon-purple/30 transition-opacity duration-500 group-hover:opacity-100" />
+      {/* Hover glow */}
+      <div className={`pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 transition-opacity duration-500 group-hover:opacity-100 ${
+        isAuction ? "ring-[#e53238]/30" : "ring-neon-purple/30"
+      }`} />
     </motion.article>
   );
 }

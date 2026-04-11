@@ -19,6 +19,7 @@ export default function Navbar({ onAuthOpen }) {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/shop", label: "Shop" },
+    { href: "/auctions", label: "Auctions" },
     { href: "/cart", label: "Cart" }
   ];
 

@@ -10,11 +10,11 @@ const words = ["discover", "collect", "desire", "deserve"];
 
 // Floating product images for the background
 const floatingItems = [
-  { src: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=200&q=60", x: "8%", y: "15%", size: 80, delay: 0 },
-  { src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=200&q=60", x: "85%", y: "20%", size: 70, delay: 0.5 },
-  { src: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=200&q=60", x: "75%", y: "70%", size: 90, delay: 1 },
-  { src: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=200&q=60", x: "12%", y: "72%", size: 75, delay: 1.5 },
-  { src: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=200&q=60", x: "50%", y: "80%", size: 65, delay: 0.8 },
+  { src: "https://picsum.photos/seed/float-headphones/200/200", x: "8%", y: "15%", size: 80, delay: 0 },
+  { src: "https://picsum.photos/seed/float-watch/200/200", x: "85%", y: "20%", size: 70, delay: 0.5 },
+  { src: "https://picsum.photos/seed/float-sneakers/200/200", x: "75%", y: "70%", size: 90, delay: 1 },
+  { src: "https://picsum.photos/seed/float-keyboard/200/200", x: "12%", y: "72%", size: 75, delay: 1.5 },
+  { src: "https://picsum.photos/seed/float-camera/200/200", x: "50%", y: "80%", size: 65, delay: 0.8 },
 ];
 
 export default function Hero() {
