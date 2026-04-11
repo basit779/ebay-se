@@ -7,6 +7,7 @@ import { ShoppingCart, Heart, User, Menu, X, LogOut, Package } from "lucide-reac
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
+import EbayLogo from "@/components/EbayLogo";
 
 export default function Navbar({ onAuthOpen }) {
   const { itemCount, setIsCartOpen } = useCart();
@@ -25,13 +26,8 @@ export default function Navbar({ onAuthOpen }) {
     <header className="sticky top-0 z-40 border-b border-white/[0.06] bg-black/60 backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 md:px-8">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple">
-            <span className="text-sm font-bold text-black">e</span>
-          </div>
-          <span className="text-xl font-bold tracking-tight">
-            <span className="text-gradient">eBay</span>
-          </span>
+        <Link href="/" className="group flex items-center gap-1">
+          <EbayLogo size="sm" animated={false} />
         </Link>
 
         {/* Desktop Nav */}

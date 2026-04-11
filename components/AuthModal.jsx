@@ -67,8 +67,13 @@ export default function AuthModal({ isOpen, onClose }) {
 
               {/* Header */}
               <div className="mb-8 text-center">
-                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-neon-cyan to-neon-purple">
-                  <span className="text-lg font-bold text-black">e</span>
+                <div className="mx-auto mb-4">
+                  <span className="text-3xl font-extrabold italic">
+                    <span style={{color:"#e53238"}}>e</span>
+                    <span style={{color:"#0064d2"}}>b</span>
+                    <span style={{color:"#f5af02"}}>a</span>
+                    <span style={{color:"#86b817"}}>y</span>
+                  </span>
                 </div>
                 <h2 className="text-2xl font-bold">
                   {mode === "login" ? "Welcome back" : "Create account"}

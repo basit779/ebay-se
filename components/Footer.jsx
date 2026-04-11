@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Globe, MessageCircle, Rss, Mail } from "lucide-react";
+import EbayLogo from "@/components/EbayLogo";
 
 const footerLinks = {
   Shop: [
@@ -39,11 +40,8 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple">
-                <span className="text-sm font-bold text-black">e</span>
-              </div>
-              <span className="text-xl font-bold text-gradient">eBay</span>
+            <Link href="/" className="inline-block">
+              <EbayLogo size="md" animated={false} />
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/40">
               A premium marketplace pushing the boundaries of modern web commerce.
