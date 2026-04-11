@@ -2,8 +2,8 @@ import "@/styles/globals.css";
 import Providers from "@/components/Providers";
 
 export const metadata = {
-  title: "eBay — Premium Commerce",
-  description: "Premium e-commerce marketplace built with Next.js"
+  title: "FluxBid — Where Everything Flows",
+  description: "Premium auction marketplace with cinematic UI — buy, sell, bid."
 };
 
 export default function RootLayout({ children }) {

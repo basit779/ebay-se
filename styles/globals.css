@@ -381,3 +381,17 @@ a {
 .img-zoom-container:hover img {
   transform: scale(1.08);
 }
+
+/* ── FluxBid Logo Gradient Flow ───────────────────────── */
+@keyframes gradient-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Smooth Focus Rings ───────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.5);
+  outline-offset: 2px;
+  border-radius: 8px;
+}

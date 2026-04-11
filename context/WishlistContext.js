@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const WishlistContext = createContext(null);
 
-const STORAGE_KEY = "ebay-wishlist";
+const STORAGE_KEY = "fluxbid-wishlist";
 
 export function WishlistProvider({ children }) {
   const { user } = useAuth();

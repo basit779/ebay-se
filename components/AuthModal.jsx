@@ -68,11 +68,8 @@ export default function AuthModal({ isOpen, onClose }) {
               {/* Header */}
               <div className="mb-8 text-center">
                 <div className="mx-auto mb-4">
-                  <span className="text-3xl font-extrabold italic">
-                    <span style={{color:"#e53238"}}>e</span>
-                    <span style={{color:"#0064d2"}}>b</span>
-                    <span style={{color:"#f5af02"}}>a</span>
-                    <span style={{color:"#86b817"}}>y</span>
+                  <span className="text-3xl font-black tracking-tighter">
+                    <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Flux</span><span className="text-white">Bid</span>
                   </span>
                 </div>
                 <h2 className="text-2xl font-bold">
@@ -80,8 +77,8 @@ export default function AuthModal({ isOpen, onClose }) {
                 </h2>
                 <p className="mt-1 text-sm text-white/40">
                   {mode === "login"
-                    ? "Sign in to your eBay account"
-                    : "Join eBay for a premium experience"}
+                    ? "Sign in to your FluxBid account"
+                    : "Join FluxBid for a premium experience"}
                 </p>
               </div>
 

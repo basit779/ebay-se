@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import AuthModal from "@/components/AuthModal";
 import ToastContainer from "@/components/Toast";
+import CursorGlow from "@/components/CursorGlow";
 
 export default function Providers({ children }) {
   const [authOpen, setAuthOpen] = useState(false);
@@ -20,6 +21,7 @@ export default function Providers({ children }) {
       <CartProvider>
         <WishlistProvider>
           <ToastProvider>
+            <CursorGlow />
             <Navbar onAuthOpen={() => setAuthOpen(true)} />
             <CartDrawer />
             <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />

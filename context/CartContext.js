@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 
 const CartContext = createContext(null);
 
-const STORAGE_KEY = "ebay-cart";
+const STORAGE_KEY = "fluxbid-cart";
 
 export function CartProvider({ children }) {
   const { user } = useAuth();

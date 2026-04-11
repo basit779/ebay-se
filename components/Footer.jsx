@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { Globe, MessageCircle, Rss, Mail } from "lucide-react";
-import EbayLogo from "@/components/EbayLogo";
+import FluxBidLogo from "@/components/FluxBidLogo";
+import { FadeUp } from "@/components/TextReveal";
 
 const footerLinks = {
   Shop: [
     { label: "All Products", href: "/shop" },
+    { label: "Live Auctions", href: "/auctions" },
     { label: "Audio", href: "/shop?category=Audio" },
     { label: "Tech", href: "/shop?category=Tech" },
-    { label: "Fashion", href: "/shop?category=Fashion" },
-    { label: "Lifestyle", href: "/shop?category=Lifestyle" }
+    { label: "Fashion", href: "/shop?category=Fashion" }
   ],
   Company: [
     { label: "About", href: "#" },
@@ -38,59 +39,56 @@ export default function Footer() {
     <footer className="border-t border-white/[0.06] bg-black/40">
       <div className="mx-auto max-w-7xl px-4 py-16 md:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
-          {/* Brand */}
-          <div className="lg:col-span-2">
+          <FadeUp className="lg:col-span-2">
             <Link href="/" className="inline-block">
-              <EbayLogo size="md" animated={false} />
+              <FluxBidLogo size="md" animate={false} />
             </Link>
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/40">
-              A premium marketplace pushing the boundaries of modern web commerce.
-              Buy and sell with confidence.
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/30">
+              The premium marketplace where everything flows. Buy, sell, and bid
+              with confidence on the most cinematic commerce platform.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex gap-2">
               {socials.map(({ icon: Icon, href }, i) => (
                 <a
                   key={i}
                   href={href}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-white/40 transition-all hover:border-neon-cyan/30 hover:text-neon-cyan"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.04] bg-white/[0.02] text-white/30 transition-all hover:border-cyan-500/20 hover:text-cyan-400"
                 >
-                  <Icon size={15} />
+                  <Icon size={13} />
                 </a>
               ))}
             </div>
-          </div>
+          </FadeUp>
 
-          {/* Link columns */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white/60">
+          {Object.entries(footerLinks).map(([title, links], i) => (
+            <FadeUp key={title} delay={0.1 * (i + 1)}>
+              <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/40">
                 {title}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/35 transition-colors hover:text-white/70"
+                      className="text-sm text-white/25 transition-colors hover:text-white/60"
                     >
                       {link.label}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
+            </FadeUp>
           ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 md:flex-row">
-          <p className="text-xs text-white/25">
-            &copy; {new Date().getFullYear()} eBay Commerce. All rights reserved.
+        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/[0.04] pt-8 md:flex-row">
+          <p className="text-[11px] text-white/15">
+            &copy; {new Date().getFullYear()} FluxBid. All rights reserved.
           </p>
-          <div className="flex gap-6 text-xs text-white/25">
-            <a href="#" className="transition hover:text-white/50">Privacy</a>
-            <a href="#" className="transition hover:text-white/50">Terms</a>
-            <a href="#" className="transition hover:text-white/50">Cookies</a>
+          <div className="flex gap-6 text-[11px] text-white/15">
+            <a href="#" className="transition hover:text-white/30">Privacy</a>
+            <a href="#" className="transition hover:text-white/30">Terms</a>
+            <a href="#" className="transition hover:text-white/30">Cookies</a>
           </div>
         </div>
       </div>
