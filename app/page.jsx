@@ -8,6 +8,11 @@ import StatsSection from "@/components/StatsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import NewsletterSection from "@/components/NewsletterSection";
 import SectionHeader from "@/components/SectionHeader";
+import EditorialSpotlight from "@/components/EditorialSpotlight";
+import HowItWorks from "@/components/HowItWorks";
+import FAQSection from "@/components/FAQSection";
+import SellCTA from "@/components/SellCTA";
+import DealBanner from "@/components/DealBanner";
 import products, { categories } from "@/data/products";
 
 export default function HomePage() {
@@ -16,6 +21,10 @@ export default function HomePage() {
   const trending = products
     .filter((p) => !p.auction && (p.badge === "Hot" || p.badge === "Sale"))
     .slice(0, 4);
+
+  // Pick specific products for spotlights
+  const editorial = products.find((p) => p.id === "5"); // Canon EOS R6
+  const flashDeal = products.find((p) => p.id === "3"); // Nike Air Max (on sale)
 
   return (
     <>
@@ -42,6 +51,12 @@ export default function HomePage() {
         <ProductGrid products={featured} />
       </section>
 
+      {/* Flash Deal Banner */}
+      <DealBanner product={flashDeal} />
+
+      {/* Editorial Spotlight */}
+      <EditorialSpotlight product={editorial} />
+
       {/* Live Auctions */}
       {auctions.length > 0 && (
         <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
@@ -64,7 +79,13 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* Categories Bento */}
       <CategoryCards categories={categories} />
+
+      {/* How It Works */}
+      <HowItWorks />
+
+      {/* Stats */}
       <StatsSection />
 
       {/* Trending */}
@@ -87,7 +108,16 @@ export default function HomePage() {
         <ProductGrid products={trending} />
       </section>
 
+      {/* Sell CTA */}
+      <SellCTA />
+
+      {/* Testimonials */}
       <TestimonialsSection />
+
+      {/* FAQ */}
+      <FAQSection />
+
+      {/* Newsletter */}
       <NewsletterSection />
     </>
   );
