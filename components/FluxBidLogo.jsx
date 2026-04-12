@@ -35,6 +35,7 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
     md: { text: "text-3xl", gap: "gap-0.5" },
     lg: { text: "text-5xl", gap: "gap-0.5" },
     xl: { text: "text-7xl", gap: "gap-1" },
+    "2xl": { text: "text-6xl sm:text-7xl md:text-8xl lg:text-[110px]", gap: "gap-1" },
     hero: { text: "text-[80px] sm:text-[100px] md:text-[140px] lg:text-[180px]", gap: "gap-0" }
   };
 

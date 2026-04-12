@@ -170,7 +170,7 @@ export default function Hero() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="mb-12 flex justify-center lg:mb-16"
         >
-          <FluxBidLogo size="xl" animate={true} />
+          <FluxBidLogo size="2xl" animate={true} />
         </motion.div>
 
         {/* Main content grid */}
