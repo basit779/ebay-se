@@ -172,7 +172,7 @@ export default function Hero() {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             className="mb-8"
           >
-            <FluxBidLogo size="lg" animate={true} />
+            <FluxBidLogo size="hero" animate={true} />
           </motion.div>
 
           {/* Eyebrow */}
