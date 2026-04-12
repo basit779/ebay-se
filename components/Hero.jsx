@@ -165,11 +165,21 @@ export default function Hero() {
       >
         {/* Left: Text Content */}
         <div className="order-2 text-left lg:order-1">
+          {/* FluxBid Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-8"
+          >
+            <FluxBidLogo size="lg" animate={true} />
+          </motion.div>
+
           {/* Eyebrow */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-white/60 backdrop-blur-sm"
           >
             <span className="relative flex h-1.5 w-1.5">
