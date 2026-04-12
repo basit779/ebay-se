@@ -2,59 +2,152 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Headphones, Watch, Shirt, Briefcase, Cpu, Home } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import ProductImage from "@/components/ProductImage";
+import { RevealText, FadeUp } from "@/components/TextReveal";
 
-const categoryMeta = {
-  Audio: { icon: Headphones, desc: "Immersive sound", gradient: "from-cyan-500/20 to-blue-600/20" },
-  Wearables: { icon: Watch, desc: "Smarter every second", gradient: "from-purple-500/20 to-pink-600/20" },
-  Fashion: { icon: Shirt, desc: "Performance meets style", gradient: "from-rose-500/20 to-orange-500/20" },
-  Lifestyle: { icon: Briefcase, desc: "Refined essentials", gradient: "from-emerald-500/20 to-teal-600/20" },
-  Tech: { icon: Cpu, desc: "Future-grade hardware", gradient: "from-blue-500/20 to-indigo-600/20" },
-  Home: { icon: Home, desc: "Beautiful daily tools", gradient: "from-amber-500/20 to-yellow-600/20" }
+const categoryData = {
+  Tech: {
+    desc: "Cutting-edge gadgets",
+    size: "col-span-2 row-span-2",
+    image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1200&q=80",
+    count: "6 items",
+    gradient: "from-blue-600/30 via-blue-500/10 to-transparent"
+  },
+  Audio: {
+    desc: "Premium sound",
+    size: "col-span-2 row-span-1",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80",
+    count: "4 items",
+    gradient: "from-cyan-500/30 via-cyan-500/10 to-transparent"
+  },
+  Wearables: {
+    desc: "Smart watches",
+    size: "col-span-1 row-span-1",
+    image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&w=800&q=80",
+    count: "2 items",
+    gradient: "from-purple-500/30 via-purple-500/10 to-transparent"
+  },
+  Fashion: {
+    desc: "Statement pieces",
+    size: "col-span-1 row-span-1",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    count: "4 items",
+    gradient: "from-rose-500/30 via-rose-500/10 to-transparent"
+  },
+  Lifestyle: {
+    desc: "Everyday essentials",
+    size: "col-span-2 row-span-1",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1200&q=80",
+    count: "2 items",
+    gradient: "from-emerald-500/30 via-emerald-500/10 to-transparent"
+  },
+  Home: {
+    desc: "Refined living",
+    size: "col-span-2 row-span-1",
+    image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=1200&q=80",
+    count: "3 items",
+    gradient: "from-amber-500/30 via-amber-500/10 to-transparent"
+  }
 };
 
 export default function CategoryCards({ categories }) {
   const filtered = categories.filter((c) => c !== "All");
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24 md:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
-        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neon-cyan">Collections</p>
-        <h2 className="mt-3 text-3xl font-bold md:text-4xl">Shop by category</h2>
-        <p className="mt-2 text-sm text-white/40">Explore our curated collections</p>
-      </motion.div>
+    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+      {/* Section header */}
+      <div className="mb-16 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+        <div>
+          <FadeUp>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">
+              Collections
+            </p>
+          </FadeUp>
+          <RevealText delay={0.1}>
+            <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+              Shop by
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                obsession.
+              </span>
+            </h2>
+          </RevealText>
+        </div>
+        <FadeUp delay={0.3}>
+          <p className="max-w-sm text-sm text-white/40 md:text-base">
+            Every category is a rabbit hole. Each collection curated
+            by taste, not algorithm.
+          </p>
+        </FadeUp>
+      </div>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Bento Grid */}
+      <div className="grid auto-rows-[200px] grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         {filtered.map((cat, i) => {
-          const meta = categoryMeta[cat] || { icon: Cpu, desc: "Premium picks", gradient: "from-white/10 to-white/5" };
-          const Icon = meta.icon;
+          const meta = categoryData[cat] || {
+            desc: "Explore",
+            size: "col-span-1 row-span-1",
+            image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+            count: "Items",
+            gradient: "from-white/10 via-white/5 to-transparent"
+          };
 
           return (
             <motion.div
               key={cat}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.07 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{ duration: 0.6, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              className={meta.size}
             >
               <Link
                 href={`/shop?category=${encodeURIComponent(cat)}`}
-                className={`group flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-gradient-to-br ${meta.gradient} p-5 transition-all hover:border-white/[0.15] hover:shadow-lg`}
+                className="group relative block h-full overflow-hidden rounded-3xl border border-white/[0.06] bg-black/40"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.03]">
-                  <Icon size={22} className="text-white/60 transition group-hover:text-neon-cyan" />
+                {/* Background image */}
+                <motion.div
+                  className="absolute inset-0"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <ProductImage
+                    src={meta.image}
+                    alt={cat}
+                    className="h-full w-full object-cover opacity-60 transition-opacity group-hover:opacity-80"
+                  />
+                </motion.div>
+
+                {/* Gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-tr ${meta.gradient}`} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+
+                {/* Animated border on hover */}
+                <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/0 transition-all duration-500 group-hover:ring-white/20" />
+
+                {/* Content */}
+                <div className="relative flex h-full flex-col justify-between p-5">
+                  <div className="flex items-start justify-between">
+                    <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
+                      {meta.count}
+                    </span>
+                    <motion.div
+                      initial={{ opacity: 0, y: -5, x: 5 }}
+                      whileHover={{ opacity: 1 }}
+                      className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    >
+                      <ArrowUpRight size={15} />
+                    </motion.div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-bold leading-tight tracking-tight text-white md:text-3xl">
+                      {cat}
+                    </h3>
+                    <p className="mt-1 text-xs text-white/50 md:text-sm">{meta.desc}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-base font-semibold">{cat}</h3>
-                  <p className="mt-0.5 text-xs text-white/35">{meta.desc}</p>
-                </div>
-                <span className="text-sm text-white/20 transition group-hover:text-neon-cyan group-hover:translate-x-1">
-                  →
-                </span>
               </Link>
             </motion.div>
           );
