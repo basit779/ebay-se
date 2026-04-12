@@ -69,16 +69,12 @@ function ProductStack() {
               transformStyle: "preserve-3d"
             }}
           >
-            <motion.div
-              animate={{
-                y: [-6, 6, -6]
+            <div
+              className="w-[320px] overflow-hidden rounded-3xl border border-white/10 bg-black/80 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)]"
+              style={{
+                animation: `float-card 6s ease-in-out infinite ${i * 0.5}s`,
+                willChange: "transform"
               }}
-              transition={{
-                repeat: Infinity,
-                duration: 4 + i,
-                ease: "easeInOut"
-              }}
-              className="w-[320px] overflow-hidden rounded-3xl border border-white/10 bg-black/80 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)] backdrop-blur-xl"
             >
               <div className="relative h-[380px] overflow-hidden">
                 <ProductImage
@@ -117,22 +113,14 @@ function ProductStack() {
                   </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         );
       })}
 
-      {/* Decorative orbital rings */}
-      <motion.div
-        animate={{ rotate: 360 }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/5"
-      />
-      <motion.div
-        animate={{ rotate: -360 }}
-        transition={{ duration: 45, repeat: Infinity, ease: "linear" }}
-        className="absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.03]"
-      />
+      {/* Static decorative rings - no animation */}
+      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/5" />
+      <div className="absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.03]" />
     </div>
   );
 }

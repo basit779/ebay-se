@@ -395,6 +395,34 @@ a {
   100% { --angle: 360deg; }
 }
 
+/* ── Performance-optimized blob keyframes ─────────────── */
+@keyframes blob-1 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(60px, 40px, 0) scale(1.1); }
+}
+@keyframes blob-2 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.1); }
+  50% { transform: translate3d(-50px, 60px, 0) scale(0.95); }
+}
+@keyframes blob-3 {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+  50% { transform: translate3d(40px, -40px, 0) scale(1.1); }
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -8px, 0); }
+}
+
+/* ── Respect prefers-reduced-motion ───────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* ── Premium scrollbar ─────────────────────────────── */
 ::-webkit-scrollbar {
   width: 10px;

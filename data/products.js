@@ -116,10 +116,10 @@ const products = [
     badge: null,
     rating: 4.6,
     reviewCount: 445,
-    image: U("1507473885765-e6ed057ab6fe"),
+    image: U("1513506003901-1e6a229e2d15"),
     images: [
-      U("1507473885765-e6ed057ab6fe"),
-      U("1513506003901-1e6a229e2d15")
+      U("1513506003901-1e6a229e2d15"),
+      U("1534126416832-a88fdf2911c2")
     ],
     description: "Task light that adapts to daylight for optimal visual comfort. Tracks local daylight with 32 LEDs.",
     features: ["Daylight Tracking", "Touch Controls", "USB Charging Port", "App Connected"],
@@ -197,9 +197,9 @@ const products = [
     badge: "Sale",
     rating: 4.9,
     reviewCount: 2341,
-    image: U("1580480055273-228ff5388ef8"),
+    image: U("1592078615290-033ee584e267"),
     images: [
-      U("1580480055273-228ff5388ef8")
+      U("1592078615290-033ee584e267")
     ],
     description: "The most iconic ergonomic chair. PostureFit SL back support and 8Z Pellicle suspension.",
     features: ["8Z Pellicle", "PostureFit SL", "12-Year Warranty", "Fully Adjustable"],
