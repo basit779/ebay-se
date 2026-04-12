@@ -170,7 +170,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8"
+            className="mb-8 flex justify-center"
           >
             <FluxBidLogo size="hero" animate={true} />
           </motion.div>
