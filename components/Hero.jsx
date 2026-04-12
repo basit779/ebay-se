@@ -158,23 +158,25 @@ export default function Hero() {
         <AnimatedBackground />
       </motion.div>
 
-      {/* Main content grid */}
+      {/* Main content wrapper */}
       <motion.div
-        className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-6 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8 lg:py-0"
+        className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 lg:py-0"
         style={{ opacity: contentOpacity, y: contentY }}
       >
+        {/* FluxBid Logo — Centered at top */}
+        <motion.div
+          initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-12 flex justify-center lg:mb-16"
+        >
+          <FluxBidLogo size="xl" animate={true} />
+        </motion.div>
+
+        {/* Main content grid */}
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
         {/* Left: Text Content */}
         <div className="order-2 text-left lg:order-1">
-          {/* FluxBid Logo */}
-          <motion.div
-            initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8 flex justify-center"
-          >
-            <FluxBidLogo size="hero" animate={true} />
-          </motion.div>
-
           {/* Eyebrow */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -284,6 +286,7 @@ export default function Hero() {
         >
           <ProductStack />
         </motion.div>
+        </div>
       </motion.div>
 
       {/* Bottom fade */}
