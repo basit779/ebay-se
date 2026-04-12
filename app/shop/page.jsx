@@ -33,12 +33,13 @@ export default function ShopPage() {
       );
     }
 
+    const getPrice = (p) => p.price ?? p.currentBid ?? 0;
     switch (sortBy) {
       case "price-asc":
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => getPrice(a) - getPrice(b));
         break;
       case "price-desc":
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a, b) => getPrice(b) - getPrice(a));
         break;
       case "rating":
         result.sort((a, b) => b.rating - a.rating);

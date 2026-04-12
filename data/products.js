@@ -1,4 +1,4 @@
-// Reliable Unsplash photo URLs — each verified to match the product type
+// All Unsplash URLs verified to match actual product imagery
 const U = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 
 const products = [
@@ -18,7 +18,7 @@ const products = [
       U("1583394838336-acd977736f90"),
       U("1487215078519-e21cc028cb29")
     ],
-    description: "Studio-grade wireless headphones with industry-leading noise cancellation, 30-hour battery life, and exceptional sound quality.",
+    description: "Industry-leading noise cancellation with premium sound and 30-hour battery life.",
     features: ["Industry-Leading ANC", "30hr Battery", "Multi-Point Connect", "Fast Charge"],
     colors: ["#1a1a2e", "#f5f5f5", "#3b82f6"],
     inStock: true,
@@ -39,7 +39,7 @@ const products = [
       U("1579586337278-3befd40fd17a"),
       U("1508685096489-7aacd43bd3b1")
     ],
-    description: "Rugged titanium smartwatch with precision dual-frequency GPS, 36-hour battery, and advanced health sensors.",
+    description: "Rugged titanium smartwatch with precision dual-frequency GPS and 36-hour battery.",
     features: ["Titanium Case", "Dual GPS", "36hr Battery", "Action Button"],
     colors: ["#374151", "#d4d4d8", "#92400e"],
     inStock: true,
@@ -60,7 +60,7 @@ const products = [
       U("1606107557195-0e29a4b5b4aa"),
       U("1595950653106-6c9ebd614d3a")
     ],
-    description: "Iconic running-inspired sneaker with full-length Max Air cushioning and metallic ripple design.",
+    description: "Iconic running-inspired sneaker with full-length Max Air cushioning.",
     features: ["Max Air Cushion", "Reflective Upper", "Rubber Outsole", "Leather Overlays"],
     colors: ["#dc2626", "#1a1a2e", "#f5f5f5"],
     inStock: true,
@@ -76,11 +76,8 @@ const products = [
     rating: 4.5,
     reviewCount: 892,
     image: U("1602143407151-7111542de6e8"),
-    images: [
-      U("1602143407151-7111542de6e8"),
-      U("1523362628745-0c100150b504")
-    ],
-    description: "TempShield double-wall vacuum insulation keeps drinks cold for 24 hours or hot for 12 hours.",
+    images: [U("1602143407151-7111542de6e8")],
+    description: "TempShield double-wall vacuum insulation keeps drinks cold 24 hrs or hot 12 hrs.",
     features: ["24hr Cold / 12hr Hot", "BPA-Free", "Flex Cap", "Dishwasher Safe"],
     colors: ["#f5f5f5", "#1e3a5f", "#064e3b"],
     inStock: true,
@@ -101,7 +98,7 @@ const products = [
       U("1502920917128-1aa500764cbd"),
       U("1510127034890-ba27508e9f1c")
     ],
-    description: "Full-frame mirrorless camera with 24MP sensor, 40fps shooting, and professional 4K video capabilities.",
+    description: "Full-frame mirrorless camera with 24MP sensor and professional 4K video.",
     features: ["24MP Full-Frame", "40fps Burst", "4K 60p Video", "Dual Card Slots"],
     colors: ["#1a1a2e"],
     inStock: true,
@@ -109,7 +106,7 @@ const products = [
   },
   {
     id: "6",
-    name: "Dyson Lightcycle Lamp",
+    name: "Premium LED Desk Lamp",
     price: 179,
     originalPrice: null,
     category: "Home",
@@ -117,12 +114,9 @@ const products = [
     rating: 4.6,
     reviewCount: 445,
     image: U("1513506003901-1e6a229e2d15"),
-    images: [
-      U("1513506003901-1e6a229e2d15"),
-      U("1534126416832-a88fdf2911c2")
-    ],
-    description: "Task light that adapts to daylight for optimal visual comfort. Tracks local daylight with 32 LEDs.",
-    features: ["Daylight Tracking", "Touch Controls", "USB Charging Port", "App Connected"],
+    images: [U("1513506003901-1e6a229e2d15")],
+    description: "Task light with adaptive daylight tracking and touch controls for optimal visual comfort.",
+    features: ["Daylight Tracking", "Touch Controls", "USB Port", "App Connected"],
     colors: ["#f5f5f5", "#1a1a2e"],
     inStock: true,
     auction: false
@@ -142,7 +136,7 @@ const products = [
       U("1587829741301-dc798b83add3"),
       U("1618384887929-16ec33fab9ef")
     ],
-    description: "Wireless mechanical keyboard with double-gasket design, hot-swap sockets, and QMK/VIA support.",
+    description: "Wireless mechanical keyboard with double-gasket design and hot-swap sockets.",
     features: ["Double Gasket", "Hot-Swap Sockets", "QMK/VIA", "Wireless Bluetooth"],
     colors: ["#1a1a2e", "#f5f5f5", "#7c3aed"],
     inStock: true,
@@ -162,7 +156,7 @@ const products = [
       U("1553062407-98eeb64c6a62"),
       U("1622560480605-d83c853bc5c3")
     ],
-    description: "Adaptable 30L backpack with customizable dividers, dedicated laptop sleeve, and weatherproof shell.",
+    description: "Adaptable 30L backpack with customizable dividers and weatherproof shell.",
     features: ["30L Capacity", "Laptop Sleeve", "Weatherproof", "MagLatch Closure"],
     colors: ["#1a1a2e", "#374151", "#065f46"],
     inStock: true,
@@ -177,12 +171,12 @@ const products = [
     badge: "New",
     rating: 4.6,
     reviewCount: 89,
-    image: U("1590658268037-6bf12f032f55"),
+    image: U("1600294037681-c80b4cb5b434"),
     images: [
-      U("1590658268037-6bf12f032f55"),
+      U("1600294037681-c80b4cb5b434"),
       U("1606220588913-b3aacb4d2f46")
     ],
-    description: "2x stronger Active Noise Cancellation, Adaptive Transparency, and up to 6 hours of listening time.",
+    description: "2x stronger Active Noise Cancellation with Adaptive Transparency mode.",
     features: ["2x ANC", "Adaptive Transparency", "Spatial Audio", "MagSafe Charging"],
     colors: ["#f5f5f5"],
     inStock: true,
@@ -198,10 +192,8 @@ const products = [
     rating: 4.9,
     reviewCount: 2341,
     image: U("1592078615290-033ee584e267"),
-    images: [
-      U("1592078615290-033ee584e267")
-    ],
-    description: "The most iconic ergonomic chair. PostureFit SL back support and 8Z Pellicle suspension.",
+    images: [U("1592078615290-033ee584e267")],
+    description: "The iconic ergonomic chair. PostureFit SL back support and 8Z Pellicle suspension.",
     features: ["8Z Pellicle", "PostureFit SL", "12-Year Warranty", "Fully Adjustable"],
     colors: ["#1a1a2e", "#374151"],
     inStock: true,
@@ -217,10 +209,8 @@ const products = [
     rating: 4.7,
     reviewCount: 567,
     image: U("1527864550417-7fd91fc51a46"),
-    images: [
-      U("1527864550417-7fd91fc51a46")
-    ],
-    description: "Ergonomic wireless mouse with 8K DPI sensor, MagSpeed scroll wheel, and quiet clicks.",
+    images: [U("1527864550417-7fd91fc51a46")],
+    description: "Ergonomic wireless mouse with 8K DPI sensor and MagSpeed scroll wheel.",
     features: ["8K DPI Sensor", "MagSpeed Scroll", "Quiet Clicks", "USB-C Charging"],
     colors: ["#1a1a2e", "#d4d4d8"],
     inStock: true,
@@ -240,7 +230,7 @@ const products = [
       U("1572635196237-14b3f281503f"),
       U("1511499767150-a48a237f0083")
     ],
-    description: "The original Aviator. Timeless metal frame design with crystal green lenses.",
+    description: "The original Aviator. Timeless metal frame with crystal green lenses.",
     features: ["Gold Metal Frame", "G-15 Lenses", "UV Protection", "100% Authentic"],
     colors: ["#1a1a2e", "#92400e", "#1e3a5f"],
     inStock: true,
@@ -260,7 +250,7 @@ const products = [
       U("1544244015-0df4b3ffc6b0"),
       U("1561154464-82e9adf32764")
     ],
-    description: "Incredibly thin iPad Pro with M4 chip, stunning Ultra Retina XDR display, and Apple Pencil Pro support.",
+    description: "Incredibly thin iPad Pro with M4 chip and stunning Ultra Retina XDR display.",
     features: ["M4 Chip", "Ultra Retina XDR", "Apple Pencil Pro", "Thunderbolt"],
     colors: ["#374151", "#d4d4d8"],
     inStock: true,
@@ -268,7 +258,7 @@ const products = [
   },
   {
     id: "14",
-    name: "Bose SoundLink Max",
+    name: "Bose SoundLink Max Speaker",
     price: 399,
     originalPrice: null,
     category: "Audio",
@@ -280,8 +270,8 @@ const products = [
       U("1608043152269-423dbba4e7e1"),
       U("1545454675-3531b543be5d")
     ],
-    description: "Bose's most powerful portable speaker. Custom transducers deliver deep, rich sound for hours.",
-    features: ["Custom Transducers", "20hr Battery", "IP67 Waterproof", "Multi-Point Pairing"],
+    description: "Bose's most powerful portable speaker with deep, rich sound for hours.",
+    features: ["Custom Transducers", "20hr Battery", "IP67 Waterproof", "Multi-Point"],
     colors: ["#1a1a2e", "#374151", "#0e4a2e"],
     inStock: true,
     auction: false
@@ -308,7 +298,7 @@ const products = [
   },
   {
     id: "16",
-    name: "DJI Mavic 3 Pro",
+    name: "DJI Mavic 3 Pro Drone",
     price: 2199,
     originalPrice: null,
     category: "Tech",
@@ -320,7 +310,7 @@ const products = [
       U("1473968512647-3e447244af8f"),
       U("1506947411487-a56738267384")
     ],
-    description: "Triple-camera flagship drone with Hasselblad L2D-20c, 5.1K 50fps video, and 43-minute flight time.",
+    description: "Triple-camera flagship drone with Hasselblad L2D-20c and 43-minute flight time.",
     features: ["Hasselblad L2D-20c", "5.1K Video", "43min Flight", "O4 Transmission"],
     colors: ["#374151"],
     inStock: true,
@@ -341,7 +331,7 @@ const products = [
       U("1614164185128-e4ec99c436d7"),
       U("1526045431048-f857369baa09")
     ],
-    description: "Rare 1968 Rolex Submariner Ref. 5513. Original gilt dial with beautiful tropical patina. Complete with service papers.",
+    description: "Rare 1968 Rolex Submariner Ref. 5513 with original gilt dial and tropical patina.",
     features: ["Ref. 5513", "Gilt Dial", "Tropical Patina", "Service Papers"],
     colors: [],
     inStock: true,
@@ -365,8 +355,8 @@ const products = [
       U("1519861531473-9200262188bf"),
       U("1546519638-68e109498ffc")
     ],
-    description: "Authentic Chicago Bulls #23 jersey signed by Michael Jordan. PSA/DNA authenticated with framed display.",
-    features: ["PSA/DNA Authenticated", "Framed Display", "Certificate Included", "Mint Condition"],
+    description: "Authentic Chicago Bulls #23 jersey signed by Michael Jordan. PSA/DNA authenticated.",
+    features: ["PSA/DNA Authenticated", "Framed Display", "Certificate Included", "Mint"],
     colors: [],
     inStock: true,
     auction: true,
@@ -385,10 +375,8 @@ const products = [
     rating: 5.0,
     reviewCount: 3,
     image: U("1511707171634-5f897ff02aa9"),
-    images: [
-      U("1511707171634-5f897ff02aa9")
-    ],
-    description: "Factory-sealed original iPhone from 2007. 8GB model in pristine condition. Museum-quality investment collectible.",
+    images: [U("1511707171634-5f897ff02aa9")],
+    description: "Factory-sealed original iPhone from 2007. 8GB model in pristine condition.",
     features: ["Factory Sealed", "8GB Model", "Original Packaging", "Investment Grade"],
     colors: [],
     inStock: true,
@@ -412,7 +400,7 @@ const products = [
       U("1452780212940-6f5c0d14d848"),
       U("1516035069371-29a1b244cc32")
     ],
-    description: "Classic Leica M6 rangefinder in black chrome. Recently CLA'd by Leica. Includes Summicron 50mm f/2.",
+    description: "Classic Leica M6 rangefinder in black chrome. Recently CLA'd by Leica.",
     features: ["Black Chrome", "Leica CLA", "Summicron 50mm", "Collector Grade"],
     colors: [],
     inStock: true,
@@ -436,7 +424,7 @@ const products = [
       U("1510915361894-db8b60106cb1"),
       U("1564186763535-ebb21ef5277f")
     ],
-    description: "Holy grail 1959 Gibson Les Paul Standard. Original PAF pickups, sunburst finish, original case. One of the finest examples.",
+    description: "Holy grail 1959 Gibson Les Paul Standard with original PAF pickups.",
     features: ["Original PAFs", "Sunburst Finish", "Original Case", "Investment Grade"],
     colors: [],
     inStock: true,
@@ -456,10 +444,8 @@ const products = [
     rating: 4.9,
     reviewCount: 1876,
     image: U("1585515320310-259814833e62"),
-    images: [
-      U("1585515320310-259814833e62")
-    ],
-    description: "Iconic enameled cast iron Dutch oven. Superior heat retention for braising, roasting, and baking.",
+    images: [U("1585515320310-259814833e62")],
+    description: "Iconic enameled cast iron Dutch oven with superior heat retention.",
     features: ["Enameled Cast Iron", "5.5qt Capacity", "Oven Safe 500F", "Lifetime Warranty"],
     colors: ["#dc2626", "#1e3a5f", "#f5f5f5"],
     inStock: true,
@@ -479,7 +465,7 @@ const products = [
       U("1592899677977-9c10ca588bbd"),
       U("1511707171634-5f897ff02aa9")
     ],
-    description: "Flagship smartphone with titanium frame, 200MP camera, S Pen built-in, and Galaxy AI features.",
+    description: "Flagship smartphone with titanium frame, 200MP camera, and S Pen built-in.",
     features: ["200MP Camera", "Titanium Frame", "S Pen", "Galaxy AI"],
     colors: ["#1a1a2e", "#374151", "#7c3aed"],
     inStock: true,
@@ -494,10 +480,8 @@ const products = [
     rating: 4.9,
     reviewCount: 4,
     image: U("1526170375885-4d8ecf77b99f"),
-    images: [
-      U("1526170375885-4d8ecf77b99f")
-    ],
-    description: "Original 1972 Polaroid SX-70 in chrome and brown leather. Fully refurbished. Tested with fresh film.",
+    images: [U("1526170375885-4d8ecf77b99f")],
+    description: "Original 1972 Polaroid SX-70 in chrome and brown leather. Fully refurbished.",
     features: ["Fully Refurbished", "Original Leather", "Chrome Finish", "Tested Working"],
     colors: [],
     inStock: true,
