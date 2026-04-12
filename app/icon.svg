@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1020"/>
+      <stop offset="100%" stop-color="#05060a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded square -->
+  <rect width="100" height="100" rx="22" ry="22" fill="url(#bgGrad)"/>
+
+  <!-- Subtle inner glow ring -->
+  <rect width="100" height="100" rx="22" ry="22" fill="none" stroke="url(#logoGrad)" stroke-width="1" opacity="0.2"/>
+
+  <!-- Letter "F" — vertical stroke -->
+  <rect x="21" y="21" width="11" height="58" rx="3" fill="url(#logoGrad)"/>
+  <!-- Letter "F" — top horizontal stroke -->
+  <rect x="21" y="21" width="43" height="11" rx="3" fill="url(#logoGrad)"/>
+  <!-- Letter "F" — middle horizontal stroke -->
+  <rect x="21" y="45" width="30" height="10" rx="3" fill="url(#logoGrad)"/>
+
+  <!-- Live pulse dot (brand signature) -->
+  <circle cx="79" cy="24" r="8" fill="#22d3ee" opacity="0.15"/>
+  <circle cx="79" cy="24" r="5" fill="#22d3ee"/>
+</svg>
