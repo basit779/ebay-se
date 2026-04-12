@@ -389,6 +389,29 @@ a {
   100% { background-position: 0% 50%; }
 }
 
+/* ── Animated border rotation ─────────────────────────── */
+@keyframes border-rotate {
+  0% { --angle: 0deg; }
+  100% { --angle: 360deg; }
+}
+
+/* ── Premium scrollbar ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #05060a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(34,211,238,0.2), rgba(168,85,247,0.2));
+  border-radius: 10px;
+  border: 2px solid #05060a;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(34,211,238,0.4), rgba(168,85,247,0.4));
+}
+
 /* ── Smooth Focus Rings ───────────────────────────────── */
 *:focus-visible {
   outline: 2px solid rgba(34, 211, 238, 0.5);
