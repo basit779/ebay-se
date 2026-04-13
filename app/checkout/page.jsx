@@ -1,13 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { CreditCard, Truck, Shield, Check, Loader2 } from "lucide-react";
+import {
+  CreditCard,
+  Truck,
+  Shield,
+  Check,
+  Loader2,
+  AlertCircle
+} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import {
+  isValidEmail,
+  luhn,
+  detectCardBrand,
+  isValidExpiry,
+  isValidCVC,
+  normalizeCardNumber
+} from "@/lib/validation";
+
+// ── Formatters ──────────────────────────────────────────────────
+function formatCardNumber(v) {
+  const digits = normalizeCardNumber(v).slice(0, 19);
+  const brand = detectCardBrand(digits);
+  // Amex format: 4-6-5
+  if (brand === "amex") {
+    return digits
+      .replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, (_, a, b, c) =>
+        [a, b, c].filter(Boolean).join(" ")
+      )
+      .trim();
+  }
+  // Default: 4-4-4-4 (and 4-4-4-4-3 for 19-digit cards)
+  return digits.replace(/(\d{4})(?=\d)/g, "$1 ");
+}
+
+function formatExpiry(v) {
+  const digits = String(v || "").replace(/\D/g, "").slice(0, 4);
+  if (digits.length < 3) return digits;
+  return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+}
+
+const BRAND_COLORS = {
+  visa: "text-blue-400",
+  mastercard: "text-orange-400",
+  amex: "text-cyan-400",
+  discover: "text-amber-400",
+  diners: "text-amber-300",
+  jcb: "text-emerald-400",
+  unknown: "text-white/30"
+};
+
+const BRAND_LABELS = {
+  visa: "Visa",
+  mastercard: "Mastercard",
+  amex: "American Express",
+  discover: "Discover",
+  diners: "Diners Club",
+  jcb: "JCB",
+  unknown: ""
+};
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -26,28 +83,95 @@ export default function CheckoutPage() {
     cardExpiry: "",
     cardCvc: ""
   });
+  const [touched, setTouched] = useState({});
 
-  const updateField = (field, value) => setForm((f) => ({ ...f, [field]: value }));
+  const brand = useMemo(() => detectCardBrand(form.cardNumber), [form.cardNumber]);
+
+  const errors = useMemo(() => {
+    const e = {};
+    // Step 1
+    if (!form.name.trim()) e.name = "Required";
+    if (!form.email.trim()) e.email = "Required";
+    else if (!isValidEmail(form.email)) e.email = "Invalid email format";
+    if (!form.address.trim()) e.address = "Required";
+    if (!form.city.trim()) e.city = "Required";
+    if (!form.zip.trim()) e.zip = "Required";
+    else if (!/^[A-Za-z0-9\s-]{3,10}$/.test(form.zip.trim())) e.zip = "Invalid ZIP";
+
+    // Step 2
+    if (!form.cardNumber.trim()) e.cardNumber = "Required";
+    else if (!luhn(form.cardNumber)) e.cardNumber = "Invalid card number";
+    if (!form.cardExpiry.trim()) e.cardExpiry = "Required";
+    else if (!isValidExpiry(form.cardExpiry)) e.cardExpiry = "Invalid or expired";
+    if (!form.cardCvc.trim()) e.cardCvc = "Required";
+    else if (!isValidCVC(form.cardCvc, brand))
+      e.cardCvc = brand === "amex" ? "Must be 4 digits" : "Must be 3 digits";
+    return e;
+  }, [form, brand]);
+
+  const step1Valid = !errors.name && !errors.email && !errors.address && !errors.city && !errors.zip;
+  const step2Valid = !errors.cardNumber && !errors.cardExpiry && !errors.cardCvc && step1Valid;
+
+  const updateField = (field, value) => {
+    let v = value;
+    if (field === "cardNumber") v = formatCardNumber(value);
+    else if (field === "cardExpiry") v = formatExpiry(value);
+    else if (field === "cardCvc") v = String(value).replace(/\D/g, "").slice(0, 4);
+    setForm((f) => ({ ...f, [field]: v }));
+  };
+
+  const markTouched = (field) => setTouched((t) => ({ ...t, [field]: true }));
+
+  const showErr = (field) => touched[field] && errors[field];
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    // force-touch every field so errors surface
+    setTouched({
+      name: true, email: true, address: true, city: true, zip: true,
+      cardNumber: true, cardExpiry: true, cardCvc: true
+    });
+    if (!step2Valid) {
+      addToast("Please fix the errors before placing the order", "error");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      if (user) {
-        await fetch("/api/orders", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            items: cartItems,
-            total,
-            shipping: { name: form.name, address: `${form.address}, ${form.city} ${form.zip}` }
-          })
-        });
+      if (!user) {
+        addToast("Please sign in to place an order", "error");
+        setLoading(false);
+        return;
+      }
+
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: cartItems,
+          total,
+          shipping: {
+            name: form.name,
+            address: `${form.address}, ${form.city} ${form.zip}`
+          },
+          payment: {
+            cardNumber: normalizeCardNumber(form.cardNumber),
+            expiry: form.cardExpiry,
+            cvc: form.cardCvc,
+            cardHolder: form.name
+          }
+        })
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        addToast(data.error || "Order failed", "error");
+        return;
       }
 
       clearAll();
-      addToast("Order placed successfully!", "success");
+      addToast("Order placed — check your inbox for confirmation", "success");
       setStep(3);
     } catch {
       addToast("Something went wrong", "error");
@@ -68,7 +192,7 @@ export default function CheckoutPage() {
           <p className="mt-2 text-sm text-white/40">Add items to your cart first</p>
           <a
             href="/shop"
-            className="mt-6 inline-block rounded-full bg-neon-cyan/10 px-6 py-2.5 text-sm font-medium text-neon-cyan"
+            className="mt-6 inline-block rounded-full bg-amber-400/10 px-6 py-2.5 text-sm font-medium text-amber-300"
           >
             Browse Shop
           </a>
@@ -91,13 +215,13 @@ export default function CheckoutPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", delay: 0.2 }}
-            className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-neon-emerald/20"
+            className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20"
           >
-            <Check size={36} className="text-neon-emerald" />
+            <Check size={36} className="text-emerald-400" />
           </motion.div>
-          <h1 className="mt-6 text-3xl font-bold">Order Confirmed!</h1>
-          <p className="mt-3 text-sm text-white/40">
-            Thanks for your purchase. We'll send you tracking info via email.
+          <h1 className="mt-6 font-display text-3xl font-bold">Order Confirmed</h1>
+          <p className="mt-3 text-sm text-white/50">
+            Thanks for your purchase. A confirmation email is on its way.
           </p>
           <div className="mt-8 flex justify-center gap-3">
             <a
@@ -109,7 +233,7 @@ export default function CheckoutPage() {
             {user && (
               <a
                 href="/account"
-                className="rounded-xl bg-neon-cyan/10 px-6 py-3 text-sm font-medium text-neon-cyan transition hover:bg-neon-cyan/20"
+                className="rounded-xl bg-amber-400/15 px-6 py-3 text-sm font-medium text-amber-300 transition hover:bg-amber-400/25"
               >
                 View Orders
               </a>
@@ -125,8 +249,8 @@ export default function CheckoutPage() {
       <AnimatedBackground />
       <div className="relative z-10 mx-auto max-w-5xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neon-cyan">Secure</p>
-          <h1 className="mt-2 text-4xl font-bold">Checkout</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Secure</p>
+          <h1 className="font-display mt-2 text-4xl font-bold">Checkout</h1>
         </motion.div>
 
         {/* Steps indicator */}
@@ -136,9 +260,9 @@ export default function CheckoutPage() {
               <div
                 className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
                   step > i + 1
-                    ? "bg-neon-emerald/20 text-neon-emerald"
+                    ? "bg-emerald-500/20 text-emerald-400"
                     : step === i + 1
-                      ? "bg-neon-cyan/20 text-neon-cyan"
+                      ? "bg-amber-400/20 text-amber-300"
                       : "bg-white/[0.04] text-white/20"
                 }`}
               >
@@ -154,66 +278,62 @@ export default function CheckoutPage() {
 
         <form onSubmit={handlePlaceOrder} className="mt-10 grid gap-8 lg:grid-cols-[1fr_380px]">
           {/* Form Steps */}
-          <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6">
+          <div className="liquid-glass rounded-2xl p-6">
             {step === 1 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                 <h3 className="flex items-center gap-2 text-base font-semibold">
-                  <Truck size={18} className="text-neon-cyan" /> Shipping Information
+                  <Truck size={18} className="text-amber-400" /> Shipping Information
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-xs text-white/35">Full Name</label>
-                    <input
-                      value={form.name}
-                      onChange={(e) => updateField("name", e.target.value)}
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-1.5 block text-xs text-white/35">Email</label>
-                    <input
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => updateField("email", e.target.value)}
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-1.5 block text-xs text-white/35">Address</label>
-                  <input
-                    value={form.address}
-                    onChange={(e) => updateField("address", e.target.value)}
-                    required
-                    className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
+                  <Field
+                    label="Full Name"
+                    value={form.name}
+                    onChange={(v) => updateField("name", v)}
+                    onBlur={() => markTouched("name")}
+                    error={showErr("name")}
+                  />
+                  <Field
+                    label="Email"
+                    type="email"
+                    value={form.email}
+                    onChange={(v) => updateField("email", v)}
+                    onBlur={() => markTouched("email")}
+                    error={showErr("email")}
                   />
                 </div>
+                <Field
+                  label="Address"
+                  value={form.address}
+                  onChange={(v) => updateField("address", v)}
+                  onBlur={() => markTouched("address")}
+                  error={showErr("address")}
+                />
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-xs text-white/35">City</label>
-                    <input
-                      value={form.city}
-                      onChange={(e) => updateField("city", e.target.value)}
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="mb-1.5 block text-xs text-white/35">ZIP Code</label>
-                    <input
-                      value={form.zip}
-                      onChange={(e) => updateField("zip", e.target.value)}
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-                    />
-                  </div>
+                  <Field
+                    label="City"
+                    value={form.city}
+                    onChange={(v) => updateField("city", v)}
+                    onBlur={() => markTouched("city")}
+                    error={showErr("city")}
+                  />
+                  <Field
+                    label="ZIP Code"
+                    value={form.zip}
+                    onChange={(v) => updateField("zip", v)}
+                    onBlur={() => markTouched("zip")}
+                    error={showErr("zip")}
+                  />
                 </div>
                 <button
                   type="button"
-                  onClick={() => setStep(2)}
-                  className="btn-glow mt-2 w-full rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue py-3.5 text-sm font-semibold text-black"
+                  onClick={() => {
+                    setTouched((t) => ({
+                      ...t, name: true, email: true, address: true, city: true, zip: true
+                    }));
+                    if (step1Valid) setStep(2);
+                  }}
+                  disabled={!step1Valid && Object.keys(touched).length > 0}
+                  className="mt-2 w-full rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 py-3.5 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(251,191,36,0.5)] transition-all disabled:opacity-50"
                 >
                   Continue to Payment
                 </button>
@@ -223,43 +343,73 @@ export default function CheckoutPage() {
             {step === 2 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
                 <h3 className="flex items-center gap-2 text-base font-semibold">
-                  <CreditCard size={18} className="text-neon-cyan" /> Payment Details
+                  <CreditCard size={18} className="text-amber-400" /> Payment Details
                 </h3>
                 <p className="text-xs text-white/30">
-                  This is a demo — no real charges will be made.
+                  This is a demo — no real charges will be made. Test card: <span className="font-mono text-amber-300">4242 4242 4242 4242</span>
                 </p>
+
                 <div>
                   <label className="mb-1.5 block text-xs text-white/35">Card Number</label>
-                  <input
-                    value={form.cardNumber}
-                    onChange={(e) => updateField("cardNumber", e.target.value)}
-                    placeholder="4242 4242 4242 4242"
-                    required
-                    className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-                  />
+                  <div className="relative">
+                    <input
+                      inputMode="numeric"
+                      autoComplete="cc-number"
+                      value={form.cardNumber}
+                      onChange={(e) => updateField("cardNumber", e.target.value)}
+                      onBlur={() => markTouched("cardNumber")}
+                      placeholder="4242 4242 4242 4242"
+                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 pr-24 text-sm font-mono tracking-wider ${
+                        showErr("cardNumber") ? "border border-rose-500/50" : ""
+                      }`}
+                    />
+                    {brand !== "unknown" && (
+                      <motion.div
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className={`absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 rounded-md bg-white/5 px-2 py-1 text-[10px] font-bold uppercase tracking-wider ${BRAND_COLORS[brand]}`}
+                      >
+                        <CreditCard size={11} />
+                        {BRAND_LABELS[brand]}
+                      </motion.div>
+                    )}
+                  </div>
+                  {showErr("cardNumber") && <ErrorText>{errors.cardNumber}</ErrorText>}
                 </div>
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label className="mb-1.5 block text-xs text-white/35">Expiry</label>
                     <input
+                      inputMode="numeric"
+                      autoComplete="cc-exp"
                       value={form.cardExpiry}
                       onChange={(e) => updateField("cardExpiry", e.target.value)}
+                      onBlur={() => markTouched("cardExpiry")}
                       placeholder="MM/YY"
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
+                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm font-mono tracking-wider ${
+                        showErr("cardExpiry") ? "border border-rose-500/50" : ""
+                      }`}
                     />
+                    {showErr("cardExpiry") && <ErrorText>{errors.cardExpiry}</ErrorText>}
                   </div>
                   <div>
                     <label className="mb-1.5 block text-xs text-white/35">CVC</label>
                     <input
+                      inputMode="numeric"
+                      autoComplete="cc-csc"
                       value={form.cardCvc}
                       onChange={(e) => updateField("cardCvc", e.target.value)}
-                      placeholder="123"
-                      required
-                      className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
+                      onBlur={() => markTouched("cardCvc")}
+                      placeholder={brand === "amex" ? "1234" : "123"}
+                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm font-mono tracking-wider ${
+                        showErr("cardCvc") ? "border border-rose-500/50" : ""
+                      }`}
                     />
+                    {showErr("cardCvc") && <ErrorText>{errors.cardCvc}</ErrorText>}
                   </div>
                 </div>
+
                 <div className="flex gap-3 pt-2">
                   <button
                     type="button"
@@ -270,8 +420,8 @@ export default function CheckoutPage() {
                   </button>
                   <button
                     type="submit"
-                    disabled={loading}
-                    className="btn-glow flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue py-3.5 text-sm font-semibold text-black disabled:opacity-50"
+                    disabled={loading || !step2Valid}
+                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 py-3.5 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(251,191,36,0.5)] transition-all disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     {loading && <Loader2 size={16} className="animate-spin" />}
                     Place Order · ${total.toFixed(2)}
@@ -305,14 +455,14 @@ export default function CheckoutPage() {
               </div>
               <div className="flex justify-between text-xs text-white/40">
                 <span>Shipping</span>
-                <span className="text-neon-emerald">Free</span>
+                <span className="text-emerald-400">Free</span>
               </div>
               <div className="flex justify-between border-t border-white/[0.06] pt-3 text-sm font-semibold">
                 <span>Total</span>
-                <span className="text-neon-cyan">${total.toFixed(2)}</span>
+                <span className="text-gold font-display text-lg">${total.toFixed(2)}</span>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-2 rounded-lg bg-neon-emerald/5 px-3 py-2 text-xs text-neon-emerald/70">
+            <div className="mt-4 flex items-center gap-2 rounded-lg bg-emerald-500/5 px-3 py-2 text-xs text-emerald-400/80">
               <Shield size={12} />
               <span>SSL Encrypted & Secure</span>
             </div>
@@ -320,5 +470,32 @@ export default function CheckoutPage() {
         </form>
       </div>
     </section>
+  );
+}
+
+function Field({ label, value, onChange, onBlur, error, type = "text" }) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-xs text-white/35">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
+        className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm ${
+          error ? "border border-rose-500/50" : ""
+        }`}
+      />
+      {error && <ErrorText>{error}</ErrorText>}
+    </div>
+  );
+}
+
+function ErrorText({ children }) {
+  return (
+    <p className="mt-1.5 flex items-center gap-1 text-[11px] text-rose-400">
+      <AlertCircle size={11} />
+      {children}
+    </p>
   );
 }

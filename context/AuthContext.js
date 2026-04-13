@@ -44,8 +44,21 @@ export function AuthProvider({ children }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
+    // New flow: registration returns { requiresVerification, email } and does NOT log the user in.
+    if (data.requiresVerification) return { requiresVerification: true, email: data.email };
     setUser(data.user);
     return data.user;
+  };
+
+  const resendVerification = async (email) => {
+    const res = await fetch("/api/auth/resend-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || "Failed to resend");
+    return data;
   };
 
   const logout = async () => {
@@ -54,7 +67,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, resendVerification, logout, refresh: fetchUser }}>
       {children}
     </AuthContext.Provider>
   );
