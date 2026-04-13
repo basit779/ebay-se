@@ -33,7 +33,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
       {/* Header */}
       <div className="mb-16 max-w-3xl">
         <FadeUp>

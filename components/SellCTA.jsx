@@ -7,7 +7,7 @@ import { RevealText, FadeUp } from "@/components/TextReveal";
 
 export default function SellCTA() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}

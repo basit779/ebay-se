@@ -44,7 +44,7 @@ const stats = [
 
 export default function StatsSection() {
   return (
-    <section className="relative overflow-hidden py-32">
+    <section className="relative overflow-hidden py-16 md:py-20">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
 

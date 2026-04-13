@@ -77,7 +77,7 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
       <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div>
           <FadeUp>
