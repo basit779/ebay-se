@@ -268,9 +268,9 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-2 lg:mb-4"
+            className="relative z-20 -mb-6 lg:-mb-10"
           >
-            <FluxBidLogo size="lg" animate={true} />
+            <FluxBidLogo size="xl" animate={true} />
           </motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}

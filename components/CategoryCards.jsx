@@ -55,9 +55,9 @@ export default function CategoryCards({ categories }) {
   const filtered = categories.filter((c) => c !== "All");
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-20">
       {/* Section header */}
-      <div className="mb-16 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
+      <div className="mb-10 flex flex-col items-start gap-6 md:mb-12 md:flex-row md:items-end md:justify-between">
         <div>
           <FadeUp>
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
@@ -75,10 +75,26 @@ export default function CategoryCards({ categories }) {
           </RevealText>
         </div>
         <FadeUp delay={0.3}>
-          <p className="max-w-sm text-sm text-white/40 md:text-base">
-            Every category is a rabbit hole. Each collection curated
-            by taste, not algorithm.
-          </p>
+          <div className="flex w-full max-w-md flex-col gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 backdrop-blur-sm md:w-auto">
+            <p className="text-sm leading-relaxed text-white/50">
+              Every category is a rabbit hole. Each collection curated
+              by taste, not algorithm.
+            </p>
+            <div className="flex items-center gap-5 border-t border-white/[0.04] pt-4">
+              <div>
+                <p className="font-display text-xl font-bold text-gold">6</p>
+                <p className="text-[10px] uppercase tracking-wider text-white/30">Collections</p>
+              </div>
+              <div>
+                <p className="font-display text-xl font-bold text-gold">24</p>
+                <p className="text-[10px] uppercase tracking-wider text-white/30">Items</p>
+              </div>
+              <div>
+                <p className="font-display text-xl font-bold text-gold">4.8</p>
+                <p className="text-[10px] uppercase tracking-wider text-white/30">Avg Rating</p>
+              </div>
+            </div>
+          </div>
         </FadeUp>
       </div>
 

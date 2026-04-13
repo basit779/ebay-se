@@ -17,7 +17,7 @@ export default function SectionHeader({
   stats
 }) {
   return (
-    <div className="mb-16 grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-end md:gap-12">
+    <div className="mb-10 grid gap-8 md:mb-12 md:grid-cols-[1.2fr_1fr] md:items-end md:gap-12">
       {/* Left: Headline */}
       <div>
         <FadeUp>

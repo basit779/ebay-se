@@ -10,17 +10,17 @@ export default function EditorialSpotlight({ product }) {
   if (!product) return null;
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-20">
       <FadeUp>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
           Editor's Pick
         </p>
       </FadeUp>
       <RevealText delay={0.1}>
-        <h2 className="mt-4 max-w-3xl text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
-          The one you
+        <h2 className="mt-4 max-w-3xl text-5xl font-black leading-[0.92] tracking-tighter md:text-6xl lg:text-7xl">
+          <span className="text-luxe">The one you</span>
           <br />
-          <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 bg-clip-text text-transparent">
+          <span className="font-display-italic font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
             won't regret.
           </span>
         </h2>
