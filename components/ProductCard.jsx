@@ -1,80 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useReducedMotion,
-  useMotionTemplate
-} from "framer-motion";
-import {
-  Heart,
-  ShoppingCart,
-  Gavel,
-  Star,
-  Clock,
-  Headphones,
-  Watch,
-  Shirt,
-  Coffee,
-  Cpu,
-  Home as HomeIcon,
-  Package
-} from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ShoppingCart, Star, Heart, Gavel, Eye, Clock } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ProductImage from "@/components/ProductImage";
-
-const CATEGORY_ICONS = {
-  Audio: Headphones,
-  Wearables: Watch,
-  Fashion: Shirt,
-  Lifestyle: Coffee,
-  Tech: Cpu,
-  Home: HomeIcon
-};
 
 export default function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
   const { addToast } = useToast();
   const reduce = useReducedMotion();
-
-  const cardRef = useRef(null);
-  // Raw 0→1 normalised pointer position inside the card
-  const px = useMotionValue(0.5);
-  const py = useMotionValue(0.5);
-
-  const rotateX = useTransform(py, [0, 1], [8, -8]);
-  const rotateY = useTransform(px, [0, 1], [-8, 8]);
-  const springRotateX = useSpring(rotateX, { stiffness: 250, damping: 22 });
-  const springRotateY = useSpring(rotateY, { stiffness: 250, damping: 22 });
-
-  const glowX = useTransform(px, [0, 1], ["0%", "100%"]);
-  const glowY = useTransform(py, [0, 1], ["0%", "100%"]);
-  const glowBg = useMotionTemplate`radial-gradient(140px at ${glowX} ${glowY}, rgba(251,191,36,0.45), transparent 55%)`;
-
-  const handleMove = (e) => {
-    if (reduce || !cardRef.current) return;
-    const r = cardRef.current.getBoundingClientRect();
-    px.set((e.clientX - r.left) / r.width);
-    py.set((e.clientY - r.top) / r.height);
-  };
-  const handleLeave = () => {
-    px.set(0.5);
-    py.set(0.5);
-  };
+  const shouldAnimate = !reduce;
 
   const isAuction = product.auction;
   const wishlisted = isWishlisted(product.id);
-  const CategoryIcon = CATEGORY_ICONS[product.category] || Package;
+
   const discount = product.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
     : 0;
+
+  const features = product.features || [];
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -94,9 +42,73 @@ export default function ProductCard({ product, index = 0 }) {
     );
   };
 
+  // ── Variants ──────────────────────────────────────────────
+  const containerVariants = {
+    rest: { scale: 1, y: 0 },
+    hover: shouldAnimate
+      ? {
+          scale: 1.02,
+          y: -6,
+          transition: { type: "spring", stiffness: 300, damping: 28, mass: 0.8 }
+        }
+      : {}
+  };
+
+  const imageVariants = {
+    rest: { scale: 1 },
+    hover: shouldAnimate ? { scale: 1.1 } : {}
+  };
+
+  const overlayVariants = {
+    rest: {
+      y: "100%",
+      opacity: 0,
+      filter: "blur(4px)"
+    },
+    hover: {
+      y: "0%",
+      opacity: 1,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.6,
+        staggerChildren: 0.08,
+        delayChildren: 0.08
+      }
+    }
+  };
+
+  const contentVariants = {
+    rest: { opacity: 0, y: 20, scale: 0.96 },
+    hover: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: "spring", stiffness: 400, damping: 25, mass: 0.5 }
+    }
+  };
+
+  const buttonMotion = {
+    rest: { scale: 1, y: 0 },
+    hover: shouldAnimate
+      ? { scale: 1.03, y: -2, transition: { type: "spring", stiffness: 400, damping: 25 } }
+      : {},
+    tap: shouldAnimate ? { scale: 0.96 } : {}
+  };
+
+  const favoriteVariants = {
+    rest: { scale: 1, rotate: 0 },
+    favorite: {
+      scale: [1, 1.3, 1],
+      rotate: [0, 10, -10, 0],
+      transition: { duration: 0.5, ease: "easeInOut" }
+    }
+  };
+
   return (
     <motion.article
-      ref={cardRef}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
@@ -105,196 +117,259 @@ export default function ProductCard({ product, index = 0 }) {
         delay: Math.min(index * 0.04, 0.3),
         ease: [0.22, 1, 0.36, 1]
       }}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-      style={{
-        rotateX: springRotateX,
-        rotateY: springRotateY,
-        transformStyle: "preserve-3d",
-        perspective: 1200
-      }}
-      className="group relative aspect-[4/5] w-full cursor-pointer rounded-3xl bg-gradient-to-br from-zinc-950 via-[#0a0807] to-black shadow-2xl shadow-black/60 transition-shadow duration-500 hover:shadow-[0_30px_80px_-15px_rgba(251,191,36,0.35)]"
+      className="relative w-full"
     >
-      {/* Whole-card click link (under the interactive controls) */}
-      <Link
-        href={`/product/${product.id}`}
-        aria-label={product.name}
-        className="absolute inset-0 z-10 rounded-3xl"
-      />
-
-      {/* Inner frame */}
-      <div
-        style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}
-        className="pointer-events-none absolute inset-3 overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.015] shadow-inner"
+      <motion.div
+        initial="rest"
+        whileHover="hover"
+        animate="rest"
+        variants={containerVariants}
+        className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-zinc-950 via-[#0a0807] to-black shadow-2xl shadow-black/50 transition-shadow duration-500 hover:border-amber-400/25 hover:shadow-[0_30px_80px_-15px_rgba(251,191,36,0.3)]"
       >
-        {/* Grid texture */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_65%,transparent_100%)]" />
-
-        {/* Cursor-following gold glow */}
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{ background: glowBg }}
+        {/* Whole-card link (under controls) */}
+        <Link
+          href={`/product/${product.id}`}
+          aria-label={product.name}
+          className="absolute inset-0 z-10"
         />
 
-        {/* Product image — escapes bottom-right, lifts on hover */}
-        <motion.div
-          style={{ z: 60 }}
-          className="pointer-events-none absolute -bottom-4 -right-4 h-40 w-40 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-1 group-hover:-translate-y-2 sm:h-44 sm:w-44"
-        >
-          <div
-            className="relative h-full w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-zinc-900 via-black to-zinc-950"
-            style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.6))" }}
+        {/* ── Image container ───────────────────────────── */}
+        <div className="relative overflow-hidden">
+          <motion.div
+            variants={imageVariants}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="h-56 w-full"
           >
-            {/* The photo, tamed to match the dark card */}
             <ProductImage
               src={product.image}
               alt={product.name}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-              style={{ filter: "brightness(0.88) contrast(1.08) saturate(1.08)" }}
+              className="h-full w-full object-cover"
+              style={{ filter: "brightness(0.92) contrast(1.05) saturate(1.05)" }}
             />
-            {/* Blend whites into the card via a dark vignette + amber inner glow */}
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%)"
-              }}
-            />
-            <div
-              className="pointer-events-none absolute inset-0 mix-blend-overlay"
-              style={{
-                background:
-                  "radial-gradient(80% 60% at 30% 30%, rgba(251,191,36,0.22), transparent 70%)"
-              }}
-            />
-            {/* Subtle inner ring for a premium 'tile' feel */}
-            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5" />
-          </div>
-        </motion.div>
+          </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
-        {/* Content layer */}
-        <div className="relative z-10 flex h-full flex-col justify-between p-5">
-          {/* Top row: category chip + wishlist */}
-          <div className="flex items-start justify-between">
-            <div
-              style={{ transform: "translateZ(30px)" }}
-              className="pointer-events-none inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/[0.06] px-3 py-1.5 backdrop-blur-sm"
+          {/* Favorite button */}
+          <motion.button
+            onClick={handleWishlist}
+            variants={favoriteVariants}
+            animate={wishlisted ? "favorite" : "rest"}
+            aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            className={`pointer-events-auto absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+              wishlisted
+                ? "border-rose-300/40 bg-rose-500/95 text-white shadow-lg shadow-rose-500/40"
+                : "border-white/25 bg-black/40 text-white hover:bg-white/20"
+            }`}
+          >
+            <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
+          </motion.button>
+
+          {/* Top-left chip: discount / auction live */}
+          {isAuction ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.15 }}
+              className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-black/70 px-3 py-1 backdrop-blur-xl"
             >
-              <CategoryIcon size={13} className="text-amber-300" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-200">
-                {product.category}
+              <Clock size={11} className="text-amber-300" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-300">
+                {product.bidCount || 0} bids
               </span>
-            </div>
-
-            <button
-              onClick={handleWishlist}
-              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              className={`pointer-events-auto relative z-20 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
-                wishlisted
-                  ? "border-rose-300/40 bg-rose-500/95 text-white shadow-lg shadow-rose-500/30"
-                  : "border-white/20 bg-black/40 text-white hover:bg-white/15"
-              }`}
+            </motion.div>
+          ) : discount > 0 ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.15 }}
+              className="absolute left-4 top-4 z-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-black shadow-[0_6px_20px_-6px_rgba(251,191,36,0.6)]"
             >
-              <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
-            </button>
+              -{discount}% OFF
+            </motion.div>
+          ) : product.badge ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, x: -20 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.15 }}
+              className="absolute left-4 top-4 z-20 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-black shadow-[0_6px_20px_-6px_rgba(251,191,36,0.6)]"
+            >
+              {product.badge}
+            </motion.div>
+          ) : null}
+        </div>
+
+        {/* ── Default (rest-state) content ───────────────── */}
+        <div className="space-y-3 p-5">
+          {/* Rating */}
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Star
+                  key={i}
+                  size={13}
+                  className={
+                    i < Math.floor(product.rating || 0)
+                      ? "star-filled"
+                      : "text-white/15"
+                  }
+                  fill={i < Math.floor(product.rating || 0) ? "currentColor" : "none"}
+                />
+              ))}
+            </div>
+            <span className="text-xs text-white/45">
+              {product.rating?.toFixed(1) || "—"}
+              {product.reviewCount ? ` (${product.reviewCount})` : ""}
+            </span>
           </div>
 
-          {/* Bottom block: name + desc + price + CTA */}
-          <div className="max-w-[68%]" style={{ transform: "translateZ(40px)" }}>
-            {/* Meta row */}
-            <div className="mb-2 flex flex-wrap items-center gap-1.5">
-              {product.badge && (
-                <span className="rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-black">
-                  {product.badge}
-                </span>
-              )}
-              {product.rating && (
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-white/55">
-                  <Star size={10} className="star-filled" fill="currentColor" />
-                  {product.rating}
-                </span>
-              )}
-              {isAuction && (
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
-                  <Clock size={10} /> {product.bidCount} bids
-                </span>
-              )}
-              {!isAuction && discount > 0 && (
-                <span className="rounded-full bg-rose-500/90 px-1.5 py-0.5 text-[9px] font-bold text-white">
-                  -{discount}%
-                </span>
-              )}
-            </div>
-
-            {/* Title */}
-            <h3 className="font-display text-[1.35rem] font-bold leading-[1.1] tracking-tight text-white line-clamp-2">
+          {/* Category + name */}
+          <div className="space-y-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-400/80">
+              {product.category}
+            </p>
+            <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-white line-clamp-2">
               {product.name}
             </h3>
+          </div>
 
-            {/* Short description */}
-            {product.description && (
-              <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-white/40">
-                {product.description}
-              </p>
+          {/* Price row */}
+          <div className="flex items-baseline gap-2">
+            {isAuction ? (
+              <>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400/75">
+                  Current Bid
+                </span>
+                <span className="font-display bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold text-transparent">
+                  ${product.currentBid?.toLocaleString()}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="font-display bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold text-transparent">
+                  ${product.price}
+                </span>
+                {product.originalPrice && (
+                  <span className="text-sm text-white/30 line-through">
+                    ${product.originalPrice}
+                  </span>
+                )}
+              </>
             )}
-
-            {/* Price + CTA */}
-            <div className="mt-4 flex items-end justify-between gap-3">
-              <div className="min-w-0">
-                {isAuction ? (
-                  <>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-amber-400/75">
-                      Current Bid
-                    </p>
-                    <p className="font-display truncate text-2xl font-bold leading-none">
-                      <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
-                        ${product.currentBid?.toLocaleString()}
-                      </span>
-                    </p>
-                  </>
-                ) : (
-                  <div className="flex items-baseline gap-2">
-                    {product.originalPrice && (
-                      <span className="text-[11px] text-white/30 line-through">
-                        ${product.originalPrice}
-                      </span>
-                    )}
-                    <p className="font-display text-2xl font-bold leading-none">
-                      <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
-                        ${product.price}
-                      </span>
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* CTA — auction gets full pill, buy-now gets circular */}
-              <div className="pointer-events-auto relative z-20 shrink-0">
-                {isAuction ? (
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="flex h-10 items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-4 text-xs font-bold text-black shadow-[0_6px_24px_-6px_rgba(251,191,36,0.7)] transition-transform hover:scale-105 active:scale-95"
-                  >
-                    <Gavel size={12} /> Bid
-                  </Link>
-                ) : (
-                  <button
-                    onClick={handleAddToCart}
-                    aria-label="Add to cart"
-                    className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-black shadow-[0_6px_24px_-6px_rgba(251,191,36,0.7)] transition-transform hover:scale-110 active:scale-95"
-                  >
-                    <ShoppingCart size={14} />
-                  </button>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Bottom glow line */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      </div>
+        {/* ── Reveal overlay (slides up on hover) ─────────── */}
+        <motion.div
+          variants={overlayVariants}
+          className="absolute inset-0 z-30 flex flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950/95 via-black/95 to-zinc-950/95 backdrop-blur-xl"
+        >
+          {/* Ambient gold glow inside overlay */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(251,191,36,0.22), transparent 70%)",
+              filter: "blur(60px)"
+            }}
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full"
+            style={{
+              background: "radial-gradient(circle, rgba(217,119,6,0.18), transparent 70%)",
+              filter: "blur(60px)"
+            }}
+          />
+
+          <div className="relative space-y-4 p-6">
+            {/* Header: category + name */}
+            <motion.div variants={contentVariants}>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-400/90">
+                {product.category}
+              </p>
+              <h3 className="font-display mt-1 text-xl font-bold leading-tight tracking-tight text-white line-clamp-2">
+                {product.name}
+              </h3>
+            </motion.div>
+
+            {/* Description */}
+            {product.description && (
+              <motion.div variants={contentVariants}>
+                <h4 className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-300/80">
+                  Product Details
+                </h4>
+                <p className="line-clamp-3 text-xs leading-relaxed text-white/60">
+                  {product.description}
+                </p>
+              </motion.div>
+            )}
+
+            {/* Feature tiles (take first two real features from data) */}
+            {features.length > 0 && (
+              <motion.div variants={contentVariants}>
+                <div className="grid grid-cols-2 gap-2">
+                  {features.slice(0, 2).map((f) => (
+                    <div
+                      key={f}
+                      className="rounded-lg border border-amber-400/15 bg-amber-400/[0.04] p-2 text-center"
+                    >
+                      <div className="text-[11px] font-semibold leading-tight text-amber-100">
+                        {f}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {/* Action buttons */}
+            <motion.div variants={contentVariants} className="pointer-events-auto relative z-10 space-y-2.5 pt-1">
+              {isAuction ? (
+                <motion.div
+                  variants={buttonMotion}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                >
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-sm font-bold text-black shadow-[0_10px_30px_-8px_rgba(251,191,36,0.6)] transition-shadow hover:shadow-[0_14px_40px_-6px_rgba(251,191,36,0.8)]"
+                  >
+                    <Gavel size={15} />
+                    Place Bid · ${product.currentBid?.toLocaleString()}
+                  </Link>
+                </motion.div>
+              ) : (
+                <motion.button
+                  onClick={handleAddToCart}
+                  variants={buttonMotion}
+                  initial="rest"
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-sm font-bold text-black shadow-[0_10px_30px_-8px_rgba(251,191,36,0.6)] transition-shadow hover:shadow-[0_14px_40px_-6px_rgba(251,191,36,0.8)]"
+                >
+                  <ShoppingCart size={15} />
+                  Add to Cart
+                </motion.button>
+              )}
+
+              <motion.div
+                variants={buttonMotion}
+                initial="rest"
+                whileHover="hover"
+                whileTap="tap"
+              >
+                <Link
+                  href={`/product/${product.id}`}
+                  className="flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] text-xs font-semibold text-white/75 transition-colors hover:border-amber-400/30 hover:bg-amber-400/[0.06] hover:text-amber-200"
+                >
+                  <Eye size={13} /> View Details
+                </Link>
+              </motion.div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </motion.div>
     </motion.article>
   );
 }
