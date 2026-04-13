@@ -46,6 +46,7 @@ export default function HomePage() {
           description="Premium products hand-selected for their quality, design, and craftsmanship. From audio gear to fashion essentials."
           ctaLabel="Browse all products"
           ctaHref="/shop"
+          thumbnails={featured}
           stats={[
             { value: "24", label: "Products" },
             { value: "6", label: "Categories" },
@@ -73,6 +74,7 @@ export default function HomePage() {
             description="Rare collectibles and one-of-a-kind items from verified sellers. Live bidding, transparent pricing, real-time updates."
             ctaLabel="See all live auctions"
             ctaHref="/auctions"
+            thumbnails={products.filter((p) => p.auction)}
             stats={[
               { value: auctions.length + "", label: "Live" },
               { value: "$222k", label: "Top Bid" },
@@ -103,6 +105,7 @@ export default function HomePage() {
           description="The most-viewed and most-bought items this week. Limited stock on sale items — move fast."
           ctaLabel="All trending items"
           ctaHref="/shop"
+          thumbnails={trending}
           stats={[
             { value: "-30%", label: "Top Deal" },
             { value: "24h", label: "Ship Time" },
