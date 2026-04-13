@@ -1,48 +1,80 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ShoppingCart, Heart, Star, Eye, Gavel, Clock, TrendingUp } from "lucide-react";
+import { useRef } from "react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+  useMotionTemplate
+} from "framer-motion";
+import {
+  Heart,
+  ShoppingCart,
+  Gavel,
+  Star,
+  Clock,
+  Headphones,
+  Watch,
+  Shirt,
+  Coffee,
+  Cpu,
+  Home as HomeIcon,
+  Package
+} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ProductImage from "@/components/ProductImage";
 
-const badgeColors = {
-  "Best Seller": "from-amber-400 to-orange-500",
-  New: "from-emerald-400 to-green-500",
-  Sale: "from-rose-400 to-red-500",
-  Hot: "from-orange-400 to-red-500",
-  Limited: "from-purple-400 to-fuchsia-500",
-  Auction: "from-amber-400 via-orange-500 to-rose-500"
+const CATEGORY_ICONS = {
+  Audio: Headphones,
+  Wearables: Watch,
+  Fashion: Shirt,
+  Lifestyle: Coffee,
+  Tech: Cpu,
+  Home: HomeIcon
 };
 
 export default function ProductCard({ product, index = 0 }) {
   const { addToCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
   const { addToast } = useToast();
-  const cardRef = useRef(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const reduce = useReducedMotion();
 
-  const isAuction = product.auction;
-  const wishlisted = isWishlisted(product.id);
+  const cardRef = useRef(null);
+  // Raw 0→1 normalised pointer position inside the card
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+
+  const rotateX = useTransform(py, [0, 1], [8, -8]);
+  const rotateY = useTransform(px, [0, 1], [-8, 8]);
+  const springRotateX = useSpring(rotateX, { stiffness: 250, damping: 22 });
+  const springRotateY = useSpring(rotateY, { stiffness: 250, damping: 22 });
+
+  const glowX = useTransform(px, [0, 1], ["0%", "100%"]);
+  const glowY = useTransform(py, [0, 1], ["0%", "100%"]);
+  const glowBg = useMotionTemplate`radial-gradient(140px at ${glowX} ${glowY}, rgba(251,191,36,0.45), transparent 55%)`;
 
   const handleMove = (e) => {
     if (reduce || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    setMouse({ x, y });
-    setTilt({ x: -(y / rect.height) * 6, y: (x / rect.width) * 6 });
+    const r = cardRef.current.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width);
+    py.set((e.clientY - r.top) / r.height);
+  };
+  const handleLeave = () => {
+    px.set(0.5);
+    py.set(0.5);
   };
 
-  const handleLeave = () => {
-    setTilt({ x: 0, y: 0 });
-    setMouse({ x: 0, y: 0 });
-  };
+  const isAuction = product.auction;
+  const wishlisted = isWishlisted(product.id);
+  const CategoryIcon = CATEGORY_ICONS[product.category] || Package;
+  const discount = product.originalPrice
+    ? Math.round((1 - product.price / product.originalPrice) * 100)
+    : 0;
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -57,14 +89,10 @@ export default function ProductCard({ product, index = 0 }) {
     e.stopPropagation();
     toggle(product.id);
     addToast(
-      isWishlisted(product.id) ? "Removed from wishlist" : "Added to wishlist",
+      wishlisted ? "Removed from wishlist" : "Added to wishlist",
       "success"
     );
   };
-
-  const discount = product.originalPrice
-    ? Math.round((1 - product.price / product.originalPrice) * 100)
-    : 0;
 
   return (
     <motion.article
@@ -72,189 +100,180 @@ export default function ProductCard({ product, index = 0 }) {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.3), ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.5,
+        delay: Math.min(index * 0.04, 0.3),
+        ease: [0.22, 1, 0.36, 1]
+      }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
-      animate={{ rotateX: tilt.x, rotateY: tilt.y }}
-      className="group relative cursor-pointer"
-      style={{ transformStyle: "preserve-3d", perspective: "1200px", willChange: "transform" }}
+      style={{
+        rotateX: springRotateX,
+        rotateY: springRotateY,
+        transformStyle: "preserve-3d",
+        perspective: 1200
+      }}
+      className="group relative aspect-[4/5] w-full cursor-pointer rounded-3xl bg-gradient-to-br from-zinc-950 via-[#0a0807] to-black shadow-2xl shadow-black/60 transition-shadow duration-500 hover:shadow-[0_30px_80px_-15px_rgba(251,191,36,0.35)]"
     >
+      {/* Whole-card click link (under the interactive controls) */}
+      <Link
+        href={`/product/${product.id}`}
+        aria-label={product.name}
+        className="absolute inset-0 z-10 rounded-3xl"
+      />
+
+      {/* Inner frame */}
       <div
-        className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-br from-zinc-950 via-[#0a0d1a] to-black shadow-2xl shadow-black/60 transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.9)]"
-        style={{ transform: "translateZ(0)" }}
+        style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}
+        className="pointer-events-none absolute inset-3 overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.015] shadow-inner"
       >
-        {/* Goldy glow blobs (hover-only) */}
-        <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-amber-400/45 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-orange-500/40 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-300/25 opacity-0 blur-[60px] transition-opacity duration-500 group-hover:opacity-100" />
+        {/* Grid texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:28px_28px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_65%,transparent_100%)]" />
 
-        {/* Glass overlay */}
-        <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent" />
+        {/* Cursor-following gold glow */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{ background: glowBg }}
+        />
 
-        {/* Image */}
-        <Link href={`/product/${product.id}`} className="relative block">
-          <div className="relative h-72 overflow-hidden">
-            <motion.div
-              className="absolute inset-0"
-              style={{ x: mouse.x * 0.025, y: mouse.y * 0.025 }}
-              transition={{ type: "spring", stiffness: 150, damping: 20 }}
-            >
-              <ProductImage
-                src={product.image}
-                alt={product.name}
-                className="h-full w-full scale-110 object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-125"
-              />
-            </motion.div>
-
-            {/* Image gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-            <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(251,191,36,0.22) 100%)" }}
+        {/* Product image — escapes bottom-right, lifts on hover */}
+        <motion.div
+          style={{ z: 60 }}
+          className="pointer-events-none absolute -bottom-4 -right-4 h-40 w-40 rounded-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-1 group-hover:-translate-y-2 sm:h-44 sm:w-44"
+        >
+          <div
+            className="h-full w-full overflow-hidden rounded-2xl"
+            style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.55))" }}
+          >
+            <ProductImage
+              src={product.image}
+              alt={product.name}
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
+          </div>
+        </motion.div>
 
-            {/* Premium badge with neon glow */}
-            {product.badge && (
-              <div className="absolute left-4 top-4 z-20">
-                <div className="relative">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${badgeColors[product.badge] || badgeColors.New} opacity-50 blur-xl rounded-full`} />
-                  <span className={`relative inline-flex items-center gap-1 rounded-full bg-gradient-to-r ${badgeColors[product.badge] || badgeColors.New} px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-white shadow-lg backdrop-blur-sm border border-white/20`}>
-                    {product.badge === "Auction" && <Gavel size={10} />}
-                    {product.badge === "Hot" && <TrendingUp size={10} />}
-                    {product.badge}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Discount chip */}
-            {!isAuction && discount > 0 && (
-              <div className="absolute right-4 top-4 z-20">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-rose-500/60 blur-xl rounded-full" />
-                  <span className="relative rounded-full bg-rose-500/95 px-2.5 py-1 text-[10px] font-bold text-white border border-white/20">
-                    -{discount}%
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Quick actions */}
-            <div className="absolute right-4 top-14 z-20 flex flex-col gap-2 opacity-0 -translate-y-2 transition-all duration-400 group-hover:opacity-100 group-hover:translate-y-0">
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.92 }}
-                onClick={handleWishlist}
-                className={`flex h-9 w-9 items-center justify-center rounded-full backdrop-blur-xl border transition-colors ${
-                  wishlisted
-                    ? "bg-rose-500/95 border-rose-300/40 text-white shadow-lg shadow-rose-500/40"
-                    : "bg-white/10 border-white/20 text-white hover:bg-white/20"
-                }`}
-                aria-label="Wishlist"
-              >
-                <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
-              </motion.button>
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }}>
-                <Link
-                  href={`/product/${product.id}`}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white transition-colors hover:bg-white/20"
-                  aria-label="Quick view"
-                >
-                  <Eye size={14} />
-                </Link>
-              </motion.div>
+        {/* Content layer */}
+        <div className="relative z-10 flex h-full flex-col justify-between p-5">
+          {/* Top row: category chip + wishlist */}
+          <div className="flex items-start justify-between">
+            <div
+              style={{ transform: "translateZ(30px)" }}
+              className="pointer-events-none inline-flex items-center gap-2 rounded-full border border-amber-400/25 bg-amber-400/[0.06] px-3 py-1.5 backdrop-blur-sm"
+            >
+              <CategoryIcon size={13} className="text-amber-300" />
+              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-200">
+                {product.category}
+              </span>
             </div>
 
-            {/* Auction time / live indicator */}
-            {isAuction && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="absolute bottom-4 left-4 z-20 flex items-center gap-2 rounded-full border border-amber-500/40 bg-black/70 px-3 py-1.5 backdrop-blur-xl"
-              >
-                <Clock size={12} className="text-amber-400" />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
-                  {product.bidCount || 0} bids · live
-                </span>
-              </motion.div>
-            )}
-          </div>
-        </Link>
-
-        {/* Content */}
-        <div className="relative z-20 space-y-3 p-5">
-          {/* Category + rating */}
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-400/85">
-              {product.category}
-            </span>
-            {product.rating && (
-              <div className="flex items-center gap-1">
-                <Star size={11} className="star-filled" fill="currentColor" />
-                <span className="text-xs font-semibold text-white">{product.rating}</span>
-              </div>
-            )}
-          </div>
-
-          {/* Name */}
-          <h3 className="font-display text-lg font-bold leading-tight text-white line-clamp-2 transition-colors group-hover:text-white/95">
-            {product.name}
-          </h3>
-
-          {/* Price */}
-          <div className="space-y-1">
-            {isAuction ? (
-              <>
-                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-amber-400/70">
-                  Current Bid
-                </span>
-                <div className="font-display text-3xl font-bold leading-none">
-                  <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-                    ${product.currentBid?.toLocaleString()}
-                  </span>
-                </div>
-              </>
-            ) : (
-              <div className="flex items-baseline gap-2">
-                {product.originalPrice && (
-                  <span className="text-xs text-white/30 line-through">
-                    ${product.originalPrice}
-                  </span>
-                )}
-                <div className="font-display text-3xl font-bold leading-none">
-                  <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
-                    ${product.price}
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* CTA */}
-          {isAuction ? (
-            <Link
-              href={`/product/${product.id}`}
-              className="relative mt-2 flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl group/btn"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 transition-opacity group-hover/btn:opacity-90" />
-              <div className="absolute inset-0 opacity-0 blur-xl bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 transition-opacity group-hover/btn:opacity-80" />
-              <Gavel size={14} className="relative text-white" />
-              <span className="relative text-sm font-bold text-white tracking-wide">Place Bid</span>
-            </Link>
-          ) : (
             <button
-              onClick={handleAddToCart}
-              className="relative mt-2 flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl group/btn"
+              onClick={handleWishlist}
+              aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              className={`pointer-events-auto relative z-20 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+                wishlisted
+                  ? "border-rose-300/40 bg-rose-500/95 text-white shadow-lg shadow-rose-500/30"
+                  : "border-white/20 bg-black/40 text-white hover:bg-white/15"
+              }`}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 transition-opacity group-hover/btn:opacity-90" />
-              <div className="absolute inset-0 opacity-0 blur-xl bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 transition-opacity group-hover/btn:opacity-80" />
-              <ShoppingCart size={14} className="relative text-black" />
-              <span className="relative text-sm font-bold text-black tracking-wide">Add to Cart</span>
+              <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
             </button>
-          )}
+          </div>
+
+          {/* Bottom block: name + desc + price + CTA */}
+          <div className="max-w-[68%]" style={{ transform: "translateZ(40px)" }}>
+            {/* Meta row */}
+            <div className="mb-2 flex flex-wrap items-center gap-1.5">
+              {product.badge && (
+                <span className="rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-black">
+                  {product.badge}
+                </span>
+              )}
+              {product.rating && (
+                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-white/55">
+                  <Star size={10} className="star-filled" fill="currentColor" />
+                  {product.rating}
+                </span>
+              )}
+              {isAuction && (
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-400">
+                  <Clock size={10} /> {product.bidCount} bids
+                </span>
+              )}
+              {!isAuction && discount > 0 && (
+                <span className="rounded-full bg-rose-500/90 px-1.5 py-0.5 text-[9px] font-bold text-white">
+                  -{discount}%
+                </span>
+              )}
+            </div>
+
+            {/* Title */}
+            <h3 className="font-display text-[1.35rem] font-bold leading-[1.1] tracking-tight text-white line-clamp-2">
+              {product.name}
+            </h3>
+
+            {/* Short description */}
+            {product.description && (
+              <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-white/40">
+                {product.description}
+              </p>
+            )}
+
+            {/* Price + CTA */}
+            <div className="mt-4 flex items-end justify-between gap-3">
+              <div className="min-w-0">
+                {isAuction ? (
+                  <>
+                    <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-amber-400/75">
+                      Current Bid
+                    </p>
+                    <p className="font-display truncate text-2xl font-bold leading-none">
+                      <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
+                        ${product.currentBid?.toLocaleString()}
+                      </span>
+                    </p>
+                  </>
+                ) : (
+                  <div className="flex items-baseline gap-2">
+                    {product.originalPrice && (
+                      <span className="text-[11px] text-white/30 line-through">
+                        ${product.originalPrice}
+                      </span>
+                    )}
+                    <p className="font-display text-2xl font-bold leading-none">
+                      <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
+                        ${product.price}
+                      </span>
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* CTA — auction gets full pill, buy-now gets circular */}
+              <div className="pointer-events-auto relative z-20 shrink-0">
+                {isAuction ? (
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="flex h-10 items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-4 text-xs font-bold text-black shadow-[0_6px_24px_-6px_rgba(251,191,36,0.7)] transition-transform hover:scale-105 active:scale-95"
+                  >
+                    <Gavel size={12} /> Bid
+                  </Link>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    aria-label="Add to cart"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-black shadow-[0_6px_24px_-6px_rgba(251,191,36,0.7)] transition-transform hover:scale-110 active:scale-95"
+                  >
+                    <ShoppingCart size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom gold glow line on hover */}
+        {/* Bottom glow line */}
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
     </motion.article>
