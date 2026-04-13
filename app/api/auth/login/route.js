@@ -57,11 +57,22 @@ export async function POST(request) {
       );
     }
 
-    const token = await signToken({ id: user.id, email: user.email, name: user.name });
+    const token = await signToken({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      accountType: user.accountType || "buyer"
+    });
     await setAuthCookie(token);
 
     return NextResponse.json({
-      user: { id: user.id, name: user.name, email: user.email }
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        accountType: user.accountType || "buyer",
+        storeName: user.storeName || null
+      }
     });
   } catch (err) {
     console.error("[login] error:", err);

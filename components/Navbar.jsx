@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Heart, User, Menu, X, LogOut, Package, Gavel } from "lucide-react";
+import { ShoppingCart, Heart, User, Menu, X, LogOut, Package, Gavel, Store } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -25,10 +25,12 @@ export default function Navbar({ onAuthOpen }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const sellHref = user?.accountType === "seller" ? "/sell/dashboard" : "/sell";
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/shop", label: "Shop" },
     { href: "/auctions", label: "Auctions", icon: Gavel, accent: true },
+    { href: sellHref, label: "Sell", icon: Store },
     { href: "/cart", label: "Cart" }
   ];
 
@@ -165,6 +167,15 @@ export default function Navbar({ onAuthOpen }) {
                     >
                       <Package size={14} /> My Orders
                     </Link>
+                    {user.accountType === "seller" && (
+                      <Link
+                        href="/sell/dashboard"
+                        onClick={() => setProfileOpen(false)}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm text-amber-200 transition hover:bg-amber-400/[0.06]"
+                      >
+                        <Store size={14} /> Seller Dashboard
+                      </Link>
+                    )}
                     <Link
                       href="/wishlist"
                       onClick={() => setProfileOpen(false)}

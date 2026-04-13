@@ -19,8 +19,9 @@ export async function POST(request) {
       );
     }
 
-    const { name, email: rawEmail, password } = await request.json();
+    const { name, email: rawEmail, password, accountType: rawType, storeName } = await request.json();
     const email = normalizeEmail(rawEmail);
+    const accountType = rawType === "seller" ? "seller" : "buyer";
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -55,7 +56,9 @@ export async function POST(request) {
       passwordHash,
       isVerified: false,
       verificationToken,
-      verificationTokenExpiry
+      verificationTokenExpiry,
+      accountType,
+      storeName: accountType === "seller" ? (storeName || name) : null
     });
 
     const result = await sendVerificationEmail(email, verificationToken, name);

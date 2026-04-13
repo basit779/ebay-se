@@ -36,7 +36,12 @@ export async function GET(request) {
     verificationTokenExpiry: null
   });
 
-  const jwt = await signToken({ id: user.id, email: user.email, name: user.name });
+  const jwt = await signToken({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    accountType: user.accountType || "buyer"
+  });
   await setAuthCookie(jwt);
 
   return NextResponse.redirect(`${origin}/account?verified=1`);

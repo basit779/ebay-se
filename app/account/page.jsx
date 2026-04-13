@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Package, User, Calendar, MapPin, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { Package, User, Calendar, MapPin, Loader2, Store, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import AnimatedBackground from "@/components/AnimatedBackground";
 
@@ -59,8 +60,52 @@ export default function AccountPage() {
           <h1 className="mt-2 text-4xl font-bold">
             Welcome, <span className="text-gradient-static">{user.name}</span>
           </h1>
-          <p className="mt-2 text-sm text-white/40">{user.email}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-white/40">
+            <span>{user.email}</span>
+            <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+              user.accountType === "seller"
+                ? "bg-amber-400/15 text-amber-200"
+                : "bg-white/[0.06] text-white/60"
+            }`}>
+              {user.accountType === "seller" ? <Store size={10} /> : <User size={10} />}
+              {user.accountType === "seller" ? "Seller" : "Buyer"}
+            </span>
+          </div>
         </motion.div>
+
+        {user.accountType === "seller" ? (
+          <Link
+            href="/sell/dashboard"
+            className="mt-6 flex items-center justify-between rounded-2xl border border-amber-400/20 bg-gradient-to-br from-amber-400/10 to-orange-500/5 p-5 transition hover:border-amber-300/40"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-400/20 text-amber-300">
+                <Store size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Seller dashboard</p>
+                <p className="text-xs text-white/45">Manage your listings and auctions</p>
+              </div>
+            </div>
+            <ArrowRight size={16} className="text-amber-300" />
+          </Link>
+        ) : (
+          <Link
+            href="/sell"
+            className="mt-6 flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 transition hover:border-amber-300/30 hover:bg-amber-400/[0.04]"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.05] text-amber-300">
+                <Store size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-semibold">Become a seller</p>
+                <p className="text-xs text-white/45">List products & live auctions in minutes</p>
+              </div>
+            </div>
+            <ArrowRight size={16} className="text-white/40" />
+          </Link>
+        )}
 
         {/* Orders */}
         <div className="mt-10">

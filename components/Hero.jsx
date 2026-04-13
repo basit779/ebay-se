@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { ArrowRight, ShoppingBag, Gavel, Zap, Star } from "lucide-react";
 import FluxBidLogo from "@/components/FluxBidLogo";
 import MagneticButton from "@/components/MagneticButton";
 import ProductImage from "@/components/ProductImage";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import HeroParticles from "@/components/HeroParticles";
 
 const heroProducts = [
   {
@@ -139,9 +140,14 @@ export default function Hero() {
     offset: ["start start", "end start"]
   });
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    mass: 0.4
+  });
+  const bgY = useTransform(smoothProgress, [0, 1], ["0%", "50%"]);
+  const contentOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
+  const contentY = useTransform(smoothProgress, [0, 0.5], [0, 150]);
 
   return (
     <section
@@ -152,6 +158,11 @@ export default function Hero() {
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <AnimatedBackground />
       </motion.div>
+
+      {/* Floating particles */}
+      <div className="pointer-events-none absolute inset-0 z-[1]">
+        <HeroParticles density={80} />
+      </div>
 
       {/* Main content wrapper */}
       <motion.div

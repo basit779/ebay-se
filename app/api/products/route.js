@@ -1,12 +1,17 @@
 import { NextResponse } from "next/server";
-import products from "@/data/products";
+import staticProducts from "@/data/products";
+import { getActiveSellerProducts } from "@/lib/db";
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category");
   const search = searchParams.get("search");
+  const sellerOnly = searchParams.get("source") === "seller";
 
-  let result = [...products];
+  const sellerProducts = getActiveSellerProducts();
+  let result = sellerOnly
+    ? [...sellerProducts]
+    : [...sellerProducts, ...staticProducts];
 
   if (category && category !== "All") {
     result = result.filter((p) => p.category === category);
@@ -17,7 +22,7 @@ export async function GET(request) {
     result = result.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
+        (p.description || "").toLowerCase().includes(q)
     );
   }
 

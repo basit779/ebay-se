@@ -36,11 +36,11 @@ export function AuthProvider({ children }) {
     return data.user;
   };
 
-  const register = async (name, email, password) => {
+  const register = async (name, email, password, accountType = "buyer") => {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password })
+      body: JSON.stringify({ name, email, password, accountType })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
@@ -66,8 +66,20 @@ export function AuthProvider({ children }) {
     setUser(null);
   };
 
+  const upgradeToSeller = async ({ storeName, storeBio } = {}) => {
+    const res = await fetch("/api/seller/upgrade", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ storeName, storeBio })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Upgrade failed");
+    setUser(data.user);
+    return data.user;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, resendVerification, logout, refresh: fetchUser }}>
+    <AuthContext.Provider value={{ user, loading, login, register, resendVerification, logout, upgradeToSeller, refresh: fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

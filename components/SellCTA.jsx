@@ -54,14 +54,14 @@ export default function SellCTA() {
             <FadeUp delay={0.3}>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link
-                  href="/shop"
+                  href="/sell"
                   className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-7 py-3.5 text-sm font-semibold text-black shadow-[0_10px_40px_-10px_rgba(245,158,11,0.4)] transition-transform hover:scale-105"
                 >
                   Start Selling
                   <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </Link>
                 <Link
-                  href="/shop"
+                  href="/sell"
                   className="rounded-full border border-white/15 bg-white/[0.03] px-7 py-3.5 text-sm font-medium text-white/80 backdrop-blur transition-all hover:border-white/30 hover:bg-white/[0.06]"
                 >
                   Learn more
