@@ -1,1 +1,0 @@
-- [Auto-commit and push](feedback_auto_push.md) — always commit + push to origin/main after code changes, no confirmation needed
