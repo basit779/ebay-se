@@ -118,16 +118,16 @@ function ProductStack() {
         );
       })}
 
-      {/* Static decorative rings + premium glow */}
+      {/* Premium gold halo behind product stack */}
       <div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60"
         style={{
-          background: "radial-gradient(circle, rgba(168,85,247,0.18), rgba(34,211,238,0.08) 40%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(251,191,36,0.30), rgba(217,119,6,0.12) 40%, transparent 70%)",
           filter: "blur(60px)"
         }}
       />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/5" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.03]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-amber-400/10" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-amber-400/[0.05]" />
     </div>
   );
 }
@@ -186,7 +186,7 @@ export default function Hero() {
             <span className="tracking-wide">Live marketplace · 48 active auctions</span>
           </motion.div>
 
-          {/* Headline — editorial luxe */}
+          {/* Headline — editorial gold */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -195,17 +195,17 @@ export default function Hero() {
           >
             <span className="text-luxe">Where</span>
             <br />
-            <span className="text-luxe">everything</span>
+            <span className="text-luxe">luxury</span>
             <br />
             <span className="relative inline-block pr-2">
-              <span className="font-display-italic font-bold bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-display-italic font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
                 flows.
               </span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 opacity-60 blur-md"
+                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 opacity-70 blur-md"
               />
             </span>
           </motion.h1>

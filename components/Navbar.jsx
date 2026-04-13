@@ -74,8 +74,8 @@ export default function Navbar({ onAuthOpen }) {
                     layoutId="nav-indicator"
                     className={`absolute inset-x-2 -bottom-[13px] h-[2px] rounded-full ${
                       link.accent
-                        ? "bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 shadow-[0_0_12px_rgba(245,158,11,0.6)]"
-                        : "bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                        ? "bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 shadow-[0_0_14px_rgba(251,191,36,0.7)]"
+                        : "bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 shadow-[0_0_12px_rgba(251,191,36,0.5)]"
                     }`}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
@@ -102,7 +102,7 @@ export default function Navbar({ onAuthOpen }) {
           <motion.button
             whileTap={{ scale: 0.92 }}
             onClick={() => setIsCartOpen(true)}
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 transition-all hover:border-cyan-500/20 hover:text-cyan-400"
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 transition-all hover:border-amber-400/30 hover:text-amber-300"
           >
             <ShoppingCart size={16} />
             <AnimatePresence>
@@ -111,7 +111,7 @@ export default function Navbar({ onAuthOpen }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-cyan-500 text-[9px] font-bold text-black"
+                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-[9px] font-bold text-black shadow-[0_0_10px_rgba(251,191,36,0.6)]"
                 >
                   {itemCount}
                 </motion.span>

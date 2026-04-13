@@ -7,10 +7,10 @@ import { RevealText, FadeUp } from "@/components/TextReveal";
 
 export default function SectionHeader({
   eyebrow,
-  eyebrowColor = "text-cyan-400",
+  eyebrowColor = "text-amber-400",
   headline,
   accentWord,
-  accentGradient = "from-cyan-400 via-blue-400 to-purple-400",
+  accentGradient = "from-amber-200 via-amber-400 to-orange-500",
   description,
   ctaLabel,
   ctaHref,
@@ -26,10 +26,10 @@ export default function SectionHeader({
           </p>
         </FadeUp>
         <RevealText delay={0.1}>
-          <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
-            {headline}
+          <h2 className="mt-4 text-5xl font-black leading-[0.92] tracking-tighter md:text-6xl lg:text-7xl">
+            <span className="text-luxe">{headline}</span>
             <br />
-            <span className={`bg-gradient-to-r ${accentGradient} bg-clip-text text-transparent`}>
+            <span className={`font-display-italic font-bold bg-gradient-to-r ${accentGradient} bg-clip-text text-transparent`}>
               {accentWord}
             </span>
           </h2>

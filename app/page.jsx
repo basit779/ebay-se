@@ -35,10 +35,10 @@ export default function HomePage() {
       <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
         <SectionHeader
           eyebrow="Curated"
-          eyebrowColor="text-cyan-400"
+          eyebrowColor="text-amber-400"
           headline="Featured"
           accentWord="collection."
-          accentGradient="from-cyan-400 via-blue-400 to-purple-400"
+          accentGradient="from-amber-200 via-amber-400 to-orange-500"
           description="Premium products hand-selected for their quality, design, and craftsmanship. From audio gear to fashion essentials."
           ctaLabel="Browse all products"
           ctaHref="/shop"
@@ -62,10 +62,10 @@ export default function HomePage() {
         <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
           <SectionHeader
             eyebrow="Live · Ending Soon"
-            eyebrowColor="text-red-400"
+            eyebrowColor="text-amber-400"
             headline="Bid on the"
             accentWord="extraordinary."
-            accentGradient="from-red-400 via-rose-400 to-orange-400"
+            accentGradient="from-amber-300 via-orange-400 to-rose-500"
             description="Rare collectibles and one-of-a-kind items from verified sellers. Live bidding, transparent pricing, real-time updates."
             ctaLabel="See all live auctions"
             ctaHref="/auctions"
@@ -92,10 +92,10 @@ export default function HomePage() {
       <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">
         <SectionHeader
           eyebrow="Trending"
-          eyebrowColor="text-purple-400"
+          eyebrowColor="text-amber-400"
           headline="Hot right"
           accentWord="now."
-          accentGradient="from-purple-400 via-pink-400 to-rose-400"
+          accentGradient="from-yellow-300 via-amber-400 to-orange-500"
           description="The most-viewed and most-bought items this week. Limited stock on sale items — move fast."
           ctaLabel="All trending items"
           ctaHref="/shop"

@@ -83,12 +83,10 @@ export default function ProductCard({ product, index = 0 }) {
         className="relative overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-br from-zinc-950 via-[#0a0d1a] to-black shadow-2xl shadow-black/60 transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.9)]"
         style={{ transform: "translateZ(0)" }}
       >
-        {/* Neon glow blobs (only render on hover via opacity) */}
-        <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-cyan-500/40 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
-        <div className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-purple-500/40 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
-        {isAuction && (
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-500/30 opacity-0 blur-[60px] transition-opacity duration-500 group-hover:opacity-100" />
-        )}
+        {/* Goldy glow blobs (hover-only) */}
+        <div className="pointer-events-none absolute -top-24 -right-24 h-48 w-48 rounded-full bg-amber-400/45 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute -bottom-24 -left-24 h-48 w-48 rounded-full bg-orange-500/40 opacity-0 blur-[80px] transition-opacity duration-500 group-hover:opacity-100" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-300/25 opacity-0 blur-[60px] transition-opacity duration-500 group-hover:opacity-100" />
 
         {/* Glass overlay */}
         <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-br from-white/[0.04] via-transparent to-transparent" />
@@ -111,7 +109,7 @@ export default function ProductCard({ product, index = 0 }) {
             {/* Image gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
             <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(168,85,247,0.20) 100%)" }}
+              style={{ background: "radial-gradient(ellipse at center, transparent 35%, rgba(251,191,36,0.22) 100%)" }}
             />
 
             {/* Premium badge with neon glow */}
@@ -187,7 +185,7 @@ export default function ProductCard({ product, index = 0 }) {
         <div className="relative z-20 space-y-3 p-5">
           {/* Category + rating */}
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-cyan-400/80">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-400/85">
               {product.category}
             </span>
             {product.rating && (
@@ -224,7 +222,7 @@ export default function ProductCard({ product, index = 0 }) {
                   </span>
                 )}
                 <div className="font-display text-3xl font-bold leading-none">
-                  <span className="bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-transparent">
                     ${product.price}
                   </span>
                 </div>
@@ -248,16 +246,16 @@ export default function ProductCard({ product, index = 0 }) {
               onClick={handleAddToCart}
               className="relative mt-2 flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl group/btn"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-opacity group-hover/btn:opacity-90" />
-              <div className="absolute inset-0 opacity-0 blur-xl bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 transition-opacity group-hover/btn:opacity-70" />
-              <ShoppingCart size={14} className="relative text-white" />
-              <span className="relative text-sm font-bold text-white tracking-wide">Add to Cart</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 transition-opacity group-hover/btn:opacity-90" />
+              <div className="absolute inset-0 opacity-0 blur-xl bg-gradient-to-r from-amber-300 via-amber-400 to-orange-400 transition-opacity group-hover/btn:opacity-80" />
+              <ShoppingCart size={14} className="relative text-black" />
+              <span className="relative text-sm font-bold text-black tracking-wide">Add to Cart</span>
             </button>
           )}
         </div>
 
-        {/* Bottom glow line on hover */}
-        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        {/* Bottom gold glow line on hover */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
     </motion.article>
   );

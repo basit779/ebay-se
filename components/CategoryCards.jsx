@@ -12,42 +12,42 @@ const categoryData = {
     size: "col-span-2 row-span-2",
     image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1200&q=80",
     count: "6 items",
-    gradient: "from-blue-600/30 via-blue-500/10 to-transparent"
+    gradient: "from-amber-500/35 via-orange-500/15 to-transparent"
   },
   Audio: {
     desc: "Premium sound",
     size: "col-span-2 row-span-1",
     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1200&q=80",
     count: "4 items",
-    gradient: "from-cyan-500/30 via-cyan-500/10 to-transparent"
+    gradient: "from-yellow-400/30 via-amber-500/10 to-transparent"
   },
   Wearables: {
     desc: "Smart watches",
     size: "col-span-1 row-span-1",
     image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&w=800&q=80",
     count: "2 items",
-    gradient: "from-purple-500/30 via-purple-500/10 to-transparent"
+    gradient: "from-purple-500/30 via-amber-500/10 to-transparent"
   },
   Fashion: {
     desc: "Statement pieces",
     size: "col-span-1 row-span-1",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
     count: "4 items",
-    gradient: "from-rose-500/30 via-rose-500/10 to-transparent"
+    gradient: "from-rose-500/25 via-amber-500/10 to-transparent"
   },
   Lifestyle: {
     desc: "Everyday essentials",
     size: "col-span-2 row-span-1",
     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=1200&q=80",
     count: "2 items",
-    gradient: "from-emerald-500/30 via-emerald-500/10 to-transparent"
+    gradient: "from-amber-400/30 via-yellow-500/10 to-transparent"
   },
   Home: {
     desc: "Refined living",
     size: "col-span-2 row-span-1",
     image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?auto=format&fit=crop&w=1200&q=80",
     count: "3 items",
-    gradient: "from-amber-500/30 via-amber-500/10 to-transparent"
+    gradient: "from-orange-500/30 via-amber-500/10 to-transparent"
   }
 };
 
@@ -60,7 +60,7 @@ export default function CategoryCards({ categories }) {
       <div className="mb-16 flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         <div>
           <FadeUp>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
               Collections
             </p>
           </FadeUp>
@@ -68,7 +68,7 @@ export default function CategoryCards({ categories }) {
             <h2 className="mt-4 text-5xl font-black leading-[0.92] tracking-tighter md:text-6xl lg:text-7xl">
               <span className="text-luxe">Shop by</span>
               <br />
-              <span className="font-display-italic font-bold bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-display-italic font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
                 obsession.
               </span>
             </h2>
@@ -135,9 +135,9 @@ export default function CategoryCards({ categories }) {
                     <motion.div
                       initial={{ opacity: 0, y: -5, x: 5 }}
                       whileHover={{ opacity: 1 }}
-                      className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                      className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-black opacity-0 shadow-[0_0_20px_rgba(251,191,36,0.6)] transition-all duration-300 group-hover:opacity-100"
                     >
-                      <ArrowUpRight size={15} />
+                      <ArrowUpRight size={16} />
                     </motion.div>
                   </div>
 

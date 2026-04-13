@@ -14,13 +14,28 @@ module.exports = {
         night: "#05060a",
         panel: "#0d1020",
         surface: "#111427",
+        gold: {
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+          champagne: "#e8c995",
+          rose: "#d4a373"
+        },
         neon: {
           cyan: "#22d3ee",
           purple: "#a855f7",
           blue: "#3b82f6",
           rose: "#f43f5e",
           emerald: "#10b981",
-          amber: "#f59e0b"
+          amber: "#f59e0b",
+          gold: "#fbbf24"
         }
       },
       boxShadow: {
@@ -35,7 +50,11 @@ module.exports = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
         "hero-mesh":
-          "radial-gradient(at 27% 37%, rgba(34,211,238,0.15) 0px, transparent 50%), radial-gradient(at 97% 21%, rgba(168,85,247,0.12) 0px, transparent 50%), radial-gradient(at 52% 99%, rgba(59,130,246,0.1) 0px, transparent 50%), radial-gradient(at 10% 29%, rgba(168,85,247,0.08) 0px, transparent 50%), radial-gradient(at 97% 96%, rgba(34,211,238,0.08) 0px, transparent 50%)"
+          "radial-gradient(at 27% 37%, rgba(251,191,36,0.18) 0px, transparent 50%), radial-gradient(at 97% 21%, rgba(217,119,6,0.14) 0px, transparent 50%), radial-gradient(at 52% 99%, rgba(168,85,247,0.10) 0px, transparent 50%), radial-gradient(at 10% 29%, rgba(252,211,77,0.10) 0px, transparent 50%), radial-gradient(at 97% 96%, rgba(245,158,11,0.10) 0px, transparent 50%)",
+        "gold-shine":
+          "linear-gradient(135deg, #fde68a 0%, #fbbf24 25%, #f59e0b 50%, #d97706 75%, #92400e 100%)",
+        "gold-soft":
+          "linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fbbf24 100%)"
       },
       animation: {
         "aurora": "aurora 12s ease-in-out infinite",

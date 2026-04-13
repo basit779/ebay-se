@@ -52,7 +52,7 @@ export default function Footer() {
                 <a
                   key={i}
                   href={href}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.04] bg-white/[0.02] text-white/30 transition-all hover:border-cyan-500/20 hover:text-cyan-400"
+                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.06] bg-white/[0.02] text-white/40 transition-all hover:border-amber-400/30 hover:bg-amber-400/[0.06] hover:text-amber-300 hover:shadow-[0_0_20px_rgba(251,191,36,0.25)]"
                 >
                   <Icon size={13} />
                 </a>
@@ -70,7 +70,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-white/25 transition-colors hover:text-white/60"
+                      className="text-sm text-white/35 transition-colors hover:text-amber-300"
                     >
                       {link.label}
                     </Link>
