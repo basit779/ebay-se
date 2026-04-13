@@ -140,17 +140,36 @@ export default function ProductCard({ product, index = 0 }) {
         {/* Product image — escapes bottom-right, lifts on hover */}
         <motion.div
           style={{ z: 60 }}
-          className="pointer-events-none absolute -bottom-4 -right-4 h-40 w-40 rounded-2xl transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-1 group-hover:-translate-y-2 sm:h-44 sm:w-44"
+          className="pointer-events-none absolute -bottom-4 -right-4 h-40 w-40 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-1 group-hover:-translate-y-2 sm:h-44 sm:w-44"
         >
           <div
-            className="h-full w-full overflow-hidden rounded-2xl"
-            style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.55))" }}
+            className="relative h-full w-full overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-br from-zinc-900 via-black to-zinc-950"
+            style={{ filter: "drop-shadow(0 20px 30px rgba(0,0,0,0.6))" }}
           >
+            {/* The photo, tamed to match the dark card */}
             <ProductImage
               src={product.image}
               alt={product.name}
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+              style={{ filter: "brightness(0.88) contrast(1.08) saturate(1.08)" }}
             />
+            {/* Blend whites into the card via a dark vignette + amber inner glow */}
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(120% 80% at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%)"
+              }}
+            />
+            <div
+              className="pointer-events-none absolute inset-0 mix-blend-overlay"
+              style={{
+                background:
+                  "radial-gradient(80% 60% at 30% 30%, rgba(251,191,36,0.22), transparent 70%)"
+              }}
+            />
+            {/* Subtle inner ring for a premium 'tile' feel */}
+            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/5" />
           </div>
         </motion.div>
 
