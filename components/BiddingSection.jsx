@@ -78,7 +78,7 @@ export default function BiddingSection({ product }) {
         body: JSON.stringify({ productId: product.id, amount })
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) throw new Error(data?.error || "Couldn't place bid — please try again");
 
       setCurrentBid(data.currentBid);
       setBidCount((prev) => prev + 1);
@@ -86,14 +86,14 @@ export default function BiddingSection({ product }) {
       addToast(`Bid of $${amount.toLocaleString()} placed successfully!`, "success");
       fetchBids();
     } catch (err) {
-      addToast(err.message, "error");
+      addToast(err?.message || "Network error — try again", "error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="space-y-5">
+    <div id="bid" className="space-y-5 scroll-mt-24">
       {/* Current Bid */}
       <div className="rounded-2xl border border-[#e53238]/20 bg-[#e53238]/5 p-5">
         <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#e53238]">
@@ -226,14 +226,14 @@ export default function BiddingSection({ product }) {
                   <div
                     key={bid.id}
                     className={`flex items-center justify-between rounded-lg px-3 py-2.5 ${
-                      i === 0 ? "border border-[#86b817]/20 bg-[#86b817]/5" : "border border-white/[0.04] bg-white/[0.01]"
+                      i === 0 ? "border border-amber-400/25 bg-amber-400/10" : "border border-white/[0.04] bg-white/[0.01]"
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       <User size={12} className="text-white/25" />
                       <span className="text-xs font-medium">
                         {bid.userName}
-                        {i === 0 && <span className="ml-1.5 text-[10px] text-[#86b817]">Leading</span>}
+                        {i === 0 && <span className="ml-1.5 text-[10px] text-amber-300">Leading</span>}
                       </span>
                     </div>
                     <div className="text-right">

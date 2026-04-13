@@ -31,32 +31,26 @@ export function WishlistProvider({ children }) {
   const toggle = useCallback(
     async (productId) => {
       const has = wishlist.includes(productId);
+      // Optimistic flip
+      const optimistic = has ? wishlist.filter((id) => id !== productId) : [...wishlist, productId];
+      setWishlist(optimistic);
+      if (!user && typeof window !== "undefined") {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(optimistic));
+      }
 
       if (user) {
         try {
-          if (has) {
-            await fetch("/api/wishlist", {
-              method: "DELETE",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ productId })
-            });
-          } else {
-            await fetch("/api/wishlist", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ productId })
-            });
-          }
-        } catch {}
-      }
-
-      setWishlist((prev) => {
-        const next = has ? prev.filter((id) => id !== productId) : [...prev, productId];
-        if (!user && typeof window !== "undefined") {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+          const res = await fetch("/api/wishlist", {
+            method: has ? "DELETE" : "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productId })
+          });
+          if (!res.ok) throw new Error("failed");
+        } catch {
+          // rollback on failure
+          setWishlist(wishlist);
         }
-        return next;
-      });
+      }
     },
     [user, wishlist]
   );

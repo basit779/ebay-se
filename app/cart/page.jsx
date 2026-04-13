@@ -7,7 +7,7 @@ import { useCart } from "@/context/CartContext";
 import AnimatedBackground from "@/components/AnimatedBackground";
 
 export default function CartPage() {
-  const { cartItems, updateQuantity, removeFromCart, total, itemCount } = useCart();
+  const { cartItems, incrementQuantity, removeFromCart, total, itemCount } = useCart();
 
   return (
     <section className="relative min-h-screen overflow-hidden px-4 py-12 md:px-8">
@@ -85,7 +85,7 @@ export default function CartPage() {
                         <div className="mt-4 flex items-center gap-3">
                           <div className="flex items-center rounded-xl border border-white/[0.08] bg-white/[0.02]">
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => incrementQuantity(item.id, -1)}
                               className="px-3 py-2 text-white/40 transition hover:text-white"
                             >
                               <Minus size={14} />
@@ -94,7 +94,7 @@ export default function CartPage() {
                               {item.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() => incrementQuantity(item.id, 1)}
                               className="px-3 py-2 text-white/40 transition hover:text-white"
                             >
                               <Plus size={14} />

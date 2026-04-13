@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { SlidersHorizontal } from "lucide-react";
 import ShopFilters from "@/components/ShopFilters";
@@ -11,12 +11,26 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 
 export default function ShopPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const initialCategory = searchParams.get("category");
+  const initialSort = searchParams.get("sort") || "default";
+  const initialSearch = searchParams.get("q") || "";
   const [selectedCategory, setSelectedCategory] = useState(
     categories.includes(initialCategory) ? initialCategory : "All"
   );
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("default");
+  const [search, setSearch] = useState(initialSearch);
+  const [sortBy, setSortBy] = useState(initialSort);
+
+  // keep URL in sync with state
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (selectedCategory && selectedCategory !== "All") params.set("category", selectedCategory);
+    if (sortBy && sortBy !== "default") params.set("sort", sortBy);
+    if (search) params.set("q", search);
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }, [selectedCategory, sortBy, search, pathname, router]);
 
   const filtered = useMemo(() => {
     let result =

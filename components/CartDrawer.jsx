@@ -6,7 +6,7 @@ import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export default function CartDrawer() {
-  const { isCartOpen, setIsCartOpen, cartItems, updateQuantity, removeFromCart, total, itemCount } = useCart();
+  const { isCartOpen, setIsCartOpen, cartItems, incrementQuantity, removeFromCart, total, itemCount } = useCart();
 
   return (
     <AnimatePresence>
@@ -93,7 +93,7 @@ export default function CartDrawer() {
                             <div className="mt-2 flex items-center gap-2">
                               <div className="flex items-center rounded-lg border border-white/[0.08] bg-white/[0.02]">
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                  onClick={() => incrementQuantity(item.id, -1)}
                                   className="px-2 py-1 text-white/40 transition hover:text-white"
                                 >
                                   <Minus size={12} />
@@ -102,7 +102,7 @@ export default function CartDrawer() {
                                   {item.quantity}
                                 </span>
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                  onClick={() => incrementQuantity(item.id, 1)}
                                   className="px-2 py-1 text-white/40 transition hover:text-white"
                                 >
                                   <Plus size={12} />

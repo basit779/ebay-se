@@ -580,8 +580,42 @@ a {
 }
 
 /* ── Smooth Focus Rings ───────────────────────────────── */
+*:focus {
+  outline: none;
+}
 *:focus-visible {
-  outline: 2px solid rgba(34, 211, 238, 0.5);
+  outline: 2px solid rgba(251, 191, 36, 0.65);
   outline-offset: 2px;
   border-radius: 8px;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.12);
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid rgba(251, 191, 36, 0.65);
+  outline-offset: 2px;
+}
+
+/* ── Skeleton shimmer (matches .shimmer, for inline use) ── */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 0.75rem;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
 }

@@ -115,6 +115,25 @@ export function CartProvider({ children }) {
     [removeFromCart, persist]
   );
 
+  // Delta-safe — resilient to rapid clicks (uses current state, not stale prop)
+  const incrementQuantity = useCallback(
+    (id, delta = 1) => {
+      setCartItems((prev) => {
+        let remove = false;
+        const next = prev.reduce((acc, item) => {
+          if (item.id !== id) return [...acc, item];
+          const q = item.quantity + delta;
+          if (q < 1) { remove = true; return acc; }
+          return [...acc, { ...item, quantity: q }];
+        }, []);
+        persist(next);
+        if (remove) return next;
+        return next;
+      });
+    },
+    [persist]
+  );
+
   const clearAll = useCallback(() => {
     setCartItems([]);
     if (typeof window !== "undefined") {
@@ -140,6 +159,7 @@ export function CartProvider({ children }) {
     addToCart,
     removeFromCart,
     updateQuantity,
+    incrementQuantity,
     clearAll,
     itemCount,
     total,

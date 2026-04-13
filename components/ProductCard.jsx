@@ -332,7 +332,7 @@ export default function ProductCard({ product, index = 0 }) {
                   whileTap="tap"
                 >
                   <Link
-                    href={`/product/${product.id}`}
+                    href={`/product/${product.id}#bid`}
                     className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-sm font-bold text-black shadow-[0_10px_30px_-8px_rgba(251,191,36,0.6)] transition-shadow hover:shadow-[0_14px_40px_-6px_rgba(251,191,36,0.8)]"
                   >
                     <Gavel size={15} />
