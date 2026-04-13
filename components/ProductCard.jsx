@@ -51,16 +51,20 @@ export default function ProductCard({ product, index = 0 }) {
       transition={{ duration: 0.4, delay: Math.min(index * 0.04, 0.3) }}
       className="group relative"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-300 hover:-translate-y-1 hover:border-white/[0.12] hover:shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5)]">
+      <div className="conic-border relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-all duration-500 ease-out hover:-translate-y-1.5 hover:border-white/[0.12] hover:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.7)]">
         {/* Image */}
         <Link href={`/product/${product.id}`} className="block">
           <div className="relative h-64 overflow-hidden">
             <ProductImage
               src={product.image}
               alt={product.name}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+            {/* Premium tinted vignette on hover */}
+            <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(168,85,247,0.18) 100%)" }}
+            />
 
             {/* Badge */}
             {product.badge && (
@@ -137,16 +141,16 @@ export default function ProductCard({ product, index = 0 }) {
           <div className="mt-3 flex items-center justify-between">
             {isAuction ? (
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-wider text-rose-400">
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-amber-400/80">
                   Current Bid
                 </p>
-                <p className="text-lg font-bold text-white">
+                <p className="font-display text-xl font-bold text-gold">
                   ${product.currentBid.toLocaleString()}
                 </p>
               </div>
             ) : (
               <div className="flex items-baseline gap-2">
-                <p className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-lg font-bold text-transparent">
+                <p className="font-display bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-xl font-bold text-transparent">
                   ${product.price}
                 </p>
                 {product.originalPrice && (

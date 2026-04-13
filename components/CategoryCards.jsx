@@ -65,10 +65,10 @@ export default function CategoryCards({ categories }) {
             </p>
           </FadeUp>
           <RevealText delay={0.1}>
-            <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
-              Shop by
+            <h2 className="mt-4 text-5xl font-black leading-[0.92] tracking-tighter md:text-6xl lg:text-7xl">
+              <span className="text-luxe">Shop by</span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="font-display-italic font-bold bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">
                 obsession.
               </span>
             </h2>
@@ -104,7 +104,7 @@ export default function CategoryCards({ categories }) {
             >
               <Link
                 href={`/shop?category=${encodeURIComponent(cat)}`}
-                className="group relative block h-full overflow-hidden rounded-3xl border border-white/[0.06] bg-black/40"
+                className="conic-border elevate-soft group relative block h-full overflow-hidden rounded-3xl border border-white/[0.06] bg-black/40"
               >
                 {/* Background image */}
                 <motion.div
@@ -142,7 +142,7 @@ export default function CategoryCards({ categories }) {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-bold leading-tight tracking-tight text-white md:text-3xl">
+                    <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-white transition-transform duration-500 ease-out group-hover:-translate-y-0.5 md:text-3xl">
                       {cat}
                     </h3>
                     <p className="mt-1 text-xs text-white/50 md:text-sm">{meta.desc}</p>

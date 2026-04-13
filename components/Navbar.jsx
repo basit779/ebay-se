@@ -39,7 +39,7 @@ export default function Navbar({ onAuthOpen }) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`sticky top-0 z-40 transition-all duration-500 ${
         scrolled
-          ? "border-b border-white/[0.06] bg-black/80 shadow-[0_4px_30px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+          ? "border-b border-white/[0.08] bg-night/70 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150"
           : "border-b border-transparent bg-transparent backdrop-blur-sm"
       }`}
     >
@@ -57,14 +57,14 @@ export default function Navbar({ onAuthOpen }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-colors ${
+                className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
                   link.accent
                     ? isActive
-                      ? "text-red-400"
-                      : "text-red-400/60 hover:text-red-400"
+                      ? "text-amber-300"
+                      : "text-amber-400/70 hover:text-amber-300"
                     : isActive
                       ? "text-white"
-                      : "text-white/50 hover:text-white/80"
+                      : "text-white/55 hover:text-white"
                 }`}
               >
                 {link.icon && <link.icon size={13} />}
@@ -74,8 +74,8 @@ export default function Navbar({ onAuthOpen }) {
                     layoutId="nav-indicator"
                     className={`absolute inset-x-2 -bottom-[13px] h-[2px] rounded-full ${
                       link.accent
-                        ? "bg-gradient-to-r from-red-500 to-orange-500"
-                        : "bg-gradient-to-r from-cyan-400 to-blue-500"
+                        ? "bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 shadow-[0_0_12px_rgba(245,158,11,0.6)]"
+                        : "bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
                     }`}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />

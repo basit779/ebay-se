@@ -118,9 +118,16 @@ function ProductStack() {
         );
       })}
 
-      {/* Static decorative rings - no animation */}
-      <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/5" />
-      <div className="absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.03]" />
+      {/* Static decorative rings + premium glow */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-50"
+        style={{
+          background: "radial-gradient(circle, rgba(168,85,247,0.18), rgba(34,211,238,0.08) 40%, transparent 70%)",
+          filter: "blur(60px)"
+        }}
+      />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/5" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[650px] w-[650px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-white/[0.03]" />
     </div>
   );
 }
@@ -170,35 +177,35 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-white/60 backdrop-blur-sm"
+            className="liquid-glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-white/70"
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-cyan-400" />
+              <span className="absolute h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-amber-400" />
             </span>
-            <span>Live marketplace · 48 active auctions</span>
+            <span className="tracking-wide">Live marketplace · 48 active auctions</span>
           </motion.div>
 
-          {/* Headline */}
+          {/* Headline — editorial luxe */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl font-black leading-[0.95] tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-[84px]"
+            className="text-5xl font-black leading-[0.92] tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-[88px]"
           >
-            Where
+            <span className="text-luxe">Where</span>
             <br />
-            everything
+            <span className="text-luxe">everything</span>
             <br />
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <span className="relative inline-block pr-2">
+              <span className="font-display-italic font-bold bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">
                 flows.
               </span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-2 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 opacity-60 blur-sm"
+                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 opacity-60 blur-md"
               />
             </span>
           </motion.h1>
@@ -224,7 +231,7 @@ export default function Hero() {
           >
             <MagneticButton
               href="/shop"
-              className="group flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_10px_40px_-10px_rgba(255,255,255,0.3)] transition-shadow hover:shadow-[0_10px_50px_-5px_rgba(255,255,255,0.4)]"
+              className="shine-sweep group flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_10px_40px_-10px_rgba(255,255,255,0.4)] transition-shadow hover:shadow-[0_15px_60px_-5px_rgba(255,255,255,0.5)]"
             >
               <ShoppingBag size={16} />
               Start Shopping
@@ -233,7 +240,7 @@ export default function Hero() {
 
             <MagneticButton
               href="/auctions"
-              className="group flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-7 py-3.5 text-sm font-medium text-white/80 backdrop-blur-md transition-all hover:border-red-500/30 hover:bg-red-500/[0.08] hover:text-red-400"
+              className="liquid-glass group flex items-center gap-2.5 rounded-full px-7 py-3.5 text-sm font-medium text-white/80 transition-all hover:text-amber-300"
             >
               <Gavel size={16} />
               Live Auctions
