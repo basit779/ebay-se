@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export default function HeroParticles({ density = 70 }) {
+export default function HeroParticles({ density = 40 }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function HeroParticles({ density = 70 }) {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(density, Math.floor((width * height) / 14000));
+      const count = Math.min(density, Math.floor((width * height) / 22000));
       particles = Array.from({ length: count }, () => spawn());
     };
 
@@ -59,7 +59,6 @@ export default function HeroParticles({ density = 70 }) {
     const step = () => {
       ctx.clearRect(0, 0, width, height);
       for (const p of particles) {
-        // gentle cursor attraction
         const dx = mouseX - p.x;
         const dy = mouseY - p.y;
         const d2 = dx * dx + dy * dy;
@@ -83,24 +82,31 @@ export default function HeroParticles({ density = 70 }) {
         ctx.fillStyle = p.color + alpha + ")";
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
-        // soft halo
-        ctx.beginPath();
-        ctx.fillStyle = p.color + alpha * 0.15 + ")";
-        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
-        ctx.fill();
       }
       rafId = requestAnimationFrame(step);
     };
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    let visible = true;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !rafId && !reduce) rafId = requestAnimationFrame(step);
+        if (!visible && rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      },
+      { threshold: 0 }
+    );
+    io.observe(canvas);
+
     resize();
-    if (!reduce) rafId = requestAnimationFrame(step);
+    if (!reduce && visible) rafId = requestAnimationFrame(step);
     window.addEventListener("resize", resize);
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseleave", onLeave);
     return () => {
-      cancelAnimationFrame(rafId);
+      if (rafId) cancelAnimationFrame(rafId);
+      io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);

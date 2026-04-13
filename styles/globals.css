@@ -30,23 +30,6 @@ html {
 
 body {
   overscroll-behavior-y: none;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Promote heavy layers to their own compositor layer for buttery scroll */
-.aurora-bg,
-.aurora-bg::before,
-.particles,
-.liquid-glass,
-.liquid-glass-strong,
-.glass,
-.glass-strong,
-canvas,
-img,
-video {
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 /* Universal smooth transition baseline for interactive elements */

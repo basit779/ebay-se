@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowRight, ShoppingBag, Gavel, Zap, Star } from "lucide-react";
 import FluxBidLogo from "@/components/FluxBidLogo";
 import MagneticButton from "@/components/MagneticButton";
@@ -140,14 +140,9 @@ export default function Hero() {
     offset: ["start start", "end start"]
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    mass: 0.4
-  });
-  const bgY = useTransform(smoothProgress, [0, 1], ["0%", "50%"]);
-  const contentOpacity = useTransform(smoothProgress, [0, 0.5], [1, 0]);
-  const contentY = useTransform(smoothProgress, [0, 0.5], [0, 150]);
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
 
   return (
     <section
@@ -161,7 +156,7 @@ export default function Hero() {
 
       {/* Floating particles */}
       <div className="pointer-events-none absolute inset-0 z-[1]">
-        <HeroParticles density={80} />
+        <HeroParticles density={40} />
       </div>
 
       {/* Main content wrapper */}

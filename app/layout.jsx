@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import Providers from "@/components/Providers";
-import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata = {
   title: "FluxBid — Where Everything Flows",
@@ -12,7 +11,6 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className="bg-night text-white antialiased" suppressHydrationWarning>
         <div className="noise-overlay" />
-        <SmoothScroll />
         <Providers>{children}</Providers>
       </body>
     </html>
