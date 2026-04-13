@@ -71,7 +71,7 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
             custom={offset}
             variants={animate ? letterVariants : {}}
             animate={isHovered ? hoverWave(offset) : {}}
-            className="inline-block bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent"
+            className="inline-block bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent"
             style={{
               backgroundSize: "200% 100%",
               animation: "gradient-flow 3s ease infinite",
@@ -94,7 +94,7 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
             className="inline-block text-white transition-all duration-300"
             style={{
               textShadow: isHovered
-                ? "0 0 20px rgba(34,211,238,0.5), 0 0 40px rgba(34,211,238,0.2)"
+                ? "0 0 20px rgba(251,191,36,0.55), 0 0 40px rgba(251,191,36,0.25)"
                 : "none"
             }}
           >
@@ -111,8 +111,8 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
             className="relative -top-[0.15em] ml-1"
           >
             <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-cyan-400" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-400" />
             </span>
           </motion.span>
         )}

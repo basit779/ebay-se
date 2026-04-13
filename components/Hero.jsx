@@ -158,16 +158,6 @@ export default function Hero() {
         className="relative z-10 mx-auto w-full max-w-7xl px-6 py-20 lg:py-0"
         style={{ opacity: contentOpacity, y: contentY }}
       >
-        {/* FluxBid Logo — Centered at top */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-12 flex justify-center lg:mb-16"
-        >
-          <FluxBidLogo size="2xl" animate={true} />
-        </motion.div>
-
         {/* Main content grid */}
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
         {/* Left: Text Content */}
@@ -272,15 +262,25 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: Product Stack */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="order-1 flex h-[540px] items-center justify-center lg:order-2"
-        >
-          <ProductStack />
-        </motion.div>
+        {/* Right: Logo + Product Stack */}
+        <div className="order-1 flex flex-col items-center lg:order-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-2 lg:mb-4"
+          >
+            <FluxBidLogo size="lg" animate={true} />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="flex h-[540px] w-full items-center justify-center"
+          >
+            <ProductStack />
+          </motion.div>
+        </div>
         </div>
       </motion.div>
 

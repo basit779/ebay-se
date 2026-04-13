@@ -350,10 +350,10 @@ const products = [
     badge: "Auction",
     rating: 5.0,
     reviewCount: 5,
-    image: U("1519861531473-9200262188bf"),
+    image: U("1577223625816-7546f13df25d"),
     images: [
-      U("1519861531473-9200262188bf"),
-      U("1546519638-68e109498ffc")
+      U("1577223625816-7546f13df25d"),
+      U("1556906781-9a412961c28c")
     ],
     description: "Authentic Chicago Bulls #23 jersey signed by Michael Jordan. PSA/DNA authenticated.",
     features: ["PSA/DNA Authenticated", "Framed Display", "Certificate Included", "Mint"],

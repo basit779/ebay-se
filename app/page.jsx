@@ -4,6 +4,8 @@ import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import CategoryCards from "@/components/CategoryCards";
 import BrandTicker from "@/components/BrandTicker";
+import LiveBidTicker from "@/components/LiveBidTicker";
+import TrustStrip from "@/components/TrustStrip";
 import StatsSection from "@/components/StatsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import NewsletterSection from "@/components/NewsletterSection";
@@ -29,7 +31,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <LiveBidTicker auctions={products.filter((p) => p.auction)} />
       <BrandTicker />
+      <TrustStrip />
 
       {/* Featured Collection */}
       <section className="relative mx-auto max-w-7xl px-6 py-32 md:px-8">

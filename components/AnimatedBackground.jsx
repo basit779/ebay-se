@@ -55,6 +55,33 @@ export default function AnimatedBackground() {
         }}
       />
 
+      {/* Floating gold particles (CSS-only, GPU) */}
+      {[
+        { left: "12%", top: "18%", size: 4, delay: 0, dur: 7 },
+        { left: "82%", top: "22%", size: 3, delay: 1.2, dur: 9 },
+        { left: "68%", top: "70%", size: 5, delay: 2.5, dur: 8 },
+        { left: "22%", top: "78%", size: 3, delay: 0.8, dur: 10 },
+        { left: "48%", top: "12%", size: 2, delay: 3, dur: 11 },
+        { left: "92%", top: "55%", size: 4, delay: 1.6, dur: 9 },
+        { left: "8%", top: "48%", size: 3, delay: 2, dur: 8 },
+        { left: "55%", top: "85%", size: 4, delay: 0.4, dur: 12 }
+      ].map((p, i) => (
+        <span
+          key={i}
+          className="absolute rounded-full bg-amber-300"
+          style={{
+            left: p.left,
+            top: p.top,
+            width: p.size,
+            height: p.size,
+            opacity: 0.5,
+            boxShadow: "0 0 12px 2px rgba(251,191,36,0.55)",
+            animation: `float-card ${p.dur}s ease-in-out infinite ${p.delay}s`,
+            willChange: "transform"
+          }}
+        />
+      ))}
+
       {/* Vignette */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/50" />
     </div>
