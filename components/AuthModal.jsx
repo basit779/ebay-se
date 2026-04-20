@@ -111,7 +111,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-x-4 top-[8%] z-50 mx-auto max-w-md sm:inset-x-auto sm:left-1/2 sm:top-[12%] sm:-translate-x-1/2"
           >
             <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-night/95 p-8 shadow-2xl backdrop-blur-2xl">
@@ -139,7 +139,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ type: "spring", delay: 0.1 }}
+                      transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                       className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-amber-400/15"
                     >
                       <Mail size={24} className="text-amber-300" />

@@ -66,40 +66,37 @@ export default function ProductCard({ product, index = 0, variant = "default" })
       opacity: 1,
       filter: "blur(0px)",
       transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        mass: 0.6,
-        staggerChildren: 0.08,
-        delayChildren: 0.08
+        duration: 0.7,
+        ease: [0.22, 1, 0.36, 1],
+        staggerChildren: 0.09,
+        delayChildren: 0.1
       }
     }
   };
 
   const contentVariants = {
-    rest: { opacity: 0, y: 20, scale: 0.96 },
+    rest: { opacity: 0, y: 20 },
     hover: {
       opacity: 1,
       y: 0,
-      scale: 1,
-      transition: { type: "spring", stiffness: 400, damping: 25, mass: 0.5 }
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
     }
   };
 
   const buttonMotion = {
     rest: { scale: 1, y: 0 },
     hover: shouldAnimate
-      ? { scale: 1.03, y: -2, transition: { type: "spring", stiffness: 400, damping: 25 } }
+      ? { scale: 1.02, y: -2, transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] } }
       : {},
-    tap: shouldAnimate ? { scale: 0.96 } : {}
+    tap: shouldAnimate ? { scale: 0.98, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] } } : {}
   };
 
   const favoriteVariants = {
     rest: { scale: 1, rotate: 0 },
     favorite: {
-      scale: [1, 1.3, 1],
-      rotate: [0, 10, -10, 0],
-      transition: { duration: 0.5, ease: "easeInOut" }
+      scale: [1, 1.25, 1],
+      rotate: [0, 8, -8, 0],
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] }
     }
   };
 

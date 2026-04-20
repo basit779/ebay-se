@@ -26,7 +26,7 @@ export default function CartDrawer() {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-white/[0.06] bg-night/95 backdrop-blur-2xl"
           >
             {/* Header */}

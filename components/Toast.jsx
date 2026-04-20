@@ -30,7 +30,7 @@ export default function ToastContainer() {
               initial={{ opacity: 0, x: 100, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               exit={{ opacity: 0, x: 100, scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-panel/95 px-5 py-3.5 shadow-2xl backdrop-blur-2xl"
             >
               <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${colors[toast.type]}`}>

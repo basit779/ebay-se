@@ -10,10 +10,9 @@ const letterVariants = {
     opacity: 1,
     rotateX: 0,
     transition: {
-      delay: i * 0.06,
-      type: "spring",
-      stiffness: 200,
-      damping: 15
+      delay: i * 0.07,
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1]
     }
   })
 };
@@ -107,7 +106,7 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.6, type: "spring" }}
+            transition={{ delay: 0.6, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="relative -top-[0.15em] ml-1"
           >
             <span className="relative flex h-2.5 w-2.5">

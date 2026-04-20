@@ -79,7 +79,7 @@ export default function Navbar({ onAuthOpen }) {
                         ? "bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 shadow-[0_0_14px_rgba(251,191,36,0.7)]"
                         : "bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 shadow-[0_0_12px_rgba(251,191,36,0.5)]"
                     }`}
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   />
                 )}
               </Link>
