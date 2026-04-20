@@ -1,13 +1,19 @@
+import { ProductGridSkeleton } from "@/components/ProductCardSkeleton";
+
 export default function Loading() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="relative h-12 w-12">
-          <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-neon-cyan" />
-          <div className="absolute inset-1 animate-spin rounded-full border-2 border-transparent border-b-neon-purple" style={{ animationDirection: "reverse", animationDuration: "1.5s" }} />
+    <section className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8 md:py-32">
+      <div className="mx-auto max-w-7xl">
+        {/* Header placeholder */}
+        <div className="mb-16 space-y-5">
+          <div className="skeleton h-3 w-32" />
+          <div className="skeleton h-12 w-80 md:h-20 md:w-[32rem]" />
+          <div className="skeleton h-4 w-full max-w-lg" />
         </div>
-        <p className="text-xs font-medium text-white/30 animate-pulse">Loading...</p>
+
+        {/* Grid placeholder */}
+        <ProductGridSkeleton count={8} />
       </div>
-    </div>
+    </section>
   );
 }
