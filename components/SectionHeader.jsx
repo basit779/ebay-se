@@ -7,10 +7,10 @@ import ProductImage from "@/components/ProductImage";
 
 export default function SectionHeader({
   eyebrow,
-  eyebrowColor = "text-amber-400",
+  eyebrowColor = "text-champagne-400",
   headline,
   accentWord,
-  accentGradient = "from-amber-200 via-amber-400 to-orange-500",
+  accentGradient = "from-champagne-100 via-champagne-400 to-champagne-600",
   description,
   ctaLabel,
   ctaHref,
@@ -19,18 +19,18 @@ export default function SectionHeader({
 }) {
   return (
     <div className="relative mb-10 overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-br from-white/[0.03] via-transparent to-transparent p-6 backdrop-blur-sm md:mb-14 md:p-10">
-      {/* Ambient gold glow */}
+      {/* Ambient champagne glow */}
       <div
-        className="pointer-events-none absolute -right-32 -top-32 h-[400px] w-[400px] rounded-full opacity-40"
+        className="pointer-events-none absolute -right-32 -top-32 h-[400px] w-[400px] rounded-full opacity-30"
         style={{
-          background: "radial-gradient(circle, rgba(251,191,36,0.22), transparent 70%)",
+          background: "radial-gradient(circle, rgba(212,175,55,0.2), transparent 70%)",
           filter: "blur(80px)"
         }}
       />
       <div
-        className="pointer-events-none absolute -left-24 -bottom-24 h-[320px] w-[320px] rounded-full opacity-30"
+        className="pointer-events-none absolute -left-24 -bottom-24 h-[320px] w-[320px] rounded-full opacity-20"
         style={{
-          background: "radial-gradient(circle, rgba(217,119,6,0.18), transparent 70%)",
+          background: "radial-gradient(circle, rgba(143,113,24,0.18), transparent 70%)",
           filter: "blur(80px)"
         }}
       />
@@ -47,9 +47,9 @@ export default function SectionHeader({
             </div>
           </FadeUp>
           <RevealText delay={0.1}>
-            <h2 className="mt-5 text-5xl font-black leading-[0.9] tracking-tighter md:text-6xl lg:text-7xl">
+            <h2 className="mt-5 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
               <span className="text-luxe">{headline}</span>{" "}
-              <span className={`font-display-italic font-bold bg-gradient-to-r ${accentGradient} bg-clip-text text-transparent`}>
+              <span className={`italic font-semibold bg-gradient-to-r ${accentGradient} bg-clip-text text-transparent`}>
                 {accentWord}
               </span>
             </h2>
@@ -63,7 +63,7 @@ export default function SectionHeader({
                   {thumbnails.slice(0, 4).map((t, i) => (
                     <div
                       key={i}
-                      className="relative h-12 w-12 overflow-hidden rounded-xl border-2 border-night ring-1 ring-amber-400/20 md:h-14 md:w-14"
+                      className="relative h-12 w-12 overflow-hidden rounded-xl border-2 border-night ring-1 ring-champagne-400/25 md:h-14 md:w-14"
                       style={{ zIndex: 4 - i }}
                     >
                       <ProductImage
@@ -75,7 +75,7 @@ export default function SectionHeader({
                   ))}
                 </div>
                 <div className="border-l border-white/10 pl-3">
-                  <p className="font-display text-xl font-bold leading-none text-gold md:text-2xl">
+                  <p className="font-mono text-xl font-bold leading-none text-champagne md:text-2xl">
                     {thumbnails.length}+
                   </p>
                   <p className="mt-1 text-[10px] uppercase tracking-wider text-white/40">
@@ -100,7 +100,7 @@ export default function SectionHeader({
               <div className="grid grid-cols-3 gap-4 border-t border-white/[0.08] pt-5">
                 {stats.map((stat, i) => (
                   <div key={i}>
-                    <p className="font-display text-2xl font-bold leading-none text-gold md:text-3xl">
+                    <p className="font-mono text-2xl font-bold leading-none text-champagne md:text-3xl">
                       {stat.value}
                     </p>
                     <p className="mt-1.5 text-[10px] uppercase tracking-[0.15em] text-white/40">
@@ -114,12 +114,12 @@ export default function SectionHeader({
             {ctaLabel && ctaHref && (
               <Link
                 href={ctaHref}
-                className="shine-sweep group relative inline-flex items-center justify-between gap-2 overflow-hidden rounded-xl border border-amber-400/25 bg-gradient-to-r from-amber-400/10 to-orange-500/5 px-4 py-3.5 text-sm font-semibold text-amber-200 transition-all hover:border-amber-400/50 hover:from-amber-400/20 hover:to-orange-500/10"
+                className="shine-sweep group relative inline-flex items-center justify-between gap-2 overflow-hidden rounded-xl border border-champagne-400/30 bg-gradient-to-r from-champagne-400/10 to-champagne-600/5 px-4 py-3.5 text-sm font-semibold text-champagne-100 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/60 hover:from-champagne-400/20 hover:to-champagne-600/10"
               >
                 <span>{ctaLabel}</span>
                 <ArrowUpRight
                   size={16}
-                  className="text-amber-300 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  className="text-champagne-300 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 />
               </Link>
             )}

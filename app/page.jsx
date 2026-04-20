@@ -36,13 +36,13 @@ export default function HomePage() {
       <TrustStrip />
 
       {/* Featured Collection */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
+      <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
           eyebrow="Curated"
-          eyebrowColor="text-amber-400"
+          eyebrowColor="text-champagne-400"
           headline="Featured"
           accentWord="collection."
-          accentGradient="from-amber-200 via-amber-400 to-orange-500"
+          accentGradient="from-champagne-100 via-champagne-400 to-champagne-600"
           description="Premium products hand-selected for their quality, design, and craftsmanship. From audio gear to fashion essentials."
           ctaLabel="Browse all products"
           ctaHref="/shop"
@@ -64,13 +64,13 @@ export default function HomePage() {
 
       {/* Live Auctions */}
       {auctions.length > 0 && (
-        <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
+        <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
           <SectionHeader
             eyebrow="Live · Ending Soon"
-            eyebrowColor="text-amber-400"
+            eyebrowColor="text-champagne-400"
             headline="Bid on the"
             accentWord="extraordinary."
-            accentGradient="from-amber-300 via-orange-400 to-rose-500"
+            accentGradient="from-champagne-200 via-champagne-400 to-champagne-600"
             description="Rare collectibles and one-of-a-kind items from verified sellers. Live bidding, transparent pricing, real-time updates."
             ctaLabel="See all live auctions"
             ctaHref="/auctions"
@@ -95,13 +95,13 @@ export default function HomePage() {
       <StatsSection />
 
       {/* Trending */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
+      <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
           eyebrow="Trending"
-          eyebrowColor="text-amber-400"
+          eyebrowColor="text-champagne-400"
           headline="Hot right"
           accentWord="now."
-          accentGradient="from-yellow-300 via-amber-400 to-orange-500"
+          accentGradient="from-champagne-100 via-champagne-400 to-champagne-600"
           description="The most-viewed and most-bought items this week. Limited stock on sale items — move fast."
           ctaLabel="All trending items"
           ctaHref="/shop"

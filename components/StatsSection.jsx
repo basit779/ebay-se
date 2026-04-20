@@ -56,15 +56,15 @@ export default function StatsSection() {
         {/* Header */}
         <div className="mb-16 max-w-3xl">
           <FadeUp>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-champagne-400">
               By the numbers
             </p>
           </FadeUp>
           <RevealText delay={0.1}>
-            <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+            <h2 className="mt-4 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
               Trusted
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              <span className="italic bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
                 globally.
               </span>
             </h2>
@@ -90,7 +90,7 @@ export default function StatsSection() {
                 </div>
 
                 {/* Number */}
-                <div className="text-4xl font-black tracking-tighter text-white md:text-5xl lg:text-6xl">
+                <div className="font-mono text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                 </div>
 

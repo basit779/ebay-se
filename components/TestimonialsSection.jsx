@@ -110,15 +110,15 @@ export default function TestimonialsSection() {
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <FadeUp>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-purple-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-champagne-400">
                 Community
               </p>
             </FadeUp>
             <RevealText delay={0.1}>
-              <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+              <h2 className="mt-4 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
                 Loved by
                 <br />
-                <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+                <span className="italic bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
                   collectors.
                 </span>
               </h2>

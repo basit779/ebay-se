@@ -13,9 +13,22 @@ module.exports = {
         mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
       },
       colors: {
-        night: "#05060a",
+        night: "#0A0A0A",
+        obsidian: "#0A0A0A",
+        ink: "#050505",
         panel: "#0d1020",
         surface: "#111427",
+        champagne: {
+          50: "#FBF6E6",
+          100: "#F5EAC2",
+          200: "#EBD68B",
+          300: "#DFC05A",
+          400: "#D4AF37",
+          500: "#B8931F",
+          600: "#8F7118",
+          700: "#6A5412",
+          DEFAULT: "#D4AF37"
+        },
         gold: {
           50: "#fffbeb",
           100: "#fef3c7",
@@ -27,7 +40,7 @@ module.exports = {
           700: "#b45309",
           800: "#92400e",
           900: "#78350f",
-          champagne: "#e8c995",
+          champagne: "#D4AF37",
           rose: "#d4a373"
         },
         neon: {
