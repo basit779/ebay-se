@@ -9,6 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import FluxBidLogo from "@/components/FluxBidLogo";
+import CommandPalette from "@/components/CommandPalette";
 
 export default function Navbar({ onAuthOpen }) {
   const { itemCount, setIsCartOpen } = useCart();
@@ -89,6 +90,8 @@ export default function Navbar({ onAuthOpen }) {
 
         {/* Action Buttons */}
         <div className="flex items-center gap-2">
+          <CommandPalette />
+
           <Link
             href="/wishlist"
             className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 transition-all hover:border-pink-500/20 hover:text-pink-400"
