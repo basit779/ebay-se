@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Globe, MessageCircle, Rss, Mail } from "lucide-react";
+import { Instagram, Twitter, Youtube, Mail } from "lucide-react";
 import FluxBidLogo from "@/components/FluxBidLogo";
 import { FadeUp } from "@/components/TextReveal";
 
@@ -26,9 +26,9 @@ const footerLinks = {
 };
 
 const socials = [
-  { icon: MessageCircle, href: "https://twitter.com", label: "Twitter" },
-  { icon: Rss, href: "#", label: "Journal" },
-  { icon: Globe, href: "https://github.com/basit779/FluxBid", label: "GitHub" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Youtube, href: "#", label: "YouTube" },
   { icon: Mail, href: "mailto:hello@fluxbid.app", label: "Email" }
 ];
 
@@ -97,10 +97,21 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-24 flex flex-col items-start justify-between gap-4 border-t border-white/[0.06] pt-10 md:flex-row md:items-center">
+        <div className="mt-24 flex flex-col items-start justify-between gap-6 border-t border-white/[0.06] pt-10 md:flex-row md:items-center">
           <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/35">
             &copy; {new Date().getFullYear()} &nbsp;·&nbsp; FluxBid &nbsp;·&nbsp; All rights reserved
           </p>
+
+          <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-white/40">
+            <a href="#" className="transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-200">
+              Privacy Policy
+            </a>
+            <span className="h-3 w-px bg-white/10" />
+            <a href="#" className="transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-200">
+              Terms of Service
+            </a>
+          </div>
+
           <p className="text-[11px] italic text-white/35">
             Where luxury flows.
           </p>

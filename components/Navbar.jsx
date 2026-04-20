@@ -65,11 +65,11 @@ export default function Navbar({ onAuthOpen }) {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 ${
+                className={`group relative flex items-center gap-1.5 px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-300 ${
                   link.accent
                     ? isActive
-                      ? "text-amber-300"
-                      : "text-amber-400/70 hover:text-amber-300"
+                      ? "text-champagne-200"
+                      : "text-champagne-300/75 hover:text-champagne-200"
                     : isActive
                       ? "text-white"
                       : "text-white/55 hover:text-white"
@@ -77,14 +77,14 @@ export default function Navbar({ onAuthOpen }) {
               >
                 {link.icon && <link.icon size={13} />}
                 {link.label}
+                {/* Hover underline-slide (only when not active) */}
+                {!isActive && (
+                  <span className="pointer-events-none absolute inset-x-3 -bottom-[9px] h-[1.5px] origin-left scale-x-0 rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100" />
+                )}
                 {isActive && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className={`absolute inset-x-2 -bottom-[13px] h-[2px] rounded-full ${
-                      link.accent
-                        ? "bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 shadow-[0_0_14px_rgba(251,191,36,0.7)]"
-                        : "bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 shadow-[0_0_12px_rgba(251,191,36,0.5)]"
-                    }`}
+                    className="absolute inset-x-2 -bottom-[13px] h-[2px] rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600 shadow-[0_0_14px_rgba(212,175,55,0.6)]"
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   />
                 )}
@@ -99,11 +99,12 @@ export default function Navbar({ onAuthOpen }) {
 
           <Link
             href="/wishlist"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 transition-all hover:border-pink-500/20 hover:text-pink-400"
+            aria-label="Wishlist"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-rose-400/30 hover:text-rose-300 sm:flex"
           >
             <Heart size={16} />
             {wishlist.length > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-pink-500 text-[9px] font-bold text-white">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 font-mono text-[9px] font-bold text-white">
                 {wishlist.length}
               </span>
             )}
@@ -112,7 +113,8 @@ export default function Navbar({ onAuthOpen }) {
           <motion.button
             whileTap={{ scale: 0.92 }}
             onClick={() => setIsCartOpen(true)}
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 transition-all hover:border-amber-400/30 hover:text-amber-300"
+            aria-label="Open cart"
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200"
           >
             <ShoppingCart size={16} />
             <AnimatePresence>
@@ -121,7 +123,8 @@ export default function Navbar({ onAuthOpen }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
-                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-amber-300 to-amber-500 text-[9px] font-bold text-black shadow-[0_0_10px_rgba(251,191,36,0.6)]"
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-champagne-200 to-champagne-500 font-mono text-[9px] font-bold text-black shadow-[0_0_10px_rgba(212,175,55,0.6)]"
                 >
                   {itemCount}
                 </motion.span>
@@ -205,7 +208,8 @@ export default function Navbar({ onAuthOpen }) {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.04] bg-white/[0.02] text-white/40 md:hidden"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200 md:hidden"
           >
             {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
@@ -218,20 +222,42 @@ export default function Navbar({ onAuthOpen }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden border-t border-white/[0.06] md:hidden"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden border-t border-white/10 bg-obsidian/80 backdrop-blur-[20px] md:hidden"
           >
-            <div className="flex flex-col gap-1 px-4 py-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-4 py-3 text-sm text-white/60 transition hover:bg-white/[0.03] hover:text-white"
-                >
-                  {link.icon && <link.icon size={14} />}
-                  {link.label}
-                </Link>
-              ))}
+            <div className="flex flex-col px-4 py-3">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-3 rounded-xl px-4 py-3.5 font-serif text-lg transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      isActive
+                        ? "bg-champagne-400/10 text-champagne-100"
+                        : "text-white/70 hover:bg-white/[0.04] hover:text-champagne-200"
+                    }`}
+                  >
+                    {link.icon && <link.icon size={14} />}
+                    {link.label}
+                  </Link>
+                );
+              })}
+
+              <Link
+                href="/wishlist"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-4 py-3.5 font-serif text-lg text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.04] hover:text-champagne-200"
+              >
+                <Heart size={14} />
+                Wishlist
+                {wishlist.length > 0 && (
+                  <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 font-mono text-[10px] font-bold text-white">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
             </div>
           </motion.div>
         )}

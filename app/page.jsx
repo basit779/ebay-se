@@ -19,14 +19,28 @@ import products, { categories } from "@/data/products";
 
 export default function HomePage() {
   const featured = products.filter((p) => !p.auction).slice(0, 4);
+  const featuredIds = new Set(featured.map((p) => p.id));
   const auctions = products.filter((p) => p.auction).slice(0, 3);
-  const trending = products
-    .filter((p) => !p.auction && (p.badge === "Hot" || p.badge === "Sale"))
-    .slice(0, 4);
 
-  // Pick specific products for spotlights
+  // Pick specific products for spotlights (picked first so we can dedupe)
   const editorial = products.find((p) => p.id === "5"); // Canon EOS R6
-  const flashDeal = products.find((p) => p.id === "3"); // Nike Air Max (on sale)
+  const flashDeal = products.find((p) => p.id === "7"); // Keychron Q1 Pro (Hot)
+
+  // Trending = Hot/Sale badged products, excluding anything already featured
+  // above (Featured row, Flash Deal, Editorial) to avoid repetition.
+  const excludeIds = new Set([
+    ...featuredIds,
+    flashDeal?.id,
+    editorial?.id
+  ].filter(Boolean));
+  const trending = products
+    .filter(
+      (p) =>
+        !p.auction &&
+        (p.badge === "Hot" || p.badge === "Sale") &&
+        !excludeIds.has(p.id)
+    )
+    .slice(0, 4);
 
   return (
     <>

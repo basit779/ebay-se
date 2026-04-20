@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import PageTransition from "@/components/PageTransition";
 import AuthModal from "@/components/AuthModal";
 import ToastContainer from "@/components/Toast";
+import BackToTop from "@/components/BackToTop";
 
 export default function Providers({ children }) {
   const [authOpen, setAuthOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function Providers({ children }) {
             <ToastContainer />
             <PageTransition>{children}</PageTransition>
             <Footer />
+            <BackToTop />
           </ToastProvider>
         </WishlistProvider>
       </CartProvider>
