@@ -1,8 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
+/**
+ * Filter pattern: category Chips (compact, multi-option, low weight)
+ * and a Search input. Linear primary actions use .btn-luxe elsewhere —
+ * there are no buttons here because filtering updates state live.
+ */
 export default function ShopFilters({
   categories,
   selectedCategory,
@@ -10,36 +15,67 @@ export default function ShopFilters({
   search,
   setSearch
 }) {
+  const hasActiveSearch = search.length > 0;
+
   return (
-    <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 backdrop-blur-sm md:flex-row md:items-center md:justify-between">
-      {/* Search */}
-      <div className="relative md:max-w-sm md:flex-1">
-        <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25" />
+    <div className="mb-12 space-y-6">
+      {/* Search bar */}
+      <div className="relative mx-auto max-w-xl">
+        <Search size={15} className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30" />
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search products..."
-          className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm text-white placeholder-white/25"
+          placeholder="Search the marketplace…"
+          className="luxe-input w-full !pl-12 !pr-12"
         />
+        {hasActiveSearch && (
+          <button
+            type="button"
+            onClick={() => setSearch("")}
+            aria-label="Clear search"
+            className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-white/35 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.06] hover:text-champagne-200"
+          >
+            <X size={13} />
+          </button>
+        )}
       </div>
 
-      {/* Category filters */}
-      <div className="flex flex-wrap gap-2">
+      {/* Category chip row */}
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {categories.map((cat) => (
-          <motion.button
+          <Chip
             key={cat}
-            whileTap={{ scale: 0.96 }}
+            active={selectedCategory === cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`rounded-full px-4 py-2 text-xs font-medium transition-all ${
-              selectedCategory === cat
-                ? "bg-neon-cyan/15 text-neon-cyan ring-1 ring-neon-cyan/30"
-                : "border border-white/[0.06] bg-white/[0.02] text-white/40 hover:border-white/15 hover:text-white/70"
-            }`}
           >
             {cat}
-          </motion.button>
+          </Chip>
         ))}
       </div>
     </div>
+  );
+}
+
+function Chip({ active, onClick, children }) {
+  return (
+    <motion.button
+      type="button"
+      whileTap={{ scale: 0.97 }}
+      onClick={onClick}
+      className={`relative rounded-full px-4 py-2 text-[12px] font-medium tracking-wide transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        active
+          ? "border border-champagne-400/45 bg-champagne-400/10 text-champagne-100 shadow-[0_8px_24px_-12px_rgba(212,175,55,0.45)]"
+          : "border border-white/10 bg-white/[0.02] text-white/55 hover:border-white/20 hover:bg-white/[0.04] hover:text-white/85"
+      }`}
+    >
+      {children}
+      {active && (
+        <motion.span
+          layoutId="chip-active"
+          className="absolute inset-0 -z-10 rounded-full ring-1 ring-champagne-400/30"
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        />
+      )}
+    </motion.button>
   );
 }

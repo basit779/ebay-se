@@ -67,46 +67,50 @@ export default function ShopPage() {
   }, [selectedCategory, search, sortBy]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-4 py-12 md:px-8">
+    <section className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8 md:py-32">
       <AnimatedBackground />
       <div className="relative z-10 mx-auto max-w-7xl">
-        {/* Header */}
+        {/* Editorial header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neon-cyan">
-            Browse
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
+            The Marketplace
           </p>
-          <div className="mt-2 flex items-end justify-between">
+          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <div>
-              <h1 className="text-4xl font-bold md:text-5xl">Shop</h1>
-              <p className="mt-2 text-sm text-white/40">
-                {filtered.length} product{filtered.length !== 1 ? "s" : ""}{" "}
-                {selectedCategory !== "All" ? `in ${selectedCategory}` : "available"}
+              <h1 className="font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
+                Browse every <span className="italic text-champagne-300">object.</span>
+              </h1>
+              <p className="mt-6 font-mono text-[12px] uppercase tracking-[0.25em] text-white/40">
+                {filtered.length} result{filtered.length !== 1 ? "s" : ""}
+                {selectedCategory !== "All" ? ` · ${selectedCategory}` : ""}
               </p>
             </div>
 
             {/* Sort */}
-            <div className="flex items-center gap-2">
-              <SlidersHorizontal size={14} className="text-white/30" />
+            <div className="flex items-center gap-3">
+              <SlidersHorizontal size={13} className="text-white/35" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-2 text-xs text-white/60 outline-none"
+                className="luxe-input !py-2.5 text-xs"
               >
-                <option value="default">Default</option>
-                <option value="price-asc">Price: Low → High</option>
-                <option value="price-desc">Price: High → Low</option>
+                <option value="default">Sort: Default</option>
+                <option value="price-asc">Price · Low → High</option>
+                <option value="price-desc">Price · High → Low</option>
                 <option value="rating">Top Rated</option>
-                <option value="name">Name A-Z</option>
+                <option value="name">Name · A→Z</option>
               </select>
             </div>
           </div>
         </motion.div>
 
-        <div className="mt-8">
+        <div className="champagne-rule my-12" />
+
+        <div>
           <ShopFilters
             categories={categories}
             selectedCategory={selectedCategory}
@@ -121,13 +125,14 @@ export default function ShopPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex flex-col items-center rounded-2xl border border-white/[0.06] bg-white/[0.02] py-20 text-center"
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center rounded-3xl border border-white/10 bg-white/[0.02] py-24 text-center"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-                <SlidersHorizontal size={24} className="text-white/15" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.02]">
+                <SlidersHorizontal size={22} className="text-white/20" />
               </div>
-              <p className="mt-4 text-sm font-medium text-white/50">No products found</p>
-              <p className="mt-1 text-xs text-white/25">Try adjusting your search or filters</p>
+              <p className="mt-8 font-serif text-2xl font-semibold text-white/70">Nothing matches</p>
+              <p className="mt-3 text-[13px] text-white/35">Try a broader search or different category.</p>
             </motion.div>
           )}
         </div>

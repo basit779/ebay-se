@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { ShoppingCart, Star, Heart, Gavel, Eye, Clock } from "lucide-react";
+import { useState, useRef } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ShoppingCart, Star, Heart, Gavel, Eye, Clock, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
@@ -16,6 +17,9 @@ export default function ProductCard({ product, index = 0, variant = "default" })
   const reduce = useReducedMotion();
   const shouldAnimate = !reduce;
 
+  const [justAdded, setJustAdded] = useState(false);
+  const resetTimer = useRef(null);
+
   const isAuction = product.auction;
   const wishlisted = isWishlisted(product.id);
 
@@ -28,9 +32,12 @@ export default function ProductCard({ product, index = 0, variant = "default" })
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isAuction) return;
+    if (isAuction || justAdded) return;
     addToCart(product);
     addToast(`${product.name} added to cart`, "success");
+    setJustAdded(true);
+    clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => setJustAdded(false), 1400);
   };
 
   const handleWishlist = (e) => {
@@ -336,12 +343,43 @@ export default function ProductCard({ product, index = 0, variant = "default" })
                   onClick={handleAddToCart}
                   variants={buttonMotion}
                   initial="rest"
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-champagne-300 to-champagne-500 text-sm font-bold text-black shadow-[0_10px_30px_-8px_rgba(212,175,55,0.5)] transition-shadow duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_14px_40px_-6px_rgba(212,175,55,0.75)]"
+                  whileHover={justAdded ? undefined : "hover"}
+                  whileTap={justAdded ? undefined : "tap"}
+                  animate={justAdded ? { backgroundColor: "rgba(212,175,55,0.15)" } : undefined}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className={`relative flex h-11 w-full items-center justify-center gap-2 overflow-hidden rounded-xl text-sm font-bold transition-shadow duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                    justAdded
+                      ? "border border-champagne-400/50 text-champagne-200 shadow-[0_10px_30px_-8px_rgba(212,175,55,0.3)]"
+                      : "bg-gradient-to-r from-champagne-300 to-champagne-500 text-black shadow-[0_10px_30px_-8px_rgba(212,175,55,0.5)] hover:shadow-[0_14px_40px_-6px_rgba(212,175,55,0.75)]"
+                  }`}
                 >
-                  <ShoppingCart size={15} />
-                  Add to Cart
+                  <AnimatePresence mode="wait" initial={false}>
+                    {justAdded ? (
+                      <motion.span
+                        key="added"
+                        initial={{ opacity: 0, y: 8, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.9 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-center gap-2"
+                      >
+                        <Check size={16} strokeWidth={2.5} />
+                        Added to Cart
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="idle"
+                        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex items-center gap-2"
+                      >
+                        <ShoppingCart size={15} />
+                        Add to Cart
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </motion.button>
               )}
 
