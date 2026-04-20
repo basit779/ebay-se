@@ -53,7 +53,7 @@ export default function HomePage() {
             { value: "4.8", label: "Avg Rating" }
           ]}
         />
-        <ProductGrid products={featured} />
+        <ProductGrid products={featured} asymmetric />
       </section>
 
       {/* Flash Deal Banner */}
