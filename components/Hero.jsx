@@ -239,16 +239,16 @@ export default function Hero() {
           >
             <MagneticButton
               href="/shop"
-              className="shine-sweep group flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black shadow-[0_10px_40px_-10px_rgba(255,255,255,0.4)] transition-shadow hover:shadow-[0_15px_60px_-5px_rgba(255,255,255,0.5)]"
+              className="btn-luxe shine-sweep group"
             >
               <ShoppingBag size={16} />
               Start Shopping
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight size={16} className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1" />
             </MagneticButton>
 
             <MagneticButton
               href="/auctions"
-              className="liquid-glass group flex items-center gap-2.5 rounded-full px-7 py-3.5 text-sm font-medium text-white/80 transition-all hover:text-amber-300"
+              className="btn-ghost group"
             >
               <Gavel size={16} />
               Live Auctions

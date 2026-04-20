@@ -17,7 +17,7 @@ module.exports = {
         obsidian: "#0A0A0A",
         ink: "#050505",
         panel: "#0d1020",
-        surface: "#111427",
+        surface: "#141414",
         champagne: {
           50: "#FBF6E6",
           100: "#F5EAC2",

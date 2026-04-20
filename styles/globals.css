@@ -575,6 +575,65 @@ a {
 .glow-cyan { box-shadow: 0 0 40px -8px rgba(34,211,238,0.45); }
 .glow-purple { box-shadow: 0 0 40px -8px rgba(168,85,247,0.45); }
 
+/* ── Global button system (luxury primary + ghost) ──── */
+.btn-luxe {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  background: linear-gradient(135deg, #EBD68B 0%, #D4AF37 50%, #B8931F 100%);
+  color: #0A0A0A;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 10px 30px -10px rgba(212, 175, 55, 0.45);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.btn-luxe:hover {
+  transform: translate3d(0, -2px, 0) scale(1.02);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 16px 44px -8px rgba(212, 175, 55, 0.6),
+    0 0 0 1px rgba(212, 175, 55, 0.25);
+}
+.btn-luxe:active {
+  transform: translate3d(0, 0, 0) scale(0.99);
+}
+
+.btn-ghost {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  background: linear-gradient(135deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+              color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-ghost:hover {
+  transform: translate3d(0, -2px, 0) scale(1.02);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: #EBD68B;
+  box-shadow: 0 10px 30px -12px rgba(212, 175, 55, 0.3);
+}
+
 /* ── Shine sweep (one-shot premium CTA) ──────────────── */
 .shine-sweep {
   position: relative;
