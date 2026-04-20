@@ -29,12 +29,12 @@ const items = [
 export default function TrustStrip() {
   return (
     <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-8">
-      {/* Soft ambient gold glow */}
+      {/* Soft ambient champagne glow */}
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[80%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30"
         style={{
           background:
-            "radial-gradient(ellipse, rgba(251,191,36,0.18), transparent 70%)",
+            "radial-gradient(ellipse, rgba(212,175,55,0.16), transparent 70%)",
           filter: "blur(60px)"
         }}
       />
@@ -60,16 +60,16 @@ export default function TrustStrip() {
               }}
             >
               {/* Icon tile */}
-              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-amber-400/30 bg-gradient-to-br from-amber-400/15 to-amber-600/5">
-                <div className="absolute inset-0 rounded-xl bg-amber-400/20 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
-                <Icon size={20} className="relative text-amber-300" />
+              <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-champagne-400/30 bg-gradient-to-br from-champagne-400/15 to-champagne-600/5">
+                <div className="absolute inset-0 rounded-xl bg-champagne-400/20 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
+                <Icon size={20} className="relative text-champagne-300" />
               </div>
 
               <div className="min-w-0">
-                <p className="font-display text-sm font-bold tracking-tight text-white md:text-base">
+                <p className="font-serif text-[15px] font-semibold tracking-tight text-white md:text-base">
                   {item.label}
                 </p>
-                <p className="mt-0.5 truncate text-[11px] text-white/45 md:text-xs">
+                <p className="mt-1 truncate text-[11px] text-white/45 md:text-xs">
                   {item.desc}
                 </p>
               </div>

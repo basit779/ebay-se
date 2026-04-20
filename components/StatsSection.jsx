@@ -42,7 +42,7 @@ function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, durat
 const stats = [
   { value: 2.4, decimals: 1, suffix: "M+", label: "Active Buyers", icon: Users, color: "text-cyan-400" },
   { value: 150, suffix: "K+", label: "Items Sold", icon: Package, color: "text-purple-400" },
-  { value: 42, suffix: "", label: "Countries", icon: Globe, color: "text-blue-400" },
+  { value: 48, suffix: "", label: "Countries", icon: Globe, color: "text-blue-400" },
   { value: 99, suffix: "%", label: "Satisfaction", icon: Award, color: "text-emerald-400" }
 ];
 

@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "Can I sell my own items?",
-    a: "Absolutely. Create a seller account, verify your identity, and list in under 5 minutes. We charge a 10% commission on sales — no listing fees, no monthly charges."
+    a: "Absolutely. Create a seller account, verify your identity, and list in under 5 minutes. During early access, we charge 0% commission — no listing fees, no monthly charges."
   },
   {
     q: "How secure are payments?",
@@ -43,16 +43,20 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
     >
       <button
         onClick={onToggle}
-        className="flex w-full items-center justify-between py-6 text-left transition-colors hover:text-white"
+        className="group flex w-full items-center justify-between py-7 text-left transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-100"
       >
-        <span className="text-base font-medium md:text-lg">{faq.q}</span>
-        <span className={`ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-all ${
-          isOpen
-            ? "border-cyan-500/50 bg-cyan-500/15 text-cyan-400"
-            : "border-white/[0.08] bg-white/[0.02] text-white/40"
-        }`}>
+        <span className="font-serif text-xl font-semibold tracking-tight md:text-2xl">{faq.q}</span>
+        <motion.span
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className={`ml-6 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+            isOpen
+              ? "border-champagne-400/50 bg-champagne-400/12 text-champagne-200"
+              : "border-white/10 bg-white/[0.02] text-white/45 group-hover:border-champagne-400/30 group-hover:text-champagne-200"
+          }`}
+        >
           {isOpen ? <Minus size={16} /> : <Plus size={16} />}
-        </span>
+        </motion.span>
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
@@ -63,7 +67,7 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-6 text-sm leading-relaxed text-white/50 md:text-base md:pr-12">
+            <p className="pb-8 text-[14px] leading-[1.8] text-white/50 md:text-[15px] md:pr-12">
               {faq.a}
             </p>
           </motion.div>
@@ -77,28 +81,28 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
       <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
         <div>
           <FadeUp>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-400">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
               Questions
             </p>
           </FadeUp>
           <RevealText delay={0.1}>
-            <h2 className="mt-4 text-5xl font-black leading-[0.95] tracking-tighter md:text-6xl lg:text-7xl">
+            <h2 className="mt-6 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
               Frequently
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="italic text-champagne-300">
                 asked.
               </span>
             </h2>
           </RevealText>
           <FadeUp delay={0.2}>
-            <p className="mt-6 text-base text-white/40">
+            <p className="mt-6 text-[15px] leading-[1.8] text-white/45">
               Everything you need to know before buying, selling, or bidding.
-              Can't find what you're looking for?{" "}
-              <a href="#" className="text-cyan-400 underline-offset-4 hover:underline">
+              Can&rsquo;t find what you&rsquo;re looking for?{" "}
+              <a href="#" className="text-champagne-300 underline-offset-4 hover:underline">
                 Contact support
               </a>
               .
