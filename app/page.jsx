@@ -81,7 +81,7 @@ export default function HomePage() {
               { value: "109", label: "Total Bids" }
             ]}
           />
-          <ProductGrid products={auctions} columns={3} />
+          <ProductGrid products={auctions} layout="bento-3" />
         </section>
       )}
 
@@ -112,7 +112,7 @@ export default function HomePage() {
             { value: "Free", label: "Returns" }
           ]}
         />
-        <ProductGrid products={trending} />
+        <ProductGrid products={trending} layout="bento-4" />
       </section>
 
       {/* Sell CTA */}

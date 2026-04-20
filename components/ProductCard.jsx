@@ -124,7 +124,7 @@ export default function ProductCard({ product, index = 0, variant = "default" })
         whileHover="hover"
         animate="rest"
         variants={containerVariants}
-        className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-[#141414] via-[#0f0f0f] to-[#0A0A0A] shadow-2xl shadow-black/50 transition-shadow duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_30px_80px_-15px_rgba(212,175,55,0.22)] ${isHero ? "h-full" : ""}`}
+        className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-[#141414] via-[#0f0f0f] to-[#0A0A0A] shadow-2xl shadow-black/50 transition-shadow duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_30px_80px_-15px_rgba(212,175,55,0.22)] ${isHero ? "flex h-full flex-col" : ""}`}
       >
         {/* Whole-card link (under controls) */}
         <Link
@@ -134,11 +134,11 @@ export default function ProductCard({ product, index = 0, variant = "default" })
         />
 
         {/* ── Image container (off-white gallery tile) ─── */}
-        <div className="relative overflow-hidden bg-zinc-50">
+        <div className={`relative overflow-hidden bg-zinc-50 ${isHero ? "flex-1" : ""}`}>
           <motion.div
             variants={imageVariants}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className={isHero ? "h-[520px] w-full" : "h-56 w-full"}
+            className={isHero ? "h-full min-h-[520px] w-full" : "h-56 w-full"}
           >
             <ProductImage
               src={product.image}
