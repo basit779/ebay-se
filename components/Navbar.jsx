@@ -9,7 +9,12 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useWishlist } from "@/context/WishlistContext";
 import FluxBidLogo from "@/components/FluxBidLogo";
-import CommandPalette from "@/components/CommandPalette";
+import dynamic from "next/dynamic";
+
+const CommandPalette = dynamic(() => import("@/components/CommandPalette"), {
+  ssr: false,
+  loading: () => null
+});
 
 export default function Navbar({ onAuthOpen }) {
   const { itemCount, setIsCartOpen } = useCart();

@@ -1,23 +1,28 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
+/**
+ * Lightweight route-change fade. No AnimatePresence exit wait —
+ * that was unmounting pages before the next one hydrated and
+ * leaving the viewport blank during navigation.
+ *
+ * Using `key={pathname}` still remounts the tree on navigation so
+ * the fade-in plays, but we never wait on an exit animation.
+ */
 export default function PageTransition({ children }) {
   const pathname = usePathname();
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.main
-        key={pathname}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-        className="min-h-screen"
-      >
-        {children}
-      </motion.main>
-    </AnimatePresence>
+    <motion.main
+      key={pathname}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      className="min-h-screen"
+    >
+      {children}
+    </motion.main>
   );
 }
