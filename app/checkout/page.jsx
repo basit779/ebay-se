@@ -47,12 +47,12 @@ function formatExpiry(v) {
 }
 
 const BRAND_COLORS = {
-  visa: "text-blue-400",
-  mastercard: "text-orange-400",
-  amex: "text-cyan-400",
-  discover: "text-amber-400",
-  diners: "text-amber-300",
-  jcb: "text-emerald-400",
+  visa: "text-blue-300",
+  mastercard: "text-orange-300",
+  amex: "text-cyan-300",
+  discover: "text-champagne-400",
+  diners: "text-champagne-300",
+  jcb: "text-emerald-300",
   unknown: "text-white/30"
 };
 
@@ -182,20 +182,15 @@ export default function CheckoutPage() {
 
   if (cartItems.length === 0 && step !== 3) {
     return (
-      <section className="relative min-h-screen overflow-hidden px-4 py-20 md:px-8">
+      <section className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8 md:py-32">
         <AnimatedBackground />
         <div className="relative z-10 mx-auto max-w-md text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-            <CreditCard size={24} className="text-white/15" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.02]">
+            <CreditCard size={22} className="text-white/20" />
           </div>
-          <h1 className="mt-6 text-2xl font-bold">Nothing to checkout</h1>
-          <p className="mt-2 text-sm text-white/40">Add items to your cart first</p>
-          <a
-            href="/shop"
-            className="mt-6 inline-block rounded-full bg-amber-400/10 px-6 py-2.5 text-sm font-medium text-amber-300"
-          >
-            Browse Shop
-          </a>
+          <h1 className="mt-8 font-serif text-3xl font-semibold tracking-tight">Nothing to checkout</h1>
+          <p className="mt-4 text-sm leading-[1.7] text-white/45">Add an object to your cart to continue.</p>
+          <a href="/shop" className="btn-luxe shine-sweep mt-10">Browse Marketplace</a>
         </div>
       </section>
     );
@@ -204,40 +199,34 @@ export default function CheckoutPage() {
   // Success
   if (step === 3) {
     return (
-      <section className="relative min-h-screen overflow-hidden px-4 py-20 md:px-8">
+      <section className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8 md:py-32">
         <AnimatedBackground />
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 mx-auto max-w-md text-center"
         >
           <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", delay: 0.2 }}
-            className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-500/20"
+            initial={{ scale: 0.6, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-champagne-400/30 bg-champagne-400/10"
           >
-            <Check size={36} className="text-emerald-400" />
+            <Check size={32} className="text-champagne-300" />
           </motion.div>
-          <h1 className="mt-6 font-display text-3xl font-bold">Order Confirmed</h1>
-          <p className="mt-3 text-sm text-white/50">
-            Thanks for your purchase. A confirmation email is on its way.
+          <p className="mt-10 font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
+            Confirmed
           </p>
-          <div className="mt-8 flex justify-center gap-3">
-            <a
-              href="/shop"
-              className="rounded-xl border border-white/[0.08] px-6 py-3 text-sm font-medium text-white/60 transition hover:text-white"
-            >
-              Keep Shopping
-            </a>
-            {user && (
-              <a
-                href="/account"
-                className="rounded-xl bg-amber-400/15 px-6 py-3 text-sm font-medium text-amber-300 transition hover:bg-amber-400/25"
-              >
-                View Orders
-              </a>
-            )}
+          <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-tight">
+            Order received.
+          </h1>
+          <p className="mt-5 text-[14px] leading-[1.8] text-white/50">
+            Your order is being reviewed. A confirmation email is on its way.
+          </p>
+          <div className="mt-10 flex justify-center gap-3">
+            <a href="/shop" className="btn-ghost">Keep Shopping</a>
+            {user && <a href="/account" className="btn-luxe shine-sweep">View Orders</a>}
           </div>
         </motion.div>
       </section>
@@ -245,44 +234,54 @@ export default function CheckoutPage() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-4 py-12 md:px-8">
+    <section className="relative min-h-screen overflow-hidden px-6 py-24 md:px-8 md:py-32">
       <AnimatedBackground />
       <div className="relative z-10 mx-auto max-w-5xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">Secure</p>
-          <h1 className="font-display mt-2 text-4xl font-bold">Checkout</h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
+            Secure Checkout
+          </p>
+          <h1 className="mt-6 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
+            Complete your <span className="italic text-champagne-300">order.</span>
+          </h1>
         </motion.div>
 
         {/* Steps indicator */}
-        <div className="mt-8 flex items-center gap-3">
+        <div className="mt-12 flex items-center gap-4">
           {["Shipping", "Payment"].map((label, i) => (
             <div key={label} className="flex items-center gap-3">
               <div
-                className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all ${
+                className={`flex h-8 w-8 items-center justify-center rounded-full font-mono text-xs font-bold transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   step > i + 1
-                    ? "bg-emerald-500/20 text-emerald-400"
+                    ? "border border-champagne-400/50 bg-champagne-400/10 text-champagne-300"
                     : step === i + 1
-                      ? "bg-amber-400/20 text-amber-300"
-                      : "bg-white/[0.04] text-white/20"
+                      ? "border border-champagne-400/50 bg-champagne-400/10 text-champagne-200"
+                      : "border border-white/10 bg-white/[0.02] text-white/25"
                 }`}
               >
                 {step > i + 1 ? <Check size={14} /> : i + 1}
               </div>
-              <span className={`text-sm ${step >= i + 1 ? "text-white/70" : "text-white/20"}`}>
+              <span className={`text-[11px] uppercase tracking-[0.25em] ${step >= i + 1 ? "text-white/70" : "text-white/25"}`}>
                 {label}
               </span>
-              {i === 0 && <div className="mx-2 h-px w-12 bg-white/[0.06]" />}
+              {i === 0 && <div className="mx-2 h-px w-16 bg-white/10" />}
             </div>
           ))}
         </div>
 
-        <form onSubmit={handlePlaceOrder} className="mt-10 grid gap-8 lg:grid-cols-[1fr_380px]">
+        <div className="champagne-rule my-14" />
+
+        <form onSubmit={handlePlaceOrder} className="grid gap-12 lg:grid-cols-[1fr_400px] lg:gap-16">
           {/* Form Steps */}
-          <div className="liquid-glass rounded-2xl p-6">
+          <div className="rounded-3xl border border-white/10 bg-surface/50 p-10 backdrop-blur-[20px]">
             {step === 1 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                <h3 className="flex items-center gap-2 text-base font-semibold">
-                  <Truck size={18} className="text-amber-400" /> Shipping Information
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="space-y-6">
+                <h3 className="flex items-center gap-3 font-serif text-2xl font-semibold tracking-tight">
+                  <Truck size={18} className="text-champagne-300" /> Shipping
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field
@@ -333,7 +332,7 @@ export default function CheckoutPage() {
                     if (step1Valid) setStep(2);
                   }}
                   disabled={!step1Valid && Object.keys(touched).length > 0}
-                  className="mt-2 w-full rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 py-3.5 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(251,191,36,0.5)] transition-all disabled:opacity-50"
+                  className="btn-luxe shine-sweep mt-4 w-full disabled:opacity-50 disabled:pointer-events-none"
                 >
                   Continue to Payment
                 </button>
@@ -341,16 +340,16 @@ export default function CheckoutPage() {
             )}
 
             {step === 2 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                <h3 className="flex items-center gap-2 text-base font-semibold">
-                  <CreditCard size={18} className="text-amber-400" /> Payment Details
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }} className="space-y-6">
+                <h3 className="flex items-center gap-3 font-serif text-2xl font-semibold tracking-tight">
+                  <CreditCard size={18} className="text-champagne-300" /> Payment
                 </h3>
-                <p className="text-xs text-white/30">
-                  This is a demo — no real charges will be made. Test card: <span className="font-mono text-amber-300">4242 4242 4242 4242</span>
+                <p className="text-xs text-white/35">
+                  Demo mode — no real charges. Test card: <span className="font-mono text-champagne-300">4242 4242 4242 4242</span>
                 </p>
 
                 <div>
-                  <label className="mb-1.5 block text-xs text-white/35">Card Number</label>
+                  <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/45">Card Number</label>
                   <div className="relative">
                     <input
                       inputMode="numeric"
@@ -359,8 +358,8 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField("cardNumber", e.target.value)}
                       onBlur={() => markTouched("cardNumber")}
                       placeholder="4242 4242 4242 4242"
-                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 pr-24 text-sm font-mono tracking-wider ${
-                        showErr("cardNumber") ? "border border-rose-500/50" : ""
+                      className={`luxe-input w-full pr-28 font-mono tracking-wider ${
+                        showErr("cardNumber") ? "!border-rose-500/50" : ""
                       }`}
                     />
                     {brand !== "unknown" && (
@@ -379,7 +378,7 @@ export default function CheckoutPage() {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <label className="mb-1.5 block text-xs text-white/35">Expiry</label>
+                    <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/45">Expiry</label>
                     <input
                       inputMode="numeric"
                       autoComplete="cc-exp"
@@ -387,14 +386,14 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField("cardExpiry", e.target.value)}
                       onBlur={() => markTouched("cardExpiry")}
                       placeholder="MM/YY"
-                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm font-mono tracking-wider ${
-                        showErr("cardExpiry") ? "border border-rose-500/50" : ""
+                      className={`luxe-input w-full font-mono tracking-wider ${
+                        showErr("cardExpiry") ? "!border-rose-500/50" : ""
                       }`}
                     />
                     {showErr("cardExpiry") && <ErrorText>{errors.cardExpiry}</ErrorText>}
                   </div>
                   <div>
-                    <label className="mb-1.5 block text-xs text-white/35">CVC</label>
+                    <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/45">CVC</label>
                     <input
                       inputMode="numeric"
                       autoComplete="cc-csc"
@@ -402,29 +401,26 @@ export default function CheckoutPage() {
                       onChange={(e) => updateField("cardCvc", e.target.value)}
                       onBlur={() => markTouched("cardCvc")}
                       placeholder={brand === "amex" ? "1234" : "123"}
-                      className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm font-mono tracking-wider ${
-                        showErr("cardCvc") ? "border border-rose-500/50" : ""
+                      className={`luxe-input w-full font-mono tracking-wider ${
+                        showErr("cardCvc") ? "!border-rose-500/50" : ""
                       }`}
                     />
                     {showErr("cardCvc") && <ErrorText>{errors.cardCvc}</ErrorText>}
                   </div>
                 </div>
 
-                <div className="flex gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setStep(1)}
-                    className="rounded-xl border border-white/[0.08] px-6 py-3 text-sm text-white/50"
-                  >
+                <div className="flex gap-4 pt-4">
+                  <button type="button" onClick={() => setStep(1)} className="btn-ghost">
                     Back
                   </button>
                   <button
                     type="submit"
                     disabled={loading || !step2Valid}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 py-3.5 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(251,191,36,0.5)] transition-all disabled:cursor-not-allowed disabled:opacity-40"
+                    className="btn-luxe shine-sweep flex-1 disabled:cursor-not-allowed disabled:opacity-50 disabled:pointer-events-none"
                   >
                     {loading && <Loader2 size={16} className="animate-spin" />}
-                    Place Order · ${total.toFixed(2)}
+                    <span>Place Order</span>
+                    <span className="font-mono">${total.toFixed(2)}</span>
                   </button>
                 </div>
               </motion.div>
@@ -432,39 +428,56 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order summary sidebar */}
-          <div className="h-fit rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 lg:sticky lg:top-24">
-            <h3 className="text-sm font-semibold">Order Summary</h3>
-            <div className="mt-4 space-y-3">
+          <div className="h-fit rounded-3xl border border-white/10 bg-surface/70 p-10 backdrop-blur-[20px] lg:sticky lg:top-28">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
+              Order Summary
+            </p>
+
+            <div className="mt-8 space-y-5">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex items-center gap-3">
-                  <img src={item.image} alt="" className="h-12 w-12 rounded-lg object-cover" />
-                  <div className="flex-1 min-w-0">
-                    <p className="truncate text-xs font-medium">{item.name}</p>
-                    <p className="text-[10px] text-white/30">Qty: {item.quantity}</p>
+                <div key={item.id} className="flex items-center gap-4">
+                  <div className="h-14 w-14 overflow-hidden rounded-xl bg-zinc-50">
+                    <img src={item.image} alt="" className="h-full w-full object-cover" />
                   </div>
-                  <p className="text-xs font-medium text-white/60">
+                  <div className="flex-1 min-w-0">
+                    <p className="truncate text-sm font-medium text-white/80">{item.name}</p>
+                    <p className="font-mono text-[11px] text-white/35">Qty {item.quantity}</p>
+                  </div>
+                  <p className="font-mono text-sm text-white/70">
                     ${(item.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="mt-5 space-y-2 border-t border-white/[0.06] pt-4">
-              <div className="flex justify-between text-xs text-white/40">
-                <span>Subtotal</span>
-                <span>${total.toFixed(2)}</span>
+
+            <div className="champagne-rule my-10" />
+
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-white/50">Subtotal</span>
+                <span className="font-mono text-white/80">${total.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-xs text-white/40">
-                <span>Shipping</span>
-                <span className="text-emerald-400">Free</span>
-              </div>
-              <div className="flex justify-between border-t border-white/[0.06] pt-3 text-sm font-semibold">
-                <span>Total</span>
-                <span className="text-gold font-display text-lg">${total.toFixed(2)}</span>
+              <div className="flex justify-between text-sm">
+                <span className="text-white/50">Shipping</span>
+                <span className="font-mono text-champagne-300">Complimentary</span>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-2 rounded-lg bg-emerald-500/5 px-3 py-2 text-xs text-emerald-400/80">
+
+            <div className="champagne-rule my-10" />
+
+            {/* The Total — most prominent element */}
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-white/40">
+                Total
+              </p>
+              <p className="mt-3 font-mono text-5xl font-bold tracking-tight text-white md:text-6xl">
+                ${total.toFixed(2)}
+              </p>
+            </div>
+
+            <div className="mt-8 flex items-center gap-2 text-[11px] uppercase tracking-[0.2em] text-white/35">
               <Shield size={12} />
-              <span>SSL Encrypted & Secure</span>
+              <span>SSL Encrypted &middot; Buyer Protection</span>
             </div>
           </div>
         </form>
@@ -476,15 +489,13 @@ export default function CheckoutPage() {
 function Field({ label, value, onChange, onBlur, error, type = "text" }) {
   return (
     <div>
-      <label className="mb-1.5 block text-xs text-white/35">{label}</label>
+      <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/45">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        className={`input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm ${
-          error ? "border border-rose-500/50" : ""
-        }`}
+        className={`luxe-input w-full ${error ? "!border-rose-500/50" : ""}`}
       />
       {error && <ErrorText>{error}</ErrorText>}
     </div>

@@ -20,7 +20,7 @@ const empty = {
   endTime: ""
 };
 
-export default function SellerProductForm({ initial = null, onSubmit, submitLabel = "Publish listing" }) {
+export default function SellerProductForm({ initial = null, onSubmit, submitLabel = "Submit Application" }) {
   const [form, setForm] = useState(() => {
     if (!initial) return empty;
     return {
@@ -74,162 +74,197 @@ export default function SellerProductForm({ initial = null, onSubmit, submitLabe
   };
 
   return (
-    <form onSubmit={handle} className="space-y-5">
+    <form onSubmit={handle} className="space-y-14">
       {error && (
         <div className="rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
           {error}
         </div>
       )}
 
-      <Field label="Product name" icon={Tag}>
-        <input
-          required
-          value={form.name}
-          onChange={(e) => set({ name: e.target.value })}
-          placeholder="e.g. Vintage Omega Seamaster"
-          className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm"
-        />
-      </Field>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Price (USD)" icon={DollarSign}>
+      {/* ── Section: The Object ─────────────────────────── */}
+      <Section index="I" title="The Object" hint="Tell us what you're listing. Clarity and detail build trust with collectors.">
+        <Field label="Object name" icon={Tag}>
           <input
-            required type="number" min="0" step="0.01"
-            value={form.price}
-            onChange={(e) => set({ price: e.target.value })}
-            className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm"
+            required
+            value={form.name}
+            onChange={(e) => set({ name: e.target.value })}
+            placeholder="e.g. Vintage Omega Seamaster"
+            className="luxe-input w-full pl-11"
           />
         </Field>
-        <Field label="Original price (optional)" icon={DollarSign}>
-          <input
-            type="number" min="0" step="0.01"
-            value={form.originalPrice}
-            onChange={(e) => set({ originalPrice: e.target.value })}
-            className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm"
+
+        <Field label="Category">
+          <select
+            value={form.category}
+            onChange={(e) => set({ category: e.target.value })}
+            className="luxe-input w-full"
+          >
+            {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </Field>
+
+        <Field label="Provenance & description" icon={FileText} alignTop>
+          <textarea
+            required rows={5}
+            value={form.description}
+            onChange={(e) => set({ description: e.target.value })}
+            placeholder="Origin, condition, history, what makes this special…"
+            className="luxe-input w-full pl-11"
           />
         </Field>
-      </div>
 
-      <div>
-        <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/40">Category</label>
-        <select
-          value={form.category}
-          onChange={(e) => set({ category: e.target.value })}
-          className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-        >
-          {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-      </div>
-
-      <Field label="Main image URL (https)" icon={ImageIcon}>
-        <input
-          required type="url"
-          value={form.image}
-          onChange={(e) => set({ image: e.target.value })}
-          placeholder="https://images.unsplash.com/..."
-          className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm"
-        />
-      </Field>
-
-      {form.image && (
-        <div className="overflow-hidden rounded-xl border border-white/[0.06]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={form.image} alt="preview" className="h-48 w-full object-cover" />
-        </div>
-      )}
-
-      <div>
-        <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/40">Additional images (one URL per line)</label>
-        <textarea
-          value={form.imagesText}
-          onChange={(e) => set({ imagesText: e.target.value })}
-          rows={3}
-          className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-        />
-      </div>
-
-      <Field label="Description" icon={FileText} alignTop>
-        <textarea
-          required rows={4}
-          value={form.description}
-          onChange={(e) => set({ description: e.target.value })}
-          className="input-glow w-full rounded-xl bg-white/[0.03] py-3 pl-11 pr-4 text-sm"
-        />
-      </Field>
-
-      <div>
-        <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/40">Features (comma-separated)</label>
-        <input
-          value={form.featuresText}
-          onChange={(e) => set({ featuresText: e.target.value })}
-          placeholder="Waterproof, 30hr Battery, Bluetooth 5.3"
-          className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-3 text-sm"
-        />
-      </div>
-
-      <label className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm">
-        <input
-          type="checkbox"
-          checked={form.inStock}
-          onChange={(e) => set({ inStock: e.target.checked })}
-          className="h-4 w-4 accent-amber-400"
-        />
-        In stock
-      </label>
-
-      <div className="rounded-2xl border border-amber-300/20 bg-amber-400/[0.04] p-4">
-        <label className="flex items-center gap-3 text-sm font-semibold text-amber-200">
+        <Field label="Signature features (comma-separated)">
           <input
-            type="checkbox"
-            checked={form.auction}
-            onChange={(e) => set({ auction: e.target.checked })}
-            className="h-4 w-4 accent-amber-400"
+            value={form.featuresText}
+            onChange={(e) => set({ featuresText: e.target.value })}
+            placeholder="Waterproof, 30hr Battery, Bluetooth 5.3"
+            className="luxe-input w-full"
           />
-          <Gavel size={14} /> List as auction
-        </label>
-        {form.auction && (
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-white/40">Starting bid (USD)</label>
-              <input
-                required type="number" min="0" step="0.01"
-                value={form.startingBid}
-                onChange={(e) => set({ startingBid: e.target.value })}
-                className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-2.5 text-sm"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-[11px] uppercase tracking-wider text-white/40">Auction ends</label>
-              <input
-                required type="datetime-local"
-                value={form.endTime}
-                onChange={(e) => set({ endTime: e.target.value })}
-                className="input-glow w-full rounded-xl bg-white/[0.03] px-4 py-2.5 text-sm"
-              />
-            </div>
+        </Field>
+      </Section>
+
+      {/* ── Section: Imagery ─────────────────────────────── */}
+      <Section index="II" title="Imagery" hint="A single hero photograph sells the story. Additional angles confirm it.">
+        <Field label="Hero image (https URL)" icon={ImageIcon}>
+          <input
+            required type="url"
+            value={form.image}
+            onChange={(e) => set({ image: e.target.value })}
+            placeholder="https://images.unsplash.com/…"
+            className="luxe-input w-full pl-11"
+          />
+        </Field>
+
+        {form.image && (
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-50">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={form.image} alt="preview" className="h-64 w-full object-cover" />
           </div>
         )}
-      </div>
 
-      <button
-        type="submit"
-        disabled={submitting}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 py-3.5 text-sm font-bold text-black shadow-[0_10px_40px_-10px_rgba(251,191,36,0.5)] disabled:opacity-50"
-      >
-        {submitting && <Loader2 size={14} className="animate-spin" />}
-        {submitLabel}
-      </button>
+        <Field label="Additional photographs (one URL per line)">
+          <textarea
+            value={form.imagesText}
+            onChange={(e) => set({ imagesText: e.target.value })}
+            rows={3}
+            className="luxe-input w-full"
+          />
+        </Field>
+      </Section>
+
+      {/* ── Section: Pricing ─────────────────────────────── */}
+      <Section index="III" title="Pricing" hint="Transparent pricing. Optional original price unlocks a discount badge on the card.">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <Field label="Asking price (USD)" icon={DollarSign}>
+            <input
+              required type="number" min="0" step="0.01"
+              value={form.price}
+              onChange={(e) => set({ price: e.target.value })}
+              className="luxe-input font-mono w-full pl-11"
+            />
+          </Field>
+          <Field label="Original retail (optional)" icon={DollarSign}>
+            <input
+              type="number" min="0" step="0.01"
+              value={form.originalPrice}
+              onChange={(e) => set({ originalPrice: e.target.value })}
+              className="luxe-input font-mono w-full pl-11"
+            />
+          </Field>
+        </div>
+
+        <label className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.02] px-5 py-4 text-sm text-white/75">
+          <input
+            type="checkbox"
+            checked={form.inStock}
+            onChange={(e) => set({ inStock: e.target.checked })}
+            className="h-4 w-4 accent-champagne-400"
+          />
+          Currently in stock and ready to ship
+        </label>
+      </Section>
+
+      {/* ── Section: Auction Terms ──────────────────────── */}
+      <Section index="IV" title="Auction Terms" hint="Skip this section for a fixed-price listing.">
+        <div className="rounded-2xl border border-champagne-300/25 bg-champagne-400/[0.04] p-5">
+          <label className="flex items-center gap-3 text-sm font-semibold text-champagne-200">
+            <input
+              type="checkbox"
+              checked={form.auction}
+              onChange={(e) => set({ auction: e.target.checked })}
+              className="h-4 w-4 accent-champagne-400"
+            />
+            <Gavel size={14} /> List this as a live auction
+          </label>
+          {form.auction && (
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <Field label="Opening bid (USD)">
+                <input
+                  required type="number" min="0" step="0.01"
+                  value={form.startingBid}
+                  onChange={(e) => set({ startingBid: e.target.value })}
+                  className="luxe-input font-mono w-full"
+                />
+              </Field>
+              <Field label="Auction closes">
+                <input
+                  required type="datetime-local"
+                  value={form.endTime}
+                  onChange={(e) => set({ endTime: e.target.value })}
+                  className="luxe-input font-mono w-full"
+                />
+              </Field>
+            </div>
+          )}
+        </div>
+      </Section>
+
+      {/* ── Submit ────────────────────────────────────────── */}
+      <div className="pt-4">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn-luxe shine-sweep w-full disabled:opacity-60 disabled:pointer-events-none"
+        >
+          {submitting && <Loader2 size={14} className="animate-spin" />}
+          {submitLabel}
+        </button>
+        <p className="mt-4 text-center text-[11px] uppercase tracking-[0.25em] text-white/35">
+          Submissions reviewed within 24 hours · Commission 3.5%
+        </p>
+      </div>
     </form>
+  );
+}
+
+function Section({ index, title, hint, children }) {
+  return (
+    <section className="grid gap-8 md:grid-cols-[auto_1fr] md:gap-12">
+      <div className="md:w-52 md:pt-2">
+        <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.3em] text-champagne-400/80">
+          {index} · Section
+        </p>
+        <h3 className="mt-3 font-serif text-2xl font-semibold tracking-tight text-white">
+          {title}
+        </h3>
+        {hint && (
+          <p className="mt-3 text-[13px] leading-[1.7] text-white/45">
+            {hint}
+          </p>
+        )}
+      </div>
+      <div className="space-y-5">{children}</div>
+    </section>
   );
 }
 
 function Field({ label, icon: Icon, alignTop, children }) {
   return (
     <div>
-      <label className="mb-1.5 block text-xs uppercase tracking-wider text-white/40">{label}</label>
+      <label className="mb-2 block text-[10px] font-semibold uppercase tracking-[0.25em] text-white/45">{label}</label>
       <div className="relative">
         {Icon && (
-          <Icon size={14} className={`absolute left-4 ${alignTop ? "top-3.5" : "top-1/2 -translate-y-1/2"} text-white/30`} />
+          <Icon size={14} className={`absolute left-4 ${alignTop ? "top-4" : "top-1/2 -translate-y-1/2"} text-white/30`} />
         )}
         {children}
       </div>

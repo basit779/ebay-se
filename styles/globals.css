@@ -306,6 +306,32 @@ a {
   -webkit-text-fill-color: transparent;
 }
 
+/* ── Luxury form input ───────────────────────────────── */
+.luxe-input {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.875rem;
+  padding: 0.95rem 1rem;
+  color: #fff;
+  font-size: 0.95rem;
+  transition: border-color 400ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 400ms cubic-bezier(0.22, 1, 0.36, 1),
+              background 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.luxe-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+.luxe-input:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+.luxe-input:focus {
+  outline: none;
+  border-color: rgba(212, 175, 55, 0.45);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12),
+              0 0 20px rgba(212, 175, 55, 0.08);
+}
+
 /* ── Floating label input ─────────────────────────────── */
 .input-glow {
   transition: all 0.3s ease;
