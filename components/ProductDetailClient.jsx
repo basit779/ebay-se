@@ -1,76 +1,182 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Heart, Star, Shield, Truck, RotateCcw, Check } from "lucide-react";
+import {
+  ShoppingCart,
+  Heart,
+  Star,
+  Shield,
+  Truck,
+  RotateCcw,
+  Check,
+  ChevronRight,
+  Minus,
+  Plus
+} from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import ProductImage from "@/components/ProductImage";
 import BiddingSection from "@/components/BiddingSection";
+import ProductGrid from "@/components/ProductGrid";
 
 const tabs = ["Details", "Features", "Reviews"];
 
-export default function ProductDetailClient({ product }) {
+// Mock reviews used for the Reviews tab on any product
+const mockReviews = [
+  {
+    stars: 5,
+    title: "Worth every dollar.",
+    name: "John D.",
+    when: "2 weeks ago",
+    body: "Packaging was immaculate and the item exceeded the listing photos. Fast shipping too. Can&rsquo;t recommend FluxBid enough."
+  },
+  {
+    stars: 5,
+    title: "Exceeded expectations.",
+    name: "Amy R.",
+    when: "1 month ago",
+    body: "Second purchase here and they&rsquo;re consistent &mdash; authenticity guaranteed, beautiful finish, and support replied in under an hour."
+  },
+  {
+    stars: 4,
+    title: "Premium feel, pricey.",
+    name: "Marcus L.",
+    when: "1 month ago",
+    body: "Quality is top-shelf. Wish the price point were a touch friendlier, but the craftsmanship justifies it."
+  },
+  {
+    stars: 5,
+    title: "A conversation piece.",
+    name: "Priya S.",
+    when: "2 months ago",
+    body: "Everyone who visits asks about it. Shipped fully insured and arrived sooner than the stated window."
+  }
+];
+
+// Bar distribution (for the summary)
+const ratingBuckets = [
+  { star: 5, pct: 78 },
+  { star: 4, pct: 14 },
+  { star: 3, pct: 5 },
+  { star: 2, pct: 2 },
+  { star: 1, pct: 1 }
+];
+
+export default function ProductDetailClient({ product, related = [] }) {
   const { addToCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
   const { addToast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
   const [activeTab, setActiveTab] = useState("Details");
   const [quantity, setQuantity] = useState(1);
+  const [justAdded, setJustAdded] = useState(false);
+  const resetTimer = useRef(null);
+  const heroImgRef = useRef(null);
+  const [zoom, setZoom] = useState({ x: 50, y: 50, active: false });
 
   const wishlisted = isWishlisted(product.id);
   const images = product.images || [product.image];
   const isAuction = product.auction;
 
+  useEffect(() => () => clearTimeout(resetTimer.current), []);
+
   const handleAddToCart = () => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
+    if (justAdded) return;
+    for (let i = 0; i < quantity; i++) addToCart(product);
     addToast(`${product.name} added to cart`, "success");
+    setJustAdded(true);
+    clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => setJustAdded(false), 1500);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!heroImgRef.current) return;
+    const r = heroImgRef.current.getBoundingClientRect();
+    setZoom({
+      x: ((e.clientX - r.left) / r.width) * 100,
+      y: ((e.clientY - r.top) / r.height) * 100,
+      active: true
+    });
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-4 py-12 md:px-8">
+    <section className="relative min-h-screen overflow-hidden px-6 py-16 md:px-8 md:py-24">
       <AnimatedBackground />
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1fr]">
+        {/* Breadcrumbs */}
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-1.5 text-[12px] text-white/45"
+        >
+          <Link href="/" className="transition-colors duration-300 hover:text-champagne-200">
+            Home
+          </Link>
+          <ChevronRight size={12} className="text-white/25" />
+          <Link
+            href={isAuction ? "/auctions" : "/shop"}
+            className="transition-colors duration-300 hover:text-champagne-200"
+          >
+            {isAuction ? "Auctions" : "Shop"}
+          </Link>
+          <ChevronRight size={12} className="text-white/25" />
+          <Link
+            href={`/shop?category=${encodeURIComponent(product.category)}`}
+            className="transition-colors duration-300 hover:text-champagne-200"
+          >
+            {product.category}
+          </Link>
+          <ChevronRight size={12} className="text-white/25" />
+          <span className="truncate text-white/65">{product.name}</span>
+        </nav>
+
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
           {/* Image Gallery */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="overflow-hidden rounded-3xl border border-white/[0.06] bg-white/[0.02]">
+            <div
+              ref={heroImgRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={() => setZoom((z) => ({ ...z, active: false }))}
+              className="relative overflow-hidden rounded-3xl border border-white/10 bg-zinc-50"
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedImage}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 0.4 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <ProductImage
                     src={images[selectedImage]}
                     alt={product.name}
-                    className="h-[480px] w-full object-cover"
+                    className="h-[480px] w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    style={{
+                      transform: zoom.active ? "scale(1.5)" : "scale(1)",
+                      transformOrigin: `${zoom.x}% ${zoom.y}%`
+                    }}
                   />
                 </motion.div>
               </AnimatePresence>
             </div>
 
             {images.length > 1 && (
-              <div className="mt-4 flex gap-3">
+              <div className="mt-5 flex gap-3 overflow-x-auto pb-1">
                 {images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`h-20 w-20 overflow-hidden rounded-xl border-2 transition-all ${
+                    className={`h-20 w-20 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                       selectedImage === i
-                        ? "border-neon-cyan shadow-glow"
-                        : "border-white/[0.06] opacity-50 hover:opacity-80"
+                        ? "border-champagne-400 shadow-[0_0_20px_-4px_rgba(212,175,55,0.5)]"
+                        : "border-white/10 opacity-60 hover:opacity-100"
                     }`}
                   >
                     <ProductImage src={img} alt="" className="h-full w-full object-cover" />
@@ -82,142 +188,155 @@ export default function ProductDetailClient({ product }) {
 
           {/* Product Info */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col"
           >
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-champagne-400/80">
                 {product.category}
-              </span>
+              </p>
               {product.badge && (
-                <span className={`rounded-full px-3 py-0.5 text-[10px] font-bold uppercase ${
-                  isAuction
-                    ? "bg-[#e53238]/20 text-[#e53238]"
-                    : "bg-neon-purple/20 text-neon-purple"
-                }`}>
+                <span className="rounded-full bg-gradient-to-r from-champagne-300 to-champagne-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-black">
                   {product.badge}
                 </span>
               )}
             </div>
 
-            <h1 className="mt-3 text-3xl font-bold md:text-4xl">{product.name}</h1>
+            <h1 className="mt-4 font-serif text-4xl font-semibold leading-[1.05] tracking-tight md:text-5xl lg:text-6xl">
+              {product.name}
+            </h1>
 
             {/* Rating */}
-            <div className="mt-3 flex items-center gap-3">
+            <div className="mt-5 flex items-center gap-3">
               <div className="flex gap-0.5">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
                     size={16}
-                    className={star <= Math.round(product.rating) ? "star-filled" : "text-white/15"}
-                    fill={star <= Math.round(product.rating) ? "currentColor" : "none"}
+                    className={star <= Math.round(product.rating || 0) ? "star-filled" : "text-white/15"}
+                    fill={star <= Math.round(product.rating || 0) ? "currentColor" : "none"}
                   />
                 ))}
               </div>
-              <span className="text-sm text-white/50">
-                {product.rating} ({product.reviewCount} reviews)
+              <span className="font-mono text-sm text-white/50">
+                {product.rating || "—"}
+                {product.reviewCount ? ` · ${product.reviewCount.toLocaleString()} reviews` : ""}
               </span>
             </div>
 
             {/* Auction or Buy Now */}
             {isAuction ? (
-              <div className="mt-6">
+              <div className="mt-8">
                 <BiddingSection product={product} />
               </div>
             ) : (
               <>
                 {/* Price */}
-                <div className="mt-6 flex items-baseline gap-3">
-                  <span className="text-4xl font-bold text-neon-cyan">${product.price}</span>
+                <div className="mt-8 flex items-baseline gap-3">
+                  <span className="font-mono bg-gradient-to-r from-champagne-100 via-champagne-300 to-champagne-500 bg-clip-text text-5xl font-bold tracking-tight text-transparent md:text-6xl">
+                    ${product.price}
+                  </span>
                   {product.originalPrice && (
                     <>
-                      <span className="text-lg text-white/30 line-through">${product.originalPrice}</span>
-                      <span className="rounded-full bg-neon-rose/20 px-3 py-1 text-xs font-bold text-neon-rose">
+                      <span className="font-mono text-lg text-white/30 line-through">
+                        ${product.originalPrice}
+                      </span>
+                      <span className="rounded-full border border-champagne-400/30 bg-champagne-400/10 px-3 py-1 font-mono text-[11px] font-bold text-champagne-200">
                         Save ${product.originalPrice - product.price}
                       </span>
                     </>
                   )}
                 </div>
 
-                <p className="mt-5 text-sm leading-relaxed text-white/50">{product.description}</p>
-
-                {/* Color selector */}
-                {product.colors && product.colors.length > 1 && (
-                  <div className="mt-6">
-                    <p className="mb-3 text-xs font-medium uppercase tracking-wider text-white/40">Color</p>
-                    <div className="flex gap-3">
-                      {product.colors.map((color, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setSelectedColor(i)}
-                          className={`h-9 w-9 rounded-full border-2 transition-all ${
-                            selectedColor === i
-                              ? "border-neon-cyan scale-110 shadow-glow"
-                              : "border-white/10 hover:border-white/30"
-                          }`}
-                          style={{ backgroundColor: color }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <p className="mt-6 text-[15px] leading-[1.8] text-white/55">{product.description}</p>
 
                 {/* Quantity & Add to Cart */}
-                <div className="mt-8 flex gap-3">
-                  <div className="flex items-center rounded-xl border border-white/[0.08] bg-white/[0.02]">
+                <div className="mt-10 flex gap-3">
+                  <div className="flex items-center rounded-full border border-white/10 bg-white/[0.02]">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-3 text-white/50 transition hover:text-white"
+                      className="px-4 py-3 text-white/50 transition-colors duration-500 hover:text-champagne-200"
+                      aria-label="Decrease quantity"
                     >
-                      -
+                      <Minus size={14} />
                     </button>
-                    <span className="min-w-[40px] text-center text-sm font-medium">{quantity}</span>
+                    <span className="min-w-[40px] text-center font-mono text-sm">{quantity}</span>
                     <button
                       onClick={() => setQuantity(quantity + 1)}
-                      className="px-4 py-3 text-white/50 transition hover:text-white"
+                      className="px-4 py-3 text-white/50 transition-colors duration-500 hover:text-champagne-200"
+                      aria-label="Increase quantity"
                     >
-                      +
+                      <Plus size={14} />
                     </button>
                   </div>
 
                   <motion.button
-                    whileTap={{ scale: 0.97 }}
+                    whileTap={justAdded ? undefined : { scale: 0.98 }}
                     onClick={handleAddToCart}
-                    className="btn-glow flex flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-blue px-6 py-3 font-semibold text-black transition-all hover:shadow-glow-lg"
+                    className={`btn-luxe shine-sweep flex-1 ${justAdded ? "!bg-none !border !border-champagne-400/60 !bg-champagne-400/10 !text-champagne-100 !shadow-none" : ""}`}
                   >
-                    <ShoppingCart size={18} />
-                    Add to Cart
+                    <AnimatePresence mode="wait" initial={false}>
+                      {justAdded ? (
+                        <motion.span
+                          key="added"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="flex items-center gap-2"
+                        >
+                          <Check size={18} strokeWidth={2.5} />
+                          Added to Cart
+                        </motion.span>
+                      ) : (
+                        <motion.span
+                          key="idle"
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="flex items-center gap-2"
+                        >
+                          <ShoppingCart size={18} />
+                          Add to Cart
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                   </motion.button>
 
                   <motion.button
-                    whileTap={{ scale: 0.9 }}
+                    whileTap={{ scale: 0.92 }}
                     onClick={() => {
                       toggle(product.id);
                       addToast(wishlisted ? "Removed from wishlist" : "Added to wishlist", "success");
                     }}
-                    className={`flex h-[50px] w-[50px] items-center justify-center rounded-xl border transition-all ${
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                       wishlisted
-                        ? "border-neon-rose/40 bg-neon-rose/15 text-neon-rose"
-                        : "border-white/[0.08] bg-white/[0.02] text-white/50 hover:text-neon-rose"
+                        ? "border-rose-400/50 bg-rose-500/15 text-rose-300"
+                        : "border-white/10 bg-white/[0.02] text-white/50 hover:border-rose-400/30 hover:text-rose-300"
                     }`}
+                    aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
                   >
-                    <Heart size={20} fill={wishlisted ? "currentColor" : "none"} />
+                    <Heart size={18} fill={wishlisted ? "currentColor" : "none"} />
                   </motion.button>
                 </div>
 
                 {/* Trust badges */}
-                <div className="mt-8 grid grid-cols-3 gap-3">
+                <div className="mt-10 grid grid-cols-3 gap-3">
                   {[
-                    { icon: Truck, label: "Free Shipping", sub: "Orders over $50" },
+                    { icon: Truck, label: "Insured Shipping", sub: "Free over $50" },
                     { icon: Shield, label: "Buyer Protection", sub: "Full coverage" },
                     { icon: RotateCcw, label: "30-Day Returns", sub: "No questions" }
                   ].map(({ icon: Icon, label, sub }) => (
-                    <div key={label} className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 text-center">
-                      <Icon size={18} className="mx-auto text-neon-cyan" />
-                      <p className="mt-1.5 text-xs font-medium">{label}</p>
-                      <p className="text-[10px] text-white/30">{sub}</p>
+                    <div
+                      key={label}
+                      className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-center"
+                    >
+                      <Icon size={18} className="mx-auto text-champagne-300" />
+                      <p className="mt-2 text-[12px] font-medium">{label}</p>
+                      <p className="mt-0.5 text-[10px] text-white/35">{sub}</p>
                     </div>
                   ))}
                 </div>
@@ -225,48 +344,145 @@ export default function ProductDetailClient({ product }) {
             )}
 
             {/* Tabs */}
-            <div className="mt-8 border-t border-white/[0.06] pt-6">
-              <div className="flex gap-1 rounded-xl border border-white/[0.06] bg-white/[0.02] p-1">
+            <div className="mt-12 border-t border-white/[0.06] pt-8">
+              <div className="flex gap-6 border-b border-white/[0.06]">
                 {tabs.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                    className={`relative -mb-px pb-3 text-[11px] font-semibold uppercase tracking-[0.25em] transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                       activeTab === tab
-                        ? "bg-neon-cyan/10 text-neon-cyan"
-                        : "text-white/40 hover:text-white/70"
+                        ? "text-champagne-200"
+                        : "text-white/35 hover:text-white/70"
                     }`}
                   >
                     {tab}
+                    {activeTab === tab && (
+                      <motion.span
+                        layoutId="tab-underline"
+                        className="absolute inset-x-0 -bottom-px h-[2px] rounded bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600"
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    )}
                   </button>
                 ))}
               </div>
 
-              <div className="mt-4">
+              <div className="mt-8 min-h-[160px]">
                 {activeTab === "Details" && (
-                  <p className="text-sm leading-relaxed text-white/50">{product.description}</p>
+                  <p className="text-[14px] leading-[1.8] text-white/55">{product.description}</p>
                 )}
                 {activeTab === "Features" && (
-                  <ul className="space-y-2">
+                  <ul className="grid gap-3 sm:grid-cols-2">
                     {(product.features || []).map((feat) => (
-                      <li key={feat} className="flex items-center gap-2 text-sm text-white/60">
-                        <Check size={14} className="text-neon-emerald" />
+                      <li
+                        key={feat}
+                        className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/70"
+                      >
+                        <Check size={14} className="text-champagne-300" />
                         {feat}
                       </li>
                     ))}
                   </ul>
                 )}
-                {activeTab === "Reviews" && (
-                  <p className="text-sm text-white/40">
-                    {product.reviewCount} reviews · {product.rating} average rating.
-                    Sign in to leave a review.
-                  </p>
-                )}
+                {activeTab === "Reviews" && <ReviewsPanel product={product} />}
               </div>
             </div>
           </motion.div>
         </div>
+
+        {/* Related products */}
+        {related.length > 0 && (
+          <div className="mt-32">
+            <div className="champagne-rule mb-16" />
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.4em] text-champagne-400/80">
+              You may also like
+            </p>
+            <h2 className="mt-6 font-serif text-4xl font-semibold leading-[0.95] tracking-tight md:text-5xl">
+              More in <span className="italic text-champagne-300">{product.category}</span>
+            </h2>
+            <div className="mt-12">
+              <ProductGrid products={related} />
+            </div>
+          </div>
+        )}
       </div>
     </section>
+  );
+}
+
+function ReviewsPanel({ product }) {
+  const avg = (product.rating || 4.8).toFixed(1);
+  const count = product.reviewCount || 214;
+  return (
+    <div className="space-y-10">
+      {/* Summary */}
+      <div className="grid gap-8 rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:grid-cols-[auto_1fr] md:gap-12">
+        <div>
+          <p className="font-mono text-6xl font-bold tracking-tight text-white">{avg}</p>
+          <div className="mt-2 flex gap-0.5">
+            {[1, 2, 3, 4, 5].map((s) => (
+              <Star
+                key={s}
+                size={14}
+                className={s <= Math.round(avg) ? "star-filled" : "text-white/15"}
+                fill={s <= Math.round(avg) ? "currentColor" : "none"}
+              />
+            ))}
+          </div>
+          <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
+            {count.toLocaleString()} reviews
+          </p>
+        </div>
+        <div className="space-y-2">
+          {ratingBuckets.map((b) => (
+            <div key={b.star} className="flex items-center gap-3 text-sm">
+              <span className="font-mono w-4 text-right text-white/50">{b.star}</span>
+              <Star size={11} className="star-filled" fill="currentColor" />
+              <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.05]">
+                <motion.div
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${b.pct}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-full rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600"
+                />
+              </div>
+              <span className="font-mono w-10 text-right text-[11px] text-white/40">{b.pct}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Individual reviews */}
+      <div className="space-y-8">
+        {mockReviews.map((r, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="border-b border-white/[0.05] pb-8 last:border-0"
+          >
+            <div className="flex items-center gap-2">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star
+                  key={s}
+                  size={12}
+                  className={s <= r.stars ? "star-filled" : "text-white/15"}
+                  fill={s <= r.stars ? "currentColor" : "none"}
+                />
+              ))}
+              <p className="ml-2 font-serif text-lg font-semibold">{r.title}</p>
+            </div>
+            <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
+              {r.name} &middot; Verified Buyer &middot; {r.when}
+            </p>
+            <p className="mt-3 text-[14px] leading-[1.8] text-white/60" dangerouslySetInnerHTML={{ __html: r.body }} />
+          </motion.div>
+        ))}
+      </div>
+    </div>
   );
 }
