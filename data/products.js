@@ -1,6 +1,11 @@
 // All Unsplash URLs verified to match actual product imagery
 const U = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 
+// Relative auction end-times (from module load). Keeps countdowns fresh
+// every build/request so auctions never appear already-ended.
+const _now = Date.now();
+const inHours = (h) => new Date(_now + h * 3600000).toISOString();
+
 const products = [
   // ── BUY NOW PRODUCTS ────────────────────────────────────
   {
@@ -339,7 +344,7 @@ const products = [
     currentBid: 8500,
     startingBid: 5000,
     bidCount: 23,
-    endTime: "2026-04-15T18:00:00.000Z",
+    endTime: inHours(2),
     sellerId: "vintage_watches_nyc"
   },
   {
@@ -364,7 +369,7 @@ const products = [
     currentBid: 3200,
     startingBid: 1000,
     bidCount: 41,
-    endTime: "2026-04-13T06:00:00.000Z",
+    endTime: inHours(0.75),
     sellerId: "sports_memorabilia_co"
   },
   {
@@ -385,7 +390,7 @@ const products = [
     currentBid: 25000,
     startingBid: 15000,
     bidCount: 18,
-    endTime: "2026-04-16T22:00:00.000Z",
+    endTime: inHours(6),
     sellerId: "tech_collectors"
   },
   {
@@ -409,7 +414,7 @@ const products = [
     currentBid: 4200,
     startingBid: 2500,
     bidCount: 19,
-    endTime: "2026-04-14T18:00:00.000Z",
+    endTime: inHours(1.5),
     sellerId: "analog_photo_shop"
   },
   {
@@ -433,7 +438,7 @@ const products = [
     currentBid: 185000,
     startingBid: 100000,
     bidCount: 12,
-    endTime: "2026-04-20T20:00:00.000Z",
+    endTime: inHours(12),
     sellerId: "vintage_guitar_vault"
   },
   {
@@ -490,7 +495,7 @@ const products = [
     currentBid: 350,
     startingBid: 150,
     bidCount: 28,
-    endTime: "2026-04-13T10:00:00.000Z",
+    endTime: inHours(3),
     sellerId: "retro_camera_shop"
   }
 ];

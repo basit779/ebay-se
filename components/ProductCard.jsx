@@ -1,13 +1,38 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ShoppingCart, Star, Heart, Gavel, Eye, Clock, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ProductImage from "@/components/ProductImage";
+
+function formatCountdown(ms) {
+  if (ms <= 0) return { text: "Ended", tone: "ended" };
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  let tone = "safe";
+  if (ms < 10 * 60 * 1000) tone = "urgent";
+  else if (ms < 60 * 60 * 1000) tone = "warning";
+  const text = h > 0 ? `${h}h ${m}m ${s}s` : `${m}m ${s}s`;
+  return { text, tone };
+}
+
+function useAuctionCountdown(endTime) {
+  const [ms, setMs] = useState(() => (endTime ? new Date(endTime).getTime() - Date.now() : 0));
+  useEffect(() => {
+    if (!endTime) return;
+    const target = new Date(endTime).getTime();
+    const tick = () => setMs(target - Date.now());
+    tick();
+    const i = setInterval(tick, 1000);
+    return () => clearInterval(i);
+  }, [endTime]);
+  return ms;
+}
 
 export default function ProductCard({ product, index = 0, variant = "default" }) {
   const isHero = variant === "hero";
@@ -22,6 +47,16 @@ export default function ProductCard({ product, index = 0, variant = "default" })
 
   const isAuction = product.auction;
   const wishlisted = isWishlisted(product.id);
+  const countdownMs = useAuctionCountdown(isAuction ? product.endTime : null);
+  const countdown = isAuction ? formatCountdown(countdownMs) : null;
+  const toneClass =
+    countdown?.tone === "urgent"
+      ? "text-rose-300 border-rose-400/40 bg-rose-500/10"
+      : countdown?.tone === "warning"
+      ? "text-orange-200 border-orange-400/40 bg-orange-500/10"
+      : countdown?.tone === "ended"
+      ? "text-white/40 border-white/10 bg-white/[0.03]"
+      : "text-champagne-200 border-champagne-400/40 bg-champagne-400/10";
 
   const discount = product.originalPrice
     ? Math.round((1 - product.price / product.originalPrice) * 100)
@@ -51,10 +86,12 @@ export default function ProductCard({ product, index = 0, variant = "default" })
   };
 
   // ── Variants ──────────────────────────────────────────────
-  // Card container stays still on hover; only the image zooms.
+  // Tiny y-translate on hover for tactile feedback; image zooms independently.
   const containerVariants = {
-    rest: {},
-    hover: {}
+    rest: { y: 0 },
+    hover: shouldAnimate
+      ? { y: -4, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } }
+      : {}
   };
 
   const imageVariants = {
@@ -162,17 +199,20 @@ export default function ProductCard({ product, index = 0, variant = "default" })
             <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
           </motion.button>
 
-          {/* Top-left chip: discount / auction live */}
+          {/* Top-left chip: LIVE pulse / discount / badge */}
           {isAuction ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9, x: -20 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-champagne-400/40 bg-black/70 px-3 py-1 backdrop-blur-xl"
+              className="absolute left-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full border border-red-500/40 bg-black/75 px-3 py-1 backdrop-blur-xl"
             >
-              <Clock size={11} className="text-champagne-300" />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-champagne-300">
-                {product.bidCount || 0} bids
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute h-full w-full animate-ping rounded-full bg-red-500 opacity-80" />
+                <span className="relative h-1.5 w-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.8)]" />
+              </span>
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-red-300">
+                Live
               </span>
             </motion.div>
           ) : discount > 0 ? (
@@ -194,6 +234,21 @@ export default function ProductCard({ product, index = 0, variant = "default" })
               {product.badge}
             </motion.div>
           ) : null}
+
+          {/* Auction countdown pill (bottom of image) */}
+          {isAuction && countdown && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className={`absolute bottom-3 left-3 z-20 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 backdrop-blur-xl ${toneClass}`}
+            >
+              <Clock size={11} />
+              <span className="font-mono text-[11px] font-bold tabular-nums">
+                {countdown.text}
+              </span>
+            </motion.div>
+          )}
         </div>
 
         {/* ── Default (rest-state) content ───────────────── */}
