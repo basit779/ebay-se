@@ -187,7 +187,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl font-black leading-[0.92] tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-[88px]"
+            className="font-serif text-5xl font-bold leading-[0.92] tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-[96px]"
           >
             <span className="text-luxe">Where</span>
             <br />
@@ -251,13 +251,13 @@ export default function Hero() {
             className="mt-14 flex items-center gap-8 border-t border-white/[0.06] pt-8"
           >
             {[
-              { value: "190M+", label: "Buyers" },
-              { value: "24", label: "Products" },
+              { value: "2.4M+", label: "Buyers" },
+              { value: "150K+", label: "Items Sold" },
               { value: "4.9", label: "Rating", star: true }
             ].map((s) => (
               <div key={s.label}>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-bold text-white md:text-3xl">{s.value}</span>
+                  <span className="font-mono text-2xl font-bold tracking-tight text-white md:text-3xl">{s.value}</span>
                   {s.star && <Star size={14} className="star-filled" fill="currentColor" />}
                 </div>
                 <p className="mt-0.5 text-[11px] uppercase tracking-wider text-white/30">

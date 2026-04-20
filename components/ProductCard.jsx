@@ -43,20 +43,15 @@ export default function ProductCard({ product, index = 0 }) {
   };
 
   // ── Variants ──────────────────────────────────────────────
+  // Card container stays still on hover; only the image zooms.
   const containerVariants = {
-    rest: { scale: 1, y: 0 },
-    hover: shouldAnimate
-      ? {
-          scale: 1.02,
-          y: -6,
-          transition: { type: "spring", stiffness: 300, damping: 28, mass: 0.8 }
-        }
-      : {}
+    rest: {},
+    hover: {}
   };
 
   const imageVariants = {
     rest: { scale: 1 },
-    hover: shouldAnimate ? { scale: 1.1 } : {}
+    hover: shouldAnimate ? { scale: 1.05 } : {}
   };
 
   const overlayVariants = {
@@ -124,7 +119,7 @@ export default function ProductCard({ product, index = 0 }) {
         whileHover="hover"
         animate="rest"
         variants={containerVariants}
-        className="group relative cursor-pointer overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-zinc-950 via-[#0a0807] to-black shadow-2xl shadow-black/50 transition-shadow duration-500 hover:border-amber-400/25 hover:shadow-[0_30px_80px_-15px_rgba(251,191,36,0.3)]"
+        className="group relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950 via-[#0a0807] to-black shadow-2xl shadow-black/50 transition-shadow duration-500 hover:shadow-[0_30px_80px_-15px_rgba(251,191,36,0.3)]"
       >
         {/* Whole-card link (under controls) */}
         <Link
@@ -133,21 +128,19 @@ export default function ProductCard({ product, index = 0 }) {
           className="absolute inset-0 z-10"
         />
 
-        {/* ── Image container ───────────────────────────── */}
-        <div className="relative overflow-hidden">
+        {/* ── Image container (off-white gallery tile) ─── */}
+        <div className="relative overflow-hidden bg-zinc-50">
           <motion.div
             variants={imageVariants}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="h-56 w-full"
           >
             <ProductImage
               src={product.image}
               alt={product.name}
               className="h-full w-full object-cover"
-              style={{ filter: "brightness(0.92) contrast(1.05) saturate(1.05)" }}
             />
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
           {/* Favorite button */}
           <motion.button
@@ -227,7 +220,7 @@ export default function ProductCard({ product, index = 0 }) {
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-400/80">
               {product.category}
             </p>
-            <h3 className="font-display text-lg font-bold leading-tight tracking-tight text-white line-clamp-2">
+            <h3 className="font-serif text-lg font-semibold leading-tight tracking-tight text-white line-clamp-2">
               {product.name}
             </h3>
           </div>
@@ -239,17 +232,17 @@ export default function ProductCard({ product, index = 0 }) {
                 <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-400/75">
                   Current Bid
                 </span>
-                <span className="font-display bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold text-transparent">
+                <span className="font-mono bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold tracking-tight text-transparent">
                   ${product.currentBid?.toLocaleString()}
                 </span>
               </>
             ) : (
               <>
-                <span className="font-display bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold text-transparent">
+                <span className="font-mono bg-gradient-to-r from-amber-100 via-amber-300 to-amber-500 bg-clip-text text-2xl font-bold tracking-tight text-transparent">
                   ${product.price}
                 </span>
                 {product.originalPrice && (
-                  <span className="text-sm text-white/30 line-through">
+                  <span className="font-mono text-sm text-white/30 line-through">
                     ${product.originalPrice}
                   </span>
                 )}
@@ -287,7 +280,7 @@ export default function ProductCard({ product, index = 0 }) {
               <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-amber-400/90">
                 {product.category}
               </p>
-              <h3 className="font-display mt-1 text-xl font-bold leading-tight tracking-tight text-white line-clamp-2">
+              <h3 className="font-serif mt-1 text-xl font-semibold leading-tight tracking-tight text-white line-clamp-2">
                 {product.name}
               </h3>
             </motion.div>
@@ -336,7 +329,8 @@ export default function ProductCard({ product, index = 0 }) {
                     className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-sm font-bold text-black shadow-[0_10px_30px_-8px_rgba(251,191,36,0.6)] transition-shadow hover:shadow-[0_14px_40px_-6px_rgba(251,191,36,0.8)]"
                   >
                     <Gavel size={15} />
-                    Place Bid · ${product.currentBid?.toLocaleString()}
+                    <span>Place Bid · </span>
+                    <span className="font-mono">${product.currentBid?.toLocaleString()}</span>
                   </Link>
                 </motion.div>
               ) : (

@@ -104,7 +104,7 @@ export default function TestimonialsSection() {
   const doubled = [...testimonials, ...testimonials];
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-20">
+    <section className="relative overflow-hidden py-24 md:py-32">
       {/* Header */}
       <div className="mx-auto mb-16 max-w-7xl px-6 md:px-8">
         <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">

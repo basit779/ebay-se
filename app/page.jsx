@@ -36,7 +36,7 @@ export default function HomePage() {
       <TrustStrip />
 
       {/* Featured Collection */}
-      <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
+      <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
           eyebrow="Curated"
           eyebrowColor="text-amber-400"
@@ -64,7 +64,7 @@ export default function HomePage() {
 
       {/* Live Auctions */}
       {auctions.length > 0 && (
-        <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
+        <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
           <SectionHeader
             eyebrow="Live · Ending Soon"
             eyebrowColor="text-amber-400"
@@ -95,7 +95,7 @@ export default function HomePage() {
       <StatsSection />
 
       {/* Trending */}
-      <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-20 md:px-8">
+      <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
           eyebrow="Trending"
           eyebrowColor="text-amber-400"

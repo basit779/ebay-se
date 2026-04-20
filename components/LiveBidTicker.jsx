@@ -33,7 +33,7 @@ export default function LiveBidTicker({ auctions = [] }) {
   const doubled = [...entries, ...entries];
 
   return (
-    <section className="relative overflow-hidden border-y border-amber-400/15 bg-gradient-to-r from-amber-950/20 via-black to-amber-950/20 py-4">
+    <section className="relative overflow-hidden border-y border-white/10 bg-white/[0.04] py-4 backdrop-blur-md supports-[backdrop-filter]:bg-white/[0.04]">
       <div className="relative">
         {/* Fade edges */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-night to-transparent" />
@@ -50,21 +50,21 @@ export default function LiveBidTicker({ auctions = [] }) {
               {e.type === "bid" ? (
                 <>
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute h-full w-full animate-ping rounded-full bg-amber-400 opacity-80" />
-                    <span className="relative h-2 w-2 rounded-full bg-amber-400" />
+                    <span className="absolute h-full w-full animate-ping rounded-full bg-red-500 opacity-80" />
+                    <span className="relative h-2 w-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                   </span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-amber-300">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-red-400">
                     Live
                   </span>
                   <span className="text-white/50">·</span>
-                  <span className="font-medium text-white/70">@{e.user}</span>
+                  <span className="font-mono text-[13px] font-medium text-white/70">@{e.user}</span>
                   <span className="text-white/40">bid</span>
-                  <span className="font-display bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text font-bold text-transparent">
+                  <span className="font-mono bg-gradient-to-r from-amber-200 via-amber-300 to-amber-500 bg-clip-text font-bold tracking-tight text-transparent">
                     ${e.amount.toLocaleString()}
                   </span>
                   <span className="text-white/40">on</span>
                   <span className="font-medium text-white">{e.name}</span>
-                  <span className="text-white/30">· {e.bids} bids</span>
+                  <span className="font-mono text-white/30">· {e.bids} bids</span>
                 </>
               ) : (
                 <>
@@ -74,7 +74,7 @@ export default function LiveBidTicker({ auctions = [] }) {
                   </span>
                   <span className="text-white/50">·</span>
                   <span className="font-medium text-white">{e.name}</span>
-                  <span className="text-white/30">— {e.bids} bidders watching</span>
+                  <span className="text-white/30">— <span className="font-mono">{e.bids}</span> bidders watching</span>
                 </>
               )}
             </div>

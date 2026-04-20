@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { Package, Users, Award, Globe } from "lucide-react";
 import { RevealText, FadeUp } from "@/components/TextReveal";
 
-function AnimatedCounter({ target, suffix = "", duration = 2 }) {
+function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, duration = 2 }) {
   const [value, setValue] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
@@ -18,33 +18,37 @@ function AnimatedCounter({ target, suffix = "", duration = 2 }) {
     const tick = () => {
       const now = Date.now();
       const progress = Math.min((now - start) / (end - start), 1);
-      // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      setValue(Math.floor(target * eased));
+      setValue(target * eased);
       if (progress < 1) requestAnimationFrame(tick);
       else setValue(target);
     };
     tick();
   }, [isInView, target, duration]);
 
+  const formatted = decimals > 0
+    ? value.toFixed(decimals)
+    : Math.floor(value).toLocaleString();
+
   return (
-    <span ref={ref}>
-      {value.toLocaleString()}
+    <span ref={ref} className="font-mono tracking-tight">
+      {prefix}
+      {formatted}
       {suffix}
     </span>
   );
 }
 
 const stats = [
-  { value: 190, suffix: "M+", label: "Active Buyers", icon: Users, color: "text-cyan-400" },
-  { value: 12, suffix: "M+", label: "Items Sold", icon: Package, color: "text-purple-400" },
-  { value: 190, suffix: "+", label: "Countries", icon: Globe, color: "text-blue-400" },
+  { value: 2.4, decimals: 1, suffix: "M+", label: "Active Buyers", icon: Users, color: "text-cyan-400" },
+  { value: 150, suffix: "K+", label: "Items Sold", icon: Package, color: "text-purple-400" },
+  { value: 42, suffix: "", label: "Countries", icon: Globe, color: "text-blue-400" },
   { value: 99, suffix: "%", label: "Satisfaction", icon: Award, color: "text-emerald-400" }
 ];
 
 export default function StatsSection() {
   return (
-    <section className="relative overflow-hidden py-16 md:py-20">
+    <section className="relative overflow-hidden py-24 md:py-32">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
 
@@ -87,7 +91,7 @@ export default function StatsSection() {
 
                 {/* Number */}
                 <div className="text-4xl font-black tracking-tighter text-white md:text-5xl lg:text-6xl">
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                 </div>
 
                 {/* Label */}
