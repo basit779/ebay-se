@@ -183,7 +183,7 @@ export default function Hero() {
           </motion.div>
 
           {/* Headline — editorial serif, cinematic cascade */}
-          <h1 className="font-serif text-5xl font-semibold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[104px]">
+          <h1 className="font-serif text-[44px] font-semibold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[96px] xl:text-[104px]">
             <motion.span
               initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -280,8 +280,8 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: Logo + Product Stack */}
-        <div className="order-1 flex flex-col items-center lg:order-2">
+        {/* Right: Logo + Product Stack (desktop only — nav logo covers mobile) */}
+        <div className="order-1 hidden flex-col items-center lg:order-2 lg:flex">
           <motion.div
             initial={{ opacity: 0, y: 20, filter: "blur(20px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -294,7 +294,7 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="flex h-[540px] w-full items-center justify-center"
+            className="hidden h-[540px] w-full items-center justify-center lg:flex"
           >
             <ProductStack />
           </motion.div>

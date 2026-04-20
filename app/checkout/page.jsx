@@ -470,7 +470,7 @@ export default function CheckoutPage() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.4em] text-white/40">
                 Total
               </p>
-              <p className="mt-3 font-mono text-5xl font-bold tracking-tight text-white md:text-6xl">
+              <p className="mt-3 font-mono text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
                 ${total.toFixed(2)}
               </p>
             </div>

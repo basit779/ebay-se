@@ -175,7 +175,7 @@ export default function ProductCard({ product, index = 0, variant = "default" })
           <motion.div
             variants={imageVariants}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className={isHero ? "h-full min-h-[520px] w-full" : "h-56 w-full"}
+            className={isHero ? "h-full min-h-[320px] w-full md:min-h-[420px] lg:min-h-[520px]" : "h-56 w-full"}
           >
             <ProductImage
               src={product.image}
@@ -309,12 +309,46 @@ export default function ProductCard({ product, index = 0, variant = "default" })
               </>
             )}
           </div>
+
+          {/* Mobile action row (hover overlay is desktop-only; on touch
+              devices users need a persistent way to act). Hidden on lg+ */}
+          <div className="pointer-events-auto relative z-20 flex gap-2 pt-2 lg:hidden">
+            {isAuction ? (
+              <Link
+                href={`/product/${product.id}#bid`}
+                className="flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-champagne-300 to-champagne-500 text-[13px] font-bold text-black shadow-[0_8px_24px_-8px_rgba(212,175,55,0.5)]"
+              >
+                <Gavel size={13} />
+                Place Bid
+              </Link>
+            ) : (
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className={`flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl text-[13px] font-bold transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                  justAdded
+                    ? "border border-champagne-400/50 bg-champagne-400/10 text-champagne-100"
+                    : "bg-gradient-to-r from-champagne-300 to-champagne-500 text-black shadow-[0_8px_24px_-8px_rgba(212,175,55,0.5)]"
+                }`}
+              >
+                {justAdded ? <Check size={14} strokeWidth={2.5} /> : <ShoppingCart size={13} />}
+                {justAdded ? "Added" : "Add to Cart"}
+              </button>
+            )}
+            <Link
+              href={`/product/${product.id}`}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/[0.03] text-white/70"
+              aria-label="View details"
+            >
+              <Eye size={14} />
+            </Link>
+          </div>
         </div>
 
-        {/* ── Reveal overlay (slides up on hover) ─────────── */}
+        {/* ── Reveal overlay (slides up on hover — desktop only) ─ */}
         <motion.div
           variants={overlayVariants}
-          className="absolute inset-0 z-30 flex flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950/95 via-black/95 to-zinc-950/95 backdrop-blur-xl"
+          className="absolute inset-0 z-30 hidden flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950/95 via-black/95 to-zinc-950/95 backdrop-blur-xl lg:flex"
         >
           {/* Ambient champagne glow inside overlay */}
           <div
