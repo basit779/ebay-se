@@ -173,45 +173,57 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="liquid-glass mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-white/70"
+            className="liquid-glass mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-1.5 text-xs font-medium text-white/70"
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
-              <span className="relative h-1.5 w-1.5 rounded-full bg-amber-400" />
+              <span className="absolute h-full w-full animate-ping rounded-full bg-champagne-400 opacity-75" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-champagne-400" />
             </span>
-            <span className="tracking-wide">Live marketplace · 48 active auctions</span>
+            <span className="tracking-[0.15em] uppercase text-[10px]">Live marketplace · 48 active auctions</span>
           </motion.div>
 
-          {/* Headline — editorial gold */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-5xl font-bold leading-[0.92] tracking-tighter text-white sm:text-6xl md:text-7xl lg:text-[96px]"
-          >
-            <span className="text-luxe">Where</span>
-            <br />
-            <span className="text-luxe">luxury</span>
-            <br />
-            <span className="relative inline-block pr-2">
-              <span className="font-display-italic font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-                flows.
+          {/* Headline — editorial serif, cinematic cascade */}
+          <h1 className="font-serif text-5xl font-semibold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[104px]">
+            <motion.span
+              initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              className="block text-luxe"
+            >
+              Where
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.2, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="block text-luxe"
+            >
+              Luxury
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="relative inline-block pr-2"
+            >
+              <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
+                Flows.
               </span>
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
-                transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 opacity-70 blur-md"
+                transition={{ delay: 1.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600 opacity-70 blur-md"
               />
-            </span>
-          </motion.h1>
+            </motion.span>
+          </h1>
 
           {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="mt-8 max-w-lg text-base text-white/50 md:text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 max-w-lg text-base leading-relaxed text-white/55 md:text-lg"
           >
             The cinematic marketplace for premium goods.
             Bid on rare collectibles, score exclusive drops,
@@ -222,7 +234,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
+            transition={{ delay: 1.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <MagneticButton
@@ -245,10 +257,10 @@ export default function Hero() {
 
           {/* Stats inline */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="mt-14 flex items-center gap-8 border-t border-white/[0.06] pt-8"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-14 flex items-center gap-8 border-t border-white/[0.08] pt-8"
           >
             {[
               { value: "2.4M+", label: "Buyers" },

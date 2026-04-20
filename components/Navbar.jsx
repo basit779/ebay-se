@@ -39,9 +39,9 @@ export default function Navbar({ onAuthOpen }) {
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`sticky top-0 z-40 transition-all duration-500 ${
+      className={`sticky top-0 z-40 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         scrolled
-          ? "border-b border-white/[0.08] bg-night/70 shadow-[0_8px_40px_-8px_rgba(0,0,0,0.6)] backdrop-blur-2xl backdrop-saturate-150"
+          ? "border-b border-white/10 bg-obsidian/60 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-[20px] backdrop-saturate-150"
           : "border-b border-transparent bg-transparent backdrop-blur-sm"
       }`}
     >
