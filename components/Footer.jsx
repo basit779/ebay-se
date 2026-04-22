@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Twitter, Youtube, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import FluxBidLogo from "@/components/FluxBidLogo";
 import { FadeUp } from "@/components/TextReveal";
 
@@ -26,9 +26,6 @@ const footerLinks = {
 };
 
 const socials = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Youtube, href: "#", label: "YouTube" },
   { icon: Mail, href: "mailto:hello@fluxbid.app", label: "Email" }
 ];
 
