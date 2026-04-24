@@ -31,7 +31,11 @@ const jetbrains = JetBrains_Mono({
 
 export const metadata = {
   title: "FluxBid — Where Everything Flows",
-  description: "Premium auction marketplace with cinematic UI — buy, sell, bid."
+  description: "Premium auction marketplace with cinematic UI — buy, sell, bid.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/favicon.ico"
+  }
 };
 
 export default function RootLayout({ children }) {
