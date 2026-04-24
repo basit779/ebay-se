@@ -1,11 +1,6 @@
 // All Unsplash URLs verified to match actual product imagery
 const U = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
 
-// Relative auction end-times (from module load). Keeps countdowns fresh
-// every build/request so auctions never appear already-ended.
-const _now = Date.now();
-const inHours = (h) => new Date(_now + h * 3600000).toISOString();
-
 const products = [
   // ── BUY NOW PRODUCTS ────────────────────────────────────
   {
@@ -344,7 +339,7 @@ const products = [
     currentBid: 8500,
     startingBid: 5000,
     bidCount: 23,
-    endTime: inHours(2),
+    endTimeOffset: 2,
     sellerId: "vintage_watches_nyc"
   },
   {
@@ -369,7 +364,7 @@ const products = [
     currentBid: 3200,
     startingBid: 1000,
     bidCount: 41,
-    endTime: inHours(0.75),
+    endTimeOffset: 0.75,
     sellerId: "sports_memorabilia_co"
   },
   {
@@ -390,7 +385,7 @@ const products = [
     currentBid: 25000,
     startingBid: 15000,
     bidCount: 18,
-    endTime: inHours(6),
+    endTimeOffset: 6,
     sellerId: "tech_collectors"
   },
   {
@@ -414,7 +409,7 @@ const products = [
     currentBid: 4200,
     startingBid: 2500,
     bidCount: 19,
-    endTime: inHours(1.5),
+    endTimeOffset: 1.5,
     sellerId: "analog_photo_shop"
   },
   {
@@ -438,7 +433,7 @@ const products = [
     currentBid: 185000,
     startingBid: 100000,
     bidCount: 12,
-    endTime: inHours(12),
+    endTimeOffset: 12,
     sellerId: "vintage_guitar_vault"
   },
   {
@@ -495,11 +490,34 @@ const products = [
     currentBid: 350,
     startingBid: 150,
     bidCount: 28,
-    endTime: inHours(3),
+    endTimeOffset: 3,
     sellerId: "retro_camera_shop"
   }
 ];
 
 export const categories = ["All", ...new Set(products.map((p) => p.category))];
+
+/**
+ * Compute a product's auction end time relative to "now" at call time.
+ *
+ * Previously this file stored absolute ISO timestamps computed from
+ * Date.now() at module load. That timestamp was frozen at `next build`
+ * time on Vercel, so by the time users visited the site the end times
+ * were already in the past — every auction card displayed 00:00:00.
+ *
+ * Now products store `endTimeOffset` (hours from now as a plain number)
+ * and callers derive a fresh Date at render time on the client.
+ */
+export function getEndTime(product) {
+  if (!product) return null;
+  // Seller-created listings store an absolute ISO end time entered by
+  // the seller at listing time — that's fine, use it as-is.
+  if (product.endTime) return new Date(product.endTime);
+  // Module-curated products use a relative offset resolved here.
+  if (typeof product.endTimeOffset === "number") {
+    return new Date(Date.now() + product.endTimeOffset * 3_600_000);
+  }
+  return null;
+}
 
 export default products;

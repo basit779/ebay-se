@@ -6,15 +6,20 @@ import { Package, Users, Award, Globe } from "lucide-react";
 import { RevealText, FadeUp } from "@/components/TextReveal";
 
 function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, duration = 2 }) {
-  const [value, setValue] = useState(0);
+  // Static fallback: the initial render shows the target value. This
+  // guarantees the section never reads "0.0M" even when JS is slow,
+  // disabled, or useInView never fires. Once the observer fires we
+  // flip `animating` on and run a 0 -> target ease; otherwise the
+  // target stays on screen.
+  const [value, setValue] = useState(target);
+  const [animating, setAnimating] = useState(false);
   const ref = useRef(null);
-  // amount: 0.1 so the counter fires reliably even when the row is
-  // partially scrolled in. Previously was 0.5, which missed on some
-  // viewports and left the stats frozen at 0.
   const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -10% 0px" });
 
   useEffect(() => {
     if (!isInView) return;
+    setAnimating(true);
+    setValue(0);
     const start = performance.now();
     const end = start + duration * 1000;
     let raf;
@@ -27,12 +32,22 @@ function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, durat
       else setValue(target);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    // Failsafe — if the RAF loop is ever interrupted, snap to the
+    // final value after duration + a small buffer. Users never see
+    // a half-finished or frozen number.
+    const failsafe = setTimeout(() => setValue(target), duration * 1000 + 400);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(failsafe);
+    };
   }, [isInView, target, duration]);
 
+  const display = animating ? value : target;
   const formatted = decimals > 0
-    ? value.toFixed(decimals)
-    : Math.floor(value).toLocaleString();
+    ? display.toFixed(decimals)
+    : Math.floor(display).toLocaleString();
 
   return (
     <span ref={ref} className="font-mono tracking-tight tabular-nums">

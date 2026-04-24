@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Gavel, Clock, TrendingUp, AlertCircle, User, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/context/ToastContext";
+import { getEndTime } from "@/data/products";
 
 function useCountdown(endTime) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, expired: false });
@@ -35,7 +36,10 @@ function useCountdown(endTime) {
 export default function BiddingSection({ product }) {
   const { user } = useAuth();
   const { addToast } = useToast();
-  const countdown = useCountdown(product.endTime);
+  // Compute the end Date on the client at mount — never trust a
+  // build-time-baked product.endTime; see lib comment on getEndTime.
+  const [endTime] = useState(() => getEndTime(product));
+  const countdown = useCountdown(endTime);
   const [bidAmount, setBidAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [bids, setBids] = useState([]);

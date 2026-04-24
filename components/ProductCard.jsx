@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useToast } from "@/context/ToastContext";
 import ProductImage from "@/components/ProductImage";
+import { getEndTime } from "@/data/products";
 
 function formatCountdown(ms) {
   if (ms <= 0) return { text: "Ended", tone: "ended" };
@@ -21,11 +22,19 @@ function formatCountdown(ms) {
   return { text, tone };
 }
 
-function useAuctionCountdown(endTime) {
-  const [ms, setMs] = useState(() => (endTime ? new Date(endTime).getTime() - Date.now() : 0));
+/**
+ * Auction countdown — computes the end time on the CLIENT on first
+ * render so we never ship a stale, build-time-baked timestamp. The
+ * end Date is memoized via useState's lazy initializer so a fresh
+ * Date isn't created on every render while still being re-derived
+ * per product mount.
+ */
+function useAuctionCountdown(product) {
+  const [endTime] = useState(() => (product?.auction ? getEndTime(product) : null));
+  const [ms, setMs] = useState(() => (endTime ? endTime.getTime() - Date.now() : 0));
   useEffect(() => {
     if (!endTime) return;
-    const target = new Date(endTime).getTime();
+    const target = endTime.getTime();
     const tick = () => setMs(target - Date.now());
     tick();
     const i = setInterval(tick, 1000);
@@ -52,7 +61,7 @@ export default function ProductCard({ product, index = 0, variant = "default" })
 
   const isAuction = product.auction;
   const wishlisted = isWishlisted(product.id);
-  const countdownMs = useAuctionCountdown(isAuction ? product.endTime : null);
+  const countdownMs = useAuctionCountdown(isAuction ? product : null);
   const countdown = isAuction ? formatCountdown(countdownMs) : null;
   const toneClass =
     countdown?.tone === "urgent"
