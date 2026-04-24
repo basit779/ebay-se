@@ -23,8 +23,8 @@ export default function ProductGrid({
 
   const gridClass =
     columns === 3
-      ? "grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      : "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+      ? "grid gap-[2px] sm:grid-cols-2 lg:grid-cols-3"
+      : "grid gap-[2px] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
 
   const staggerContainer = {
     hidden: {},
@@ -40,7 +40,7 @@ export default function ProductGrid({
         whileInView="visible"
         viewport={{ once: true, amount: 0.05 }}
         variants={staggerContainer}
-        className="grid gap-6 lg:grid-cols-3 lg:grid-rows-2"
+        className="grid gap-[2px] lg:grid-cols-3 lg:grid-rows-2"
       >
         <div className="lg:col-span-2 lg:row-span-2">
           <ProductCard product={hero} index={0} variant="hero" />
@@ -64,7 +64,7 @@ export default function ProductGrid({
         whileInView="visible"
         viewport={{ once: true, amount: 0.05 }}
         variants={staggerContainer}
-        className="grid gap-6 lg:grid-cols-3 lg:grid-rows-2"
+        className="grid gap-[2px] lg:grid-cols-3 lg:grid-rows-2"
       >
         {/* A: tall hero, left column spanning both rows */}
         <div className="lg:col-span-1 lg:row-span-2">
@@ -94,7 +94,7 @@ export default function ProductGrid({
         whileInView="visible"
         viewport={{ once: true, amount: 0.05 }}
         variants={staggerContainer}
-        className="grid gap-6 lg:grid-cols-3 lg:grid-rows-2"
+        className="grid gap-[2px] lg:grid-cols-3 lg:grid-rows-2"
       >
         <div className="lg:col-span-2 lg:row-span-2">
           <ProductCard product={hero} index={0} variant="hero" />
