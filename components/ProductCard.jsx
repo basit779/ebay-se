@@ -22,6 +22,13 @@ function formatCountdown(ms) {
   return { text, tone };
 }
 
+/**
+ * Auction countdown — computes the end time on the CLIENT on first
+ * render so we never ship a stale, build-time-baked timestamp. The
+ * end Date is memoized via useState's lazy initializer so a fresh
+ * Date isn't created on every render while still being re-derived
+ * per product mount.
+ */
 function useAuctionCountdown(product) {
   const [endTime] = useState(() => (product?.auction ? getEndTime(product) : null));
   const [ms, setMs] = useState(() => (endTime ? endTime.getTime() - Date.now() : 0));
@@ -36,134 +43,7 @@ function useAuctionCountdown(product) {
   return ms;
 }
 
-// Editorial minimal card for regular (non-auction) products.
-function RegularProductCard({ product }) {
-  const { addToCart } = useCart();
-  const { addToast } = useToast();
-
-  const handleAddToCart = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart(product);
-    addToast(`${product.name} added to cart`, "success");
-  };
-
-  return (
-    <article className="pc-card relative w-full">
-      <Link
-        href={`/product/${product.id}`}
-        aria-label={product.name}
-        className="absolute inset-0 z-10"
-      />
-
-      <div className="pc-image-frame">
-        <div className="pc-image-wrap">
-          <ProductImage
-            src={product.image}
-            alt={product.name}
-            className="block h-full w-full object-cover"
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={handleAddToCart}
-          className="pc-cart-bar"
-          aria-label="Add to cart"
-        >
-          ADD TO CART
-        </button>
-      </div>
-
-      <div className="pc-info">
-        <h3 className="pc-name">{product.name}</h3>
-        <p className="pc-price">${product.price}</p>
-      </div>
-
-      <style jsx>{`
-        .pc-card {
-          border-radius: 4px;
-          overflow: hidden;
-          background: transparent;
-          box-shadow: none;
-        }
-        .pc-image-frame {
-          position: relative;
-          width: 100%;
-          aspect-ratio: 1 / 1;
-          overflow: hidden;
-          border-radius: 0;
-        }
-        .pc-image-wrap {
-          position: absolute;
-          inset: 0;
-          transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          will-change: transform;
-        }
-        .pc-card:hover .pc-image-wrap {
-          transform: scale(1.04);
-        }
-        .pc-cart-bar {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 20;
-          height: 32px;
-          border: 0;
-          border-radius: 0;
-          background: rgba(255, 255, 255, 0.06);
-          color: rgba(255, 255, 255, 0.85);
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-          font-size: 10px;
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          cursor: pointer;
-          opacity: 0;
-          transition: opacity 200ms ease;
-        }
-        .pc-card:hover .pc-cart-bar {
-          opacity: 1;
-        }
-        .pc-info {
-          padding-top: 10px;
-        }
-        .pc-name {
-          margin: 0;
-          font-size: 13px;
-          font-weight: 500;
-          color: rgba(255, 255, 255, 0.85);
-          line-height: 1.3;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-        .pc-price {
-          margin: 4px 0 0 0;
-          font-size: 12px;
-          font-weight: 400;
-          color: rgba(255, 255, 255, 0.4);
-          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-            "Liberation Mono", "Courier New", monospace;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .pc-image-wrap,
-          .pc-cart-bar {
-            transition: none;
-          }
-          .pc-card:hover .pc-image-wrap {
-            transform: none;
-          }
-        }
-      `}</style>
-    </article>
-  );
-}
-
-// Auction card — unchanged from the previous implementation.
-function LegacyCard({ product, index = 0, variant = "default" }) {
+export default function ProductCard({ product, index = 0, variant = "default" }) {
   const isHero = variant === "hero";
   const { addToCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
@@ -219,6 +99,8 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
     );
   };
 
+  // ── Variants ──────────────────────────────────────────────
+  // Tiny y-translate on hover for tactile feedback; image zooms independently.
   const containerVariants = {
     rest: { y: 0 },
     hover: shouldAnimate
@@ -295,12 +177,14 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
         variants={containerVariants}
         className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br from-[#141414] via-[#0f0f0f] to-[#0A0A0A] shadow-2xl shadow-black/50 transition-shadow duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:shadow-[0_30px_80px_-15px_rgba(212,175,55,0.22)] ${isHero ? "flex h-full flex-col" : ""}`}
       >
+        {/* Whole-card link (under controls) */}
         <Link
           href={`/product/${product.id}`}
           aria-label={product.name}
           className="absolute inset-0 z-10"
         />
 
+        {/* ── Image container (off-white gallery tile) ─── */}
         <div className={`relative overflow-hidden bg-zinc-50 ${isHero ? "flex-1" : ""}`}>
           <motion.div
             variants={imageVariants}
@@ -314,6 +198,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             />
           </motion.div>
 
+          {/* Favorite button */}
           <motion.button
             onClick={handleWishlist}
             variants={favoriteVariants}
@@ -328,6 +213,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
           </motion.button>
 
+          {/* Top-left chip: LIVE pulse / discount / badge */}
           {isAuction ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.9, x: -20 }}
@@ -363,6 +249,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             </motion.div>
           ) : null}
 
+          {/* Auction countdown pill (bottom of image) */}
           {isAuction && countdown && isMounted && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -378,7 +265,9 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
           )}
         </div>
 
+        {/* ── Default (rest-state) content ───────────────── */}
         <div className="space-y-3 p-5">
+          {/* Rating */}
           <div className="flex items-center gap-2">
             <div className="flex">
               {[0, 1, 2, 3, 4].map((i) => (
@@ -400,6 +289,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             </span>
           </div>
 
+          {/* Category + name */}
           <div className="space-y-1">
             <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-champagne-400/80">
               {product.category}
@@ -409,6 +299,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             </h3>
           </div>
 
+          {/* Price row */}
           <div className="flex items-baseline gap-2">
             {isAuction ? (
               <>
@@ -433,6 +324,8 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
             )}
           </div>
 
+          {/* Mobile action row (hover overlay is desktop-only; on touch
+              devices users need a persistent way to act). Hidden on lg+ */}
           <div className="pointer-events-auto relative z-20 flex gap-2 pt-2 lg:hidden">
             {isAuction ? (
               <Link
@@ -466,10 +359,12 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
           </div>
         </div>
 
+        {/* ── Reveal overlay (slides up on hover — desktop only) ─ */}
         <motion.div
           variants={overlayVariants}
           className="absolute inset-0 z-30 hidden flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br from-zinc-950/95 via-black/95 to-zinc-950/95 backdrop-blur-xl lg:flex"
         >
+          {/* Ambient champagne glow inside overlay */}
           <div
             aria-hidden
             className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full"
@@ -488,6 +383,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
           />
 
           <div className="relative space-y-4 p-6">
+            {/* Header: category + name */}
             <motion.div variants={contentVariants}>
               <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-champagne-400/90">
                 {product.category}
@@ -497,6 +393,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
               </h3>
             </motion.div>
 
+            {/* Description */}
             {product.description && (
               <motion.div variants={contentVariants}>
                 <h4 className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.25em] text-champagne-300/80">
@@ -508,6 +405,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
               </motion.div>
             )}
 
+            {/* Feature tiles (take first two real features from data) */}
             {features.length > 0 && (
               <motion.div variants={contentVariants}>
                 <div className="grid grid-cols-2 gap-2">
@@ -525,6 +423,7 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
               </motion.div>
             )}
 
+            {/* Action buttons */}
             <motion.div variants={contentVariants} className="pointer-events-auto relative z-10 space-y-2.5 pt-1">
               {isAuction ? (
                 <motion.div
@@ -606,11 +505,4 @@ function LegacyCard({ product, index = 0, variant = "default" }) {
       </motion.div>
     </motion.article>
   );
-}
-
-export default function ProductCard({ product, index = 0, variant = "default" }) {
-  if (!product.auction) {
-    return <RegularProductCard product={product} />;
-  }
-  return <LegacyCard product={product} index={index} variant={variant} />;
 }
