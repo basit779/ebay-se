@@ -2,26 +2,31 @@ import "@/styles/globals.css";
 import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import Providers from "@/components/Providers";
 
+// Trimmed weights to only what's actually used. Each weight+style pair
+// is a separate font file over the wire.
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
-  display: "swap"
+  display: "swap",
+  preload: true
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   variable: "--font-serif",
-  display: "swap"
+  display: "swap",
+  preload: true
 });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "700"],
   variable: "--font-mono",
-  display: "swap"
+  display: "swap",
+  preload: false
 });
 
 export const metadata = {

@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Shimmer skeleton that mirrors ProductCard's layout exactly:
  * off-white h-56 image tile, category eyebrow, 2-line title, price.

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   CreditCard,
@@ -436,8 +437,15 @@ export default function CheckoutPage() {
             <div className="mt-8 space-y-5">
               {cartItems.map((item) => (
                 <div key={item.id} className="flex items-center gap-4">
-                  <div className="h-14 w-14 overflow-hidden rounded-xl bg-zinc-50">
-                    <img src={item.image} alt="" className="h-full w-full object-cover" />
+                  <div className="relative h-14 w-14 overflow-hidden rounded-xl bg-zinc-50">
+                    <Image
+                      src={item.image}
+                      alt={item.name || ""}
+                      fill
+                      loading="lazy"
+                      sizes="56px"
+                      className="object-cover"
+                    />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="truncate text-sm font-medium text-white/80">{item.name}</p>

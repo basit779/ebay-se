@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { ArrowRight, ShoppingBag, Gavel, Zap, Star } from "lucide-react";
@@ -8,7 +9,14 @@ import FluxBidLogo from "@/components/FluxBidLogo";
 import MagneticButton from "@/components/MagneticButton";
 import ProductImage from "@/components/ProductImage";
 import AnimatedBackground from "@/components/AnimatedBackground";
-import HeroParticles from "@/components/HeroParticles";
+
+// Defer the particle canvas until the page is interactive — it's pure
+// decoration and not needed for FCP. Fallback is a transparent div so
+// there's no layout shift.
+const HeroParticles = dynamic(() => import("@/components/HeroParticles"), {
+  ssr: false,
+  loading: () => null
+});
 
 const heroProducts = [
   {

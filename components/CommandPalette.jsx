@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Search,
@@ -262,11 +263,14 @@ export default function CommandPalette() {
                                     }`}
                                   >
                                     {item.image ? (
-                                      <div className="h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-zinc-50">
-                                        <img
+                                      <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-zinc-50">
+                                        <Image
                                           src={item.image}
-                                          alt=""
-                                          className="h-full w-full object-cover"
+                                          alt={item.label || ""}
+                                          fill
+                                          sizes="36px"
+                                          loading="lazy"
+                                          className="object-cover"
                                         />
                                       </div>
                                     ) : (

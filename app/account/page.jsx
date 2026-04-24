@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Package, User, Calendar, MapPin, Loader2, Store, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import AnimatedBackground from "@/components/AnimatedBackground";
@@ -167,7 +168,9 @@ export default function AccountPage() {
                   <div className="mt-4 flex flex-wrap gap-2">
                     {order.items.map((item) => (
                       <div key={item.id} className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2">
-                        <img src={item.image} alt="" className="h-8 w-8 rounded object-cover" />
+                        <div className="relative h-8 w-8 overflow-hidden rounded bg-zinc-900">
+                          <Image src={item.image} alt={item.name || ""} fill sizes="32px" loading="lazy" className="object-cover" />
+                        </div>
                         <div>
                           <p className="text-xs font-medium">{item.name}</p>
                           <p className="text-[10px] text-white/30">x{item.quantity}</p>

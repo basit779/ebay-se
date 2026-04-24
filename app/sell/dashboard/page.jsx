@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Plus, Edit3, Trash2, Loader2, Package, Eye, Gavel, DollarSign } from "lucide-react";
@@ -107,8 +108,11 @@ export default function SellerDashboard() {
                   transition={{ delay: i * 0.04 }}
                   className="flex items-center gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.image} alt="" className="h-16 w-16 shrink-0 rounded-xl object-cover" />
+                  <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-zinc-900">
+                    {p.image && (
+                      <Image src={p.image} alt={p.name || ""} fill sizes="64px" loading="lazy" className="object-cover" />
+                    )}
+                  </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="truncate font-medium">{p.name}</p>

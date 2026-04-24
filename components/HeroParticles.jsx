@@ -1,19 +1,33 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export default function HeroParticles({ density = 40 }) {
+const MOBILE_BREAKPOINT = 768;
+const TARGET_FPS = 30;
+const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+export default function HeroParticles({ density = 20 }) {
   const canvasRef = useRef(null);
+  const [enabled, setEnabled] = useState(null); // null = undecided (SSR safe)
+
+  // Decide whether to run based on viewport + reduced-motion preference
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    setEnabled(!reduce && !isMobile);
+  }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const ctx = canvas.getContext("2d", { alpha: true });
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     let width = 0;
     let height = 0;
     let particles = [];
     let rafId;
+    let lastFrame = 0;
     let mouseX = -9999;
     let mouseY = -9999;
 
@@ -24,25 +38,26 @@ export default function HeroParticles({ density = 40 }) {
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const count = Math.min(density, Math.floor((width * height) / 22000));
+      // Density halved vs. the old default and derived from viewport area.
+      const count = Math.min(density, Math.floor((width * height) / 35000));
       particles = Array.from({ length: count }, () => spawn());
     };
 
     const spawn = () => {
       const palette = [
-        "rgba(251,191,36,",
-        "rgba(34,211,238,",
+        "rgba(212,175,55,",
+        "rgba(235,214,139,",
         "rgba(255,255,255,"
       ];
       return {
         x: Math.random() * width,
         y: Math.random() * height,
-        r: Math.random() * 1.6 + 0.4,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: -Math.random() * 0.25 - 0.05,
+        r: Math.random() * 1.4 + 0.4,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: -Math.random() * 0.2 - 0.04,
         life: Math.random(),
         color: palette[Math.floor(Math.random() * palette.length)],
-        a: Math.random() * 0.5 + 0.15
+        a: Math.random() * 0.45 + 0.12
       };
     };
 
@@ -56,7 +71,14 @@ export default function HeroParticles({ density = 40 }) {
       mouseY = -9999;
     };
 
-    const step = () => {
+    const step = (t) => {
+      // FPS cap — skip frames until enough time has elapsed
+      if (t - lastFrame < FRAME_INTERVAL) {
+        rafId = requestAnimationFrame(step);
+        return;
+      }
+      lastFrame = t;
+
       ctx.clearRect(0, 0, width, height);
       for (const p of particles) {
         const dx = mouseX - p.x;
@@ -86,32 +108,52 @@ export default function HeroParticles({ density = 40 }) {
       rafId = requestAnimationFrame(step);
     };
 
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // Pause when tab is hidden, resume when visible
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      } else if (!rafId) {
+        rafId = requestAnimationFrame(step);
+      }
+    };
 
+    // Pause when offscreen via IntersectionObserver
     let visible = true;
     const io = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
-        if (visible && !rafId && !reduce) rafId = requestAnimationFrame(step);
-        if (!visible && rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        if (visible && !rafId) rafId = requestAnimationFrame(step);
+        if (!visible && rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
       },
       { threshold: 0 }
     );
     io.observe(canvas);
 
     resize();
-    if (!reduce && visible) rafId = requestAnimationFrame(step);
+    rafId = requestAnimationFrame(step);
+
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", onMove, { passive: true });
     window.addEventListener("mouseleave", onLeave);
+    document.addEventListener("visibilitychange", onVisibility);
+
     return () => {
       if (rafId) cancelAnimationFrame(rafId);
       io.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
+      document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [density]);
+  }, [enabled, density]);
+
+  if (!enabled) return null;
 
   return (
     <canvas

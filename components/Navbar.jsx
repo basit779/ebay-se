@@ -219,45 +219,68 @@ export default function Navbar({ onAuthOpen }) {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden border-t border-white/10 bg-obsidian/80 backdrop-blur-[20px] md:hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[100] flex flex-col bg-obsidian/95 p-6 backdrop-blur-[30px] md:hidden"
           >
-            <div className="flex flex-col px-4 py-3">
-              {navLinks.map((link) => {
+            <div className="flex items-center justify-between">
+              <FluxBidLogo size="sm" animate={false} />
+              <button
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close menu"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/70 transition hover:border-champagne-400/30 hover:text-champagne-200"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="mt-12 flex flex-col gap-4">
+              {navLinks.map((link, i) => {
                 const isActive = pathname === link.href;
                 return (
-                  <Link
+                  <motion.div
                     key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-3 rounded-xl px-4 py-3.5 font-serif text-lg transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                      isActive
-                        ? "bg-champagne-400/10 text-champagne-100"
-                        : "text-white/70 hover:bg-white/[0.04] hover:text-champagne-200"
-                    }`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 + 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   >
-                    {link.icon && <link.icon size={14} />}
-                    {link.label}
-                  </Link>
+                    <Link
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className={`flex items-center gap-4 rounded-2xl px-6 py-5 font-serif text-2xl transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        isActive
+                          ? "bg-champagne-400/10 text-champagne-200"
+                          : "text-white/70 hover:bg-white/[0.04] hover:text-white"
+                      }`}
+                    >
+                      {link.icon && <link.icon size={20} />}
+                      {link.label}
+                    </Link>
+                  </motion.div>
                 );
               })}
 
-              <Link
-                href="/wishlist"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-4 py-3.5 font-serif text-lg text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.04] hover:text-champagne-200"
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navLinks.length * 0.1 + 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <Heart size={14} />
-                Wishlist
-                {wishlist.length > 0 && (
-                  <span className="ml-auto rounded-full bg-rose-500 px-2 py-0.5 font-mono text-[10px] font-bold text-white">
-                    {wishlist.length}
-                  </span>
-                )}
-              </Link>
+                <Link
+                  href="/wishlist"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-4 rounded-2xl px-6 py-5 font-serif text-2xl text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.04] hover:text-white"
+                >
+                  <Heart size={20} />
+                  Wishlist
+                  {wishlist.length > 0 && (
+                    <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 font-mono text-[11px] font-bold text-white">
+                      {wishlist.length}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}

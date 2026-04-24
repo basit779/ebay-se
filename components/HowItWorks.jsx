@@ -27,7 +27,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
+    <section className="relative mx-auto max-w-7xl px-6 py-20 md:py-32 md:px-8">
       {/* Header */}
       <div className="mb-16 max-w-3xl">
         <FadeUp>
@@ -51,7 +51,7 @@ export default function HowItWorks() {
       </div>
 
       {/* Steps */}
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-8 md:grid-cols-3 md:gap-6">
         {steps.map((step, i) => {
           const Icon = step.icon;
           return (

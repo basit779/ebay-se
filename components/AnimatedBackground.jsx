@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Lean premium background — 2 GPU-composited blobs + vignette.
  * Dropped: the 8 box-shadow-blurred particle dots, the grid overlay,

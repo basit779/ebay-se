@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -78,13 +79,16 @@ export default function CartDrawer() {
                         className="group rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 transition-colors hover:border-white/[0.1]"
                       >
                         <div className="flex gap-3">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="h-16 w-16 rounded-lg object-cover"
-                            loading="lazy"
-                            onError={(e) => { e.target.style.background = '#0d1020'; }}
-                          />
+                          <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-zinc-900">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="64px"
+                              loading="lazy"
+                              className="object-cover"
+                            />
+                          </div>
                           <div className="flex-1 min-w-0">
                             <p className="truncate text-sm font-medium">{item.name}</p>
                             <p className="mt-0.5 text-sm font-semibold text-neon-cyan">

@@ -8,22 +8,26 @@ import { RevealText, FadeUp } from "@/components/TextReveal";
 function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, duration = 2 }) {
   const [value, setValue] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  // amount: 0.1 so the counter fires reliably even when the row is
+  // partially scrolled in. Previously was 0.5, which missed on some
+  // viewports and left the stats frozen at 0.
+  const isInView = useInView(ref, { once: true, amount: 0.1, margin: "0px 0px -10% 0px" });
 
   useEffect(() => {
     if (!isInView) return;
-    const start = Date.now();
+    const start = performance.now();
     const end = start + duration * 1000;
+    let raf;
 
-    const tick = () => {
-      const now = Date.now();
-      const progress = Math.min((now - start) / (end - start), 1);
+    const tick = (t) => {
+      const progress = Math.min((t - start) / (end - start), 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(target * eased);
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) raf = requestAnimationFrame(tick);
       else setValue(target);
     };
-    tick();
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [isInView, target, duration]);
 
   const formatted = decimals > 0
@@ -31,7 +35,7 @@ function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, durat
     : Math.floor(value).toLocaleString();
 
   return (
-    <span ref={ref} className="font-mono tracking-tight">
+    <span ref={ref} className="font-mono tracking-tight tabular-nums">
       {prefix}
       {formatted}
       {suffix}
@@ -42,8 +46,8 @@ function AnimatedCounter({ target, prefix = "", suffix = "", decimals = 0, durat
 const stats = [
   { value: 2.4, decimals: 1, suffix: "M+", label: "Active Buyers", icon: Users, color: "text-cyan-400" },
   { value: 150, suffix: "K+", label: "Items Sold", icon: Package, color: "text-purple-400" },
-  { value: 48, suffix: "", label: "Countries", icon: Globe, color: "text-blue-400" },
-  { value: 99, suffix: "%", label: "Satisfaction", icon: Award, color: "text-emerald-400" }
+  { value: 45, suffix: "", label: "Countries", icon: Globe, color: "text-blue-400" },
+  { value: 98, suffix: "%", label: "Satisfaction", icon: Award, color: "text-emerald-400" }
 ];
 
 export default function StatsSection() {
@@ -72,7 +76,7 @@ export default function StatsSection() {
         </div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4 md:gap-6">
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (

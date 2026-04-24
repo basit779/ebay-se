@@ -43,7 +43,12 @@ export default function ProductCard({ product, index = 0, variant = "default" })
   const shouldAnimate = !reduce;
 
   const [justAdded, setJustAdded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const resetTimer = useRef(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isAuction = product.auction;
   const wishlisted = isWishlisted(product.id);
@@ -236,7 +241,7 @@ export default function ProductCard({ product, index = 0, variant = "default" })
           ) : null}
 
           {/* Auction countdown pill (bottom of image) */}
-          {isAuction && countdown && (
+          {isAuction && countdown && isMounted && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

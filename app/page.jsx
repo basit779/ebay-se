@@ -1,33 +1,43 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Hero from "@/components/Hero";
-import ProductGrid from "@/components/ProductGrid";
-import CategoryCards from "@/components/CategoryCards";
-import BrandTicker from "@/components/BrandTicker";
 import LiveBidTicker from "@/components/LiveBidTicker";
-import TrustStrip from "@/components/TrustStrip";
-import StatsSection from "@/components/StatsSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-import NewsletterSection from "@/components/NewsletterSection";
-import SectionHeader from "@/components/SectionHeader";
-import EditorialSpotlight from "@/components/EditorialSpotlight";
-import HowItWorks from "@/components/HowItWorks";
-import FAQSection from "@/components/FAQSection";
-import SellCTA from "@/components/SellCTA";
-import DealBanner from "@/components/DealBanner";
 import products, { categories } from "@/data/products";
+import SectionHeader from "@/components/SectionHeader";
+import ProductGrid from "@/components/ProductGrid";
+
+// Lightweight skeleton used while below-fold chunks hydrate.
+// Keeps scroll depth stable so the page doesn't jump when a section arrives.
+const SectionFallback = ({ h = 320 }) => (
+  <div
+    aria-hidden
+    className="mx-auto my-6 max-w-7xl animate-pulse rounded-3xl border border-white/[0.04] bg-white/[0.02]"
+    style={{ height: h }}
+  />
+);
+
+// Below-the-fold: dynamic-import so their JS streams in after the hero.
+const BrandTicker       = dynamic(() => import("@/components/BrandTicker"),       { ssr: false, loading: () => <SectionFallback h={80} /> });
+const TrustStrip        = dynamic(() => import("@/components/TrustStrip"),        { ssr: false, loading: () => <SectionFallback h={180} /> });
+const DealBanner        = dynamic(() => import("@/components/DealBanner"),        { ssr: false, loading: () => <SectionFallback h={240} /> });
+const EditorialSpotlight= dynamic(() => import("@/components/EditorialSpotlight"),{ ssr: false, loading: () => <SectionFallback h={400} /> });
+const CategoryCards     = dynamic(() => import("@/components/CategoryCards"),     { ssr: false, loading: () => <SectionFallback h={520} /> });
+const HowItWorks        = dynamic(() => import("@/components/HowItWorks"),        { ssr: false, loading: () => <SectionFallback h={480} /> });
+const StatsSection      = dynamic(() => import("@/components/StatsSection"),      { ssr: false, loading: () => <SectionFallback h={420} /> });
+const SellCTA           = dynamic(() => import("@/components/SellCTA"),           { ssr: false, loading: () => <SectionFallback h={480} /> });
+const TestimonialsSection = dynamic(() => import("@/components/TestimonialsSection"), { ssr: false, loading: () => <SectionFallback h={480} /> });
+const FAQSection        = dynamic(() => import("@/components/FAQSection"),        { ssr: false, loading: () => <SectionFallback h={520} /> });
+const NewsletterSection = dynamic(() => import("@/components/NewsletterSection"), { ssr: false, loading: () => <SectionFallback h={360} /> });
 
 export default function HomePage() {
   const featured = products.filter((p) => !p.auction).slice(0, 4);
   const featuredIds = new Set(featured.map((p) => p.id));
   const auctions = products.filter((p) => p.auction).slice(0, 3);
 
-  // Pick specific products for spotlights (picked first so we can dedupe)
   const editorial = products.find((p) => p.id === "5"); // Canon EOS R6
   const flashDeal = products.find((p) => p.id === "7"); // Keychron Q1 Pro (Hot)
 
-  // Trending = Hot/Sale badged products, excluding anything already featured
-  // above (Featured row, Flash Deal, Editorial) to avoid repetition.
   const excludeIds = new Set([
     ...featuredIds,
     flashDeal?.id,
@@ -44,6 +54,7 @@ export default function HomePage() {
 
   return (
     <>
+      {/* ── Above the fold — ships in the main chunk ── */}
       <Hero />
       <LiveBidTicker auctions={products.filter((p) => p.auction)} />
       <BrandTicker />
@@ -70,13 +81,10 @@ export default function HomePage() {
         <ProductGrid products={featured} asymmetric />
       </section>
 
-      {/* Flash Deal Banner */}
+      {/* ── Below the fold — lazy-chunked ── */}
       <DealBanner product={flashDeal} />
-
-      {/* Editorial Spotlight */}
       <EditorialSpotlight product={editorial} />
 
-      {/* Live Auctions */}
       {auctions.length > 0 && (
         <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
           <SectionHeader
@@ -99,16 +107,10 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* Categories Bento */}
       <CategoryCards categories={categories} />
-
-      {/* How It Works */}
       <HowItWorks />
-
-      {/* Stats */}
       <StatsSection />
 
-      {/* Trending */}
       <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
           eyebrow="Trending"
@@ -129,16 +131,9 @@ export default function HomePage() {
         <ProductGrid products={trending} layout="bento-4" />
       </section>
 
-      {/* Sell CTA */}
       <SellCTA />
-
-      {/* Testimonials */}
       <TestimonialsSection />
-
-      {/* FAQ */}
       <FAQSection />
-
-      {/* Newsletter */}
       <NewsletterSection />
     </>
   );

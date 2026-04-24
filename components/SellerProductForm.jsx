@@ -136,9 +136,12 @@ export default function SellerProductForm({ initial = null, onSubmit, submitLabe
         </Field>
 
         {form.image && (
-          <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-50">
+          <div className="relative h-64 w-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-50">
+            {/* User-entered URL — could be any host, so bypass the
+                next/image optimizer with unoptimized to avoid a
+                remotePatterns violation. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={form.image} alt="preview" className="h-64 w-full object-cover" />
+            <img src={form.image} alt="preview" className="h-full w-full object-cover" />
           </div>
         )}
 

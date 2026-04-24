@@ -42,6 +42,11 @@ export default function BiddingSection({ product }) {
   const [currentBid, setCurrentBid] = useState(product.currentBid);
   const [bidCount, setBidCount] = useState(product.bidCount);
   const [showBids, setShowBids] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const minBid = currentBid + 1;
 
@@ -119,7 +124,7 @@ export default function BiddingSection({ product }) {
         </div>
         {countdown.expired ? (
           <p className="text-lg font-semibold text-[#e53238]">This auction has ended</p>
-        ) : (
+        ) : isMounted ? (
           <div className="grid grid-cols-4 gap-2">
             {[
               { value: countdown.days, label: "Days" },
@@ -140,7 +145,7 @@ export default function BiddingSection({ product }) {
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </div>
 
       {/* Place Bid */}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Store, Sparkles, Gavel, ArrowRight, Loader2, ShieldCheck, Coins,
@@ -418,11 +419,13 @@ function PreviewCard() {
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)] transition-transform duration-500 hover:-translate-y-2 hover:rotate-1">
       <div className="relative h-[340px] overflow-hidden rounded-2xl">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80"
-          alt="preview"
-          className="h-full w-full object-cover transition-transform duration-[1200ms] group-hover:scale-110"
+          alt="Apple Watch preview"
+          fill
+          loading="lazy"
+          sizes="(min-width: 1024px) 520px, 100vw"
+          className="object-cover transition-transform duration-[1200ms] group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 

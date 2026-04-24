@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Flame, ArrowRight } from "lucide-react";
 import ProductImage from "@/components/ProductImage";
 
-const WINDOW_MS = 14 * 60 * 60 * 1000; // 14-hour rolling window
+const WINDOW_MS = 72 * 60 * 60 * 1000; // 72-hour rolling window
 
 function TimeBlock({ value, label }) {
   return (
@@ -26,9 +26,11 @@ function TimeBlock({ value, label }) {
 
 export default function DealBanner({ product }) {
   const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 });
+  const [isMounted, setIsMounted] = useState(false);
   const targetRef = useRef(null);
 
   useEffect(() => {
+    setIsMounted(true);
     if (!targetRef.current) {
       targetRef.current = Date.now() + WINDOW_MS;
     }
@@ -93,7 +95,7 @@ export default function DealBanner({ product }) {
                 </span>
               </span>
               <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.25em] text-champagne-300/80">
-                Limited · 14-hour window
+                Limited · 72-hour window
               </span>
             </div>
 
@@ -118,13 +120,15 @@ export default function DealBanner({ product }) {
             </div>
 
             {/* Countdown */}
-            <div className="mt-6 flex items-center gap-3">
-              <TimeBlock value={timeLeft.h} label="Hrs" />
-              <span className="font-mono -mt-3 text-2xl font-bold text-champagne-400/40">:</span>
-              <TimeBlock value={timeLeft.m} label="Min" />
-              <span className="font-mono -mt-3 text-2xl font-bold text-champagne-400/40">:</span>
-              <TimeBlock value={timeLeft.s} label="Sec" />
-            </div>
+            {isMounted && (
+              <div className="mt-6 flex items-center gap-3">
+                <TimeBlock value={timeLeft.h} label="Hrs" />
+                <span className="font-mono -mt-3 text-2xl font-bold text-champagne-400/40">:</span>
+                <TimeBlock value={timeLeft.m} label="Min" />
+                <span className="font-mono -mt-3 text-2xl font-bold text-champagne-400/40">:</span>
+                <TimeBlock value={timeLeft.s} label="Sec" />
+              </div>
+            )}
           </div>
 
           {/* CTA */}

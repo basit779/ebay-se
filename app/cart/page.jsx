@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Shield } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -64,11 +65,17 @@ export default function CartPage() {
                     transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     className="group grid grid-cols-1 gap-6 border-b border-white/[0.06] pb-10 sm:grid-cols-[180px_1fr_auto]"
                   >
-                    <Link href={`/product/${item.id}`} className="block overflow-hidden rounded-2xl bg-zinc-50">
-                      <img
+                    <Link
+                      href={`/product/${item.id}`}
+                      className="relative block h-44 w-full overflow-hidden rounded-2xl bg-zinc-50 sm:w-44"
+                    >
+                      <Image
                         src={item.image}
                         alt={item.name}
-                        className="h-44 w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105 sm:h-44 sm:w-44"
+                        fill
+                        loading="lazy"
+                        sizes="(min-width: 640px) 176px, 100vw"
+                        className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
                       />
                     </Link>
 

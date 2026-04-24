@@ -26,7 +26,41 @@ const footerLinks = {
 };
 
 const socials = [
-  { icon: Mail, href: "mailto:hello@fluxbid.app", label: "Email" }
+  {
+    label: "Instagram",
+    href: "#",
+    svg: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+      </svg>
+    )
+  },
+  {
+    label: "X",
+    href: "#",
+    svg: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    )
+  },
+  {
+    label: "YouTube",
+    href: "#",
+    svg: (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+        <path d="m10 15 5-3-5-3z" />
+      </svg>
+    )
+  },
+  {
+    label: "Email",
+    href: "mailto:hello@fluxbid.app",
+    svg: <Mail size={14} />
+  }
 ];
 
 export default function Footer() {
@@ -57,7 +91,7 @@ export default function Footer() {
               Hand-verified sellers, transparent bidding, cinematic commerce.
             </p>
             <div className="mt-8 flex gap-3">
-              {socials.map(({ icon: Icon, href, label }) => (
+              {socials.map(({ svg, href, label }) => (
                 <a
                   key={label}
                   href={href}
@@ -66,7 +100,7 @@ export default function Footer() {
                   rel={href.startsWith("http") ? "noreferrer" : undefined}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/55 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-champagne-400/40 hover:text-champagne-300 hover:shadow-[0_10px_30px_-12px_rgba(212,175,55,0.5)]"
                 >
-                  <Icon size={14} />
+                  {svg}
                 </a>
               ))}
             </div>
