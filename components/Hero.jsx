@@ -214,7 +214,7 @@ export default function Hero() {
               transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="relative inline-block pr-2"
             >
-              <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
+              <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-300 to-champagne-500 bg-clip-text text-transparent">
                 Flows.
               </span>
               <motion.span

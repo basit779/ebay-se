@@ -118,7 +118,7 @@ export default function TestimonialsSection() {
               <h2 className="mt-4 font-serif text-5xl font-semibold leading-[0.95] tracking-tight md:text-6xl lg:text-7xl">
                 Loved by
                 <br />
-                <span className="italic bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
+                <span className="italic bg-gradient-to-r from-champagne-100 via-champagne-300 to-champagne-500 bg-clip-text text-transparent">
                   collectors.
                 </span>
               </h2>
