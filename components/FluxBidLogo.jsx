@@ -55,13 +55,18 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
 
   return (
     <motion.div
-      className={`inline-flex items-baseline font-black tracking-tighter ${s.text} ${s.gap} select-none`}
+      className={`relative inline-flex items-baseline font-black tracking-tighter ${s.text} ${s.gap} select-none overflow-hidden`}
       style={{ perspective: "600px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       initial="hidden"
       animate="visible"
     >
+      {/* Premium shine sweep — diagonal highlight brightens the
+          letters every ~6s. mix-blend-overlay means it only lights up
+          pixels that already have color, so the dark page behind stays
+          dark. */}
+      <span className="logo-shine-layer" aria-hidden="true" />
       {/* "Flux" — flowing gradient */}
       <span className="relative inline-flex">
         {flux.map(({ char, offset }) => (
