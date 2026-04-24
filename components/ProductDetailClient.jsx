@@ -22,49 +22,10 @@ import AnimatedBackground from "@/components/AnimatedBackground";
 import ProductImage from "@/components/ProductImage";
 import BiddingSection from "@/components/BiddingSection";
 import ProductGrid from "@/components/ProductGrid";
+import { getReviewsForProduct, getRatingBuckets } from "@/lib/reviews";
+import { getSpecsForProduct, getSellerForProduct, getHighlightsForProduct } from "@/lib/product-meta";
 
-const tabs = ["Details", "Features", "Reviews"];
-
-// Mock reviews used for the Reviews tab on any product
-const mockReviews = [
-  {
-    stars: 5,
-    title: "Worth every dollar.",
-    name: "John D.",
-    when: "2 weeks ago",
-    body: "Packaging was immaculate and the item exceeded the listing photos. Fast shipping too. Can&rsquo;t recommend FluxBid enough."
-  },
-  {
-    stars: 5,
-    title: "Exceeded expectations.",
-    name: "Amy R.",
-    when: "1 month ago",
-    body: "Second purchase here and they&rsquo;re consistent &mdash; authenticity guaranteed, beautiful finish, and support replied in under an hour."
-  },
-  {
-    stars: 4,
-    title: "Premium feel, pricey.",
-    name: "Marcus L.",
-    when: "1 month ago",
-    body: "Quality is top-shelf. Wish the price point were a touch friendlier, but the craftsmanship justifies it."
-  },
-  {
-    stars: 5,
-    title: "A conversation piece.",
-    name: "Priya S.",
-    when: "2 months ago",
-    body: "Everyone who visits asks about it. Shipped fully insured and arrived sooner than the stated window."
-  }
-];
-
-// Bar distribution (for the summary)
-const ratingBuckets = [
-  { star: 5, pct: 78 },
-  { star: 4, pct: 14 },
-  { star: 3, pct: 5 },
-  { star: 2, pct: 2 },
-  { star: 1, pct: 1 }
-];
+const tabs = ["Details", "Features", "Specs", "Reviews"];
 
 export default function ProductDetailClient({ product, related = [] }) {
   const { addToCart } = useCart();
@@ -368,25 +329,15 @@ export default function ProductDetailClient({ product, related = [] }) {
                 ))}
               </div>
 
-              <div className="mt-8 min-h-[160px]">
-                {activeTab === "Details" && (
-                  <p className="text-[14px] leading-[1.8] text-white/55">{product.description}</p>
-                )}
-                {activeTab === "Features" && (
-                  <ul className="grid gap-3 sm:grid-cols-2">
-                    {(product.features || []).map((feat) => (
-                      <li
-                        key={feat}
-                        className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/70"
-                      >
-                        <Check size={14} className="text-champagne-300" />
-                        {feat}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+              <div className="mt-8 min-h-[200px]">
+                {activeTab === "Details" && <DetailsPanel product={product} />}
+                {activeTab === "Features" && <FeaturesPanel product={product} />}
+                {activeTab === "Specs" && <SpecsPanel product={product} />}
                 {activeTab === "Reviews" && <ReviewsPanel product={product} />}
               </div>
+
+              {/* Seller card (always visible under tabs) */}
+              <SellerCard product={product} />
             </div>
           </motion.div>
         </div>
@@ -411,7 +362,106 @@ export default function ProductDetailClient({ product, related = [] }) {
   );
 }
 
+function DetailsPanel({ product }) {
+  return (
+    <div className="space-y-6">
+      <p className="text-[14px] leading-[1.8] text-white/65">
+        {product.description || "A curated piece from FluxBid's verified sellers, selected for its craftsmanship, provenance, and finish."}
+      </p>
+      <div className="grid gap-3 rounded-2xl border border-white/10 bg-white/[0.02] p-5 sm:grid-cols-3">
+        <InlineFact label="Ships in" value="24–48 hrs" />
+        <InlineFact label="Returns" value="30-day free" />
+        <InlineFact label="Protection" value="Buyer covered" />
+      </div>
+      <p className="text-[13px] leading-[1.8] text-white/45">
+        Every FluxBid listing is verified for authenticity and condition before it goes live.
+        Your order ships fully insured, tracked end-to-end, and backed by our 30-day
+        buyer protection.
+      </p>
+    </div>
+  );
+}
+
+function FeaturesPanel({ product }) {
+  const highlights = getHighlightsForProduct(product);
+  return (
+    <ul className="grid gap-3 sm:grid-cols-2">
+      {highlights.map((feat) => (
+        <li
+          key={feat}
+          className="flex items-center gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-sm text-white/70"
+        >
+          <Check size={14} className="shrink-0 text-champagne-300" />
+          {feat}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function SpecsPanel({ product }) {
+  const specs = getSpecsForProduct(product);
+  return (
+    <div className="overflow-hidden rounded-2xl border border-white/10">
+      <dl className="divide-y divide-white/[0.06]">
+        {specs.map((s) => (
+          <div
+            key={s.label}
+            className="grid grid-cols-1 gap-1 px-5 py-4 sm:grid-cols-[180px_1fr] sm:gap-6 sm:py-4"
+          >
+            <dt className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
+              {s.label}
+            </dt>
+            <dd className="text-[14px] text-white/80">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+function InlineFact({ label, value }) {
+  return (
+    <div>
+      <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/35">{label}</p>
+      <p className="mt-1 text-[14px] font-medium text-white/85">{value}</p>
+    </div>
+  );
+}
+
+function SellerCard({ product }) {
+  const seller = getSellerForProduct(product);
+  return (
+    <div className="mt-10 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-champagne-500/[0.04] via-transparent to-white/[0.02] p-6 md:p-8">
+      <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-5">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-champagne-400/30 bg-champagne-400/10 font-serif text-xl font-semibold text-champagne-200">
+            {seller.name[0]}
+          </div>
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-champagne-400/80">
+              Sold by
+            </p>
+            <p className="mt-1 font-serif text-2xl font-semibold tracking-tight text-white">
+              {seller.name}
+            </p>
+            <p className="mt-1 text-[12px] text-white/45">{seller.city} &middot; on FluxBid {seller.years} years</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 md:gap-8">
+          <InlineFact label="Rating" value={seller.rating.toFixed(2) + "★"} />
+          <InlineFact label="Sales" value={seller.sales} />
+          <InlineFact label="Status" value="Verified" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ReviewsPanel({ product }) {
+  const reviews = getReviewsForProduct(product);
+  const ratingBuckets = getRatingBuckets(product);
   const avg = (product.rating || 4.8).toFixed(1);
   const count = product.reviewCount || 214;
   return (
@@ -456,9 +506,9 @@ function ReviewsPanel({ product }) {
 
       {/* Individual reviews */}
       <div className="space-y-8">
-        {mockReviews.map((r, i) => (
+        {reviews.map((r, i) => (
           <motion.div
-            key={i}
+            key={r.name + i}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -479,7 +529,7 @@ function ReviewsPanel({ product }) {
             <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
               {r.name} &middot; Verified Buyer &middot; {r.when}
             </p>
-            <p className="mt-3 text-[14px] leading-[1.8] text-white/60" dangerouslySetInnerHTML={{ __html: r.body }} />
+            <p className="mt-3 text-[14px] leading-[1.8] text-white/60">{r.body}</p>
           </motion.div>
         ))}
       </div>

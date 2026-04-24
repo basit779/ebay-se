@@ -148,20 +148,18 @@ export default function AccountPage() {
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="text-xs text-white/30">
+                      <p className="font-mono text-xs uppercase tracking-[0.2em] text-white/35">
                         Order #{order.id.slice(0, 8).toUpperCase()}
                       </p>
-                      <div className="mt-1 flex items-center gap-3">
-                        <span className="rounded-full bg-neon-emerald/15 px-2.5 py-0.5 text-[10px] font-bold uppercase text-neon-emerald">
-                          {order.status}
-                        </span>
-                        <span className="flex items-center gap-1 text-xs text-white/30">
+                      <div className="mt-2 flex items-center gap-3">
+                        <OrderStatusBadge status={order.status} />
+                        <span className="flex items-center gap-1 text-xs text-white/35">
                           <Calendar size={11} />
                           {new Date(order.createdAt).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
-                    <p className="text-lg font-bold text-neon-cyan">${order.total.toFixed(2)}</p>
+                    <p className="font-mono text-xl font-bold text-champagne-200">${order.total.toFixed(2)}</p>
                   </div>
 
                   {/* Items */}
@@ -192,5 +190,27 @@ export default function AccountPage() {
         </div>
       </div>
     </section>
+  );
+}
+
+const STATUS_STYLES = {
+  pending:    "border-amber-400/40 bg-amber-400/10 text-amber-200",
+  paid:       "border-cyan-400/40 bg-cyan-400/10 text-cyan-200",
+  processing: "border-cyan-400/40 bg-cyan-400/10 text-cyan-200",
+  shipped:    "border-champagne-400/40 bg-champagne-400/10 text-champagne-200",
+  delivered:  "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
+  completed:  "border-emerald-400/40 bg-emerald-400/10 text-emerald-200",
+  cancelled:  "border-rose-400/40 bg-rose-400/10 text-rose-200",
+  refunded:   "border-rose-400/40 bg-rose-400/10 text-rose-200"
+};
+
+function OrderStatusBadge({ status }) {
+  const key = String(status || "").toLowerCase();
+  const cls = STATUS_STYLES[key] || "border-white/15 bg-white/[0.04] text-white/60";
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.2em] ${cls}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      {status}
+    </span>
   );
 }

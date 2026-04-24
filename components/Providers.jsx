@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
@@ -12,6 +12,7 @@ import PageTransition from "@/components/PageTransition";
 import AuthModal from "@/components/AuthModal";
 import ToastContainer from "@/components/Toast";
 import BackToTop from "@/components/BackToTop";
+import OAuthErrorWatcher from "@/components/OAuthErrorWatcher";
 
 export default function Providers({ children }) {
   const [authOpen, setAuthOpen] = useState(false);
@@ -25,6 +26,10 @@ export default function Providers({ children }) {
             <CartDrawer />
             <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
             <ToastContainer />
+            {/* useSearchParams must live inside Suspense in App Router */}
+            <Suspense fallback={null}>
+              <OAuthErrorWatcher />
+            </Suspense>
             <PageTransition>{children}</PageTransition>
             <Footer />
             <BackToTop />

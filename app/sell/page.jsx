@@ -109,8 +109,8 @@ export default function SellLanding() {
           </h1>
 
           <p className="mx-auto mt-7 max-w-xl text-base text-white/55 md:text-lg">
-            List products and live auctions on FluxBid in 60 seconds.
-            Buyers worldwide, zero listing fees, instant publish.
+            List products and live auctions on FluxBid in a few minutes.
+            Buyers worldwide, zero listing fees, curated marketplace.
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
@@ -179,7 +179,7 @@ export default function SellLanding() {
 
           {[
             { n: "01", Icon: Rocket, title: "Create your listing", body: "Name, price, image, done. Flip one switch to run it as an auction with a starting bid and end date." },
-            { n: "02", Icon: Sparkles, title: "Get discovered", body: "Your listing goes live instantly across shop, auctions, and search — no review queue, no waiting." },
+            { n: "02", Icon: Sparkles, title: "Get discovered", body: "Approved listings publish across shop, auctions, and search — with curated placement on the homepage for standout pieces." },
             { n: "03", Icon: Coins, title: "Get paid", body: "Buyers check out in a single click. You keep 100% of the sale — zero fees during early access." }
           ].map((s, i) => (
             <motion.div
@@ -369,9 +369,9 @@ export default function SellLanding() {
 
           <Package size={32} className="mx-auto text-amber-300" />
           <h2 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">
-            <span className="text-luxe">Start selling in</span>{" "}
+            <span className="text-luxe">Apply, list,</span>{" "}
             <span className="font-display-italic bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-              60 seconds.
+              get paid.
             </span>
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm text-white/55">
