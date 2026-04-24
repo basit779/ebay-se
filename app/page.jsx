@@ -60,9 +60,6 @@ export default function HomePage() {
       <BrandTicker />
       <TrustStrip />
 
-      {/* Category narrowing — marketplace IA: categories before listings */}
-      <CategoryCards categories={categories} />
-
       {/* Featured Collection */}
       <section className="obsidian-depth relative mx-auto max-w-7xl px-6 py-24 md:py-32 md:px-8">
         <SectionHeader
@@ -110,6 +107,7 @@ export default function HomePage() {
         </section>
       )}
 
+      <CategoryCards categories={categories} />
       <HowItWorks />
       <StatsSection />
 

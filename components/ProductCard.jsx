@@ -160,12 +160,12 @@ export default function ProductCard({ product, index = 0, variant = "default" })
 
   return (
     <motion.article
-      initial={shouldAnimate ? { opacity: 0, y: 24 } : false}
-      whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{
-        duration: shouldAnimate ? 0.8 : 0,
-        delay: shouldAnimate ? Math.min(index * 0.06, 0.35) : 0,
+        duration: 0.8,
+        delay: Math.min(index * 0.06, 0.35),
         ease: [0.22, 1, 0.36, 1]
       }}
       className={`relative w-full ${isHero ? "h-full" : ""}`}
@@ -204,13 +204,13 @@ export default function ProductCard({ product, index = 0, variant = "default" })
             variants={favoriteVariants}
             animate={wishlisted ? "favorite" : "rest"}
             aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-            className={`pointer-events-auto absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
+            className={`pointer-events-auto absolute right-4 top-4 z-20 flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-colors ${
               wishlisted
                 ? "border-rose-300/40 bg-rose-500/95 text-white shadow-lg shadow-rose-500/40"
                 : "border-white/25 bg-black/40 text-white hover:bg-white/20"
             }`}
           >
-            <Heart size={16} fill={wishlisted ? "currentColor" : "none"} />
+            <Heart size={14} fill={wishlisted ? "currentColor" : "none"} />
           </motion.button>
 
           {/* Top-left chip: LIVE pulse / discount / badge */}

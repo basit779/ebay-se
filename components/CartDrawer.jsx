@@ -43,10 +43,9 @@ export default function CartDrawer() {
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                aria-label="Close cart"
-                className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.03] text-white/50 transition hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.03] text-white/50 transition hover:text-white"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
