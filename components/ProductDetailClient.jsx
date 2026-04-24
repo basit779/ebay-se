@@ -114,11 +114,12 @@ export default function ProductDetailClient({ product, related = [] }) {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="h-[480px] w-full"
                 >
                   <ProductImage
                     src={images[selectedImage]}
                     alt={product.name}
-                    className="h-[480px] w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={{
                       transform: zoom.active ? "scale(1.5)" : "scale(1)",
                       transformOrigin: `${zoom.x}% ${zoom.y}%`

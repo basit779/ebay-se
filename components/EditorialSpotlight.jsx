@@ -34,12 +34,12 @@ export default function EditorialSpotlight({ product }) {
         className="mt-12 grid gap-6 overflow-hidden rounded-3xl border border-white/[0.06] bg-gradient-to-br from-white/[0.04] to-transparent p-6 md:grid-cols-2 md:p-10 lg:gap-12"
       >
         {/* Image */}
-        <Link href={`/product/${product.id}`} className="block">
-          <div className="group relative overflow-hidden rounded-2xl">
+        <Link href={`/product/${product.id}`} className="block h-full">
+          <div className="group relative h-full min-h-[400px] overflow-hidden rounded-2xl">
             <ProductImage
               src={product.image}
               alt={product.name}
-              className="h-full min-h-[400px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             {product.badge && (
