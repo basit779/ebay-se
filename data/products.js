@@ -1,5 +1,5 @@
 // All Unsplash URLs verified to match actual product imagery
-const U = (id, w = 800) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=80`;
+const U = (id, w = 1200) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=95`;
 
 const products = [
   // ── BUY NOW PRODUCTS ────────────────────────────────────
