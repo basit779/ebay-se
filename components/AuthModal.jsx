@@ -121,7 +121,8 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
 
               <button
                 onClick={closeAndReset}
-                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-white/30 transition hover:text-white/60"
+                aria-label="Close sign-in"
+                className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg text-white/30 transition hover:text-white/60"
               >
                 <X size={18} />
               </button>

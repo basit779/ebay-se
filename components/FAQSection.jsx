@@ -49,7 +49,7 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className={`ml-6 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`ml-6 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isOpen
               ? "border-champagne-400/50 bg-champagne-400/12 text-champagne-200"
               : "border-white/10 bg-white/[0.02] text-white/45 group-hover:border-champagne-400/30 group-hover:text-champagne-200"

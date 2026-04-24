@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowRight, ShoppingBag, Gavel, Zap, Star } from "lucide-react";
+import { ArrowRight, ShoppingBag, Gavel, Zap, Star, Search } from "lucide-react";
 import FluxBidLogo from "@/components/FluxBidLogo";
 import MagneticButton from "@/components/MagneticButton";
 import ProductImage from "@/components/ProductImage";
@@ -56,13 +57,12 @@ function ProductStack() {
         return (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 100, rotateY: -30 }}
+            initial={{ opacity: 0, y: 100 }}
             animate={{
               opacity: 1,
               y: pos.y,
               x: pos.x,
               rotateZ: pos.rotate,
-              rotateY: 0,
               scale: isHovered ? 1.05 : pos.scale
             }}
             transition={{
@@ -78,13 +78,7 @@ function ProductStack() {
               transformStyle: "preserve-3d"
             }}
           >
-            <div
-              className="w-[320px] overflow-hidden rounded-3xl border border-white/10 bg-black/80 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)]"
-              style={{
-                animation: `float-card 6s ease-in-out infinite ${i * 0.5}s`,
-                willChange: "transform"
-              }}
-            >
+            <div className="w-[320px] overflow-hidden rounded-3xl border border-white/10 bg-black/80 shadow-[0_30px_80px_-10px_rgba(0,0,0,0.8)]">
               <div className="relative h-[380px] overflow-hidden">
                 <ProductImage
                   src={product.image}
@@ -141,8 +135,15 @@ function ProductStack() {
   );
 }
 
+const SEARCH_SCOPES = ["All", "Auctions", "Shop"];
+const POPULAR_QUERIES = ["Rolex", "Les Paul", "Canon R6", "Keychron"];
+
 export default function Hero() {
   const sectionRef = useRef(null);
+  const router = useRouter();
+  const [scope, setScope] = useState("All");
+  const [query, setQuery] = useState("");
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"]
@@ -151,6 +152,20 @@ export default function Hero() {
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const contentY = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
+
+  const runSearch = (term) => {
+    const q = (term ?? query).trim();
+    if (scope === "Auctions") {
+      router.push("/auctions");
+      return;
+    }
+    router.push(q ? `/shop?q=${encodeURIComponent(q)}` : "/shop");
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    runSearch();
+  };
 
   return (
     <section
@@ -217,12 +232,6 @@ export default function Hero() {
               <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
                 Flows.
               </span>
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 1.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600 opacity-70 blur-md"
-              />
             </motion.span>
           </h1>
 
@@ -238,19 +247,83 @@ export default function Hero() {
             checkout in a single click.
           </motion.p>
 
-          {/* CTAs */}
+          {/* Search — marketplace pattern's primary CTA */}
+          <motion.form
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            onSubmit={handleSubmit}
+            className="mt-10 max-w-xl"
+            role="search"
+          >
+            {/* Scope chips */}
+            <div className="mb-3 flex items-center gap-1">
+              {SEARCH_SCOPES.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setScope(s)}
+                  className={`rounded-full px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${
+                    scope === s
+                      ? "bg-champagne-400/15 text-champagne-200 ring-1 ring-champagne-400/25"
+                      : "text-white/40 hover:text-white/70"
+                  }`}
+                  aria-pressed={scope === s}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+
+            {/* Search pill */}
+            <div className="liquid-glass relative flex h-16 items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] pl-6 pr-2 backdrop-blur-xl transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] focus-within:border-champagne-400/40">
+              <Search size={18} className="shrink-0 text-white/40" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder='Search "Rolex", "Canon R6", "Keychron"…'
+                className="min-w-0 flex-1 bg-transparent text-sm text-white outline-none placeholder:text-white/30"
+                aria-label="Search products"
+              />
+              <button
+                type="submit"
+                className="inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-champagne-300 via-champagne-400 to-champagne-500 px-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-black shadow-[0_8px_24px_-8px_rgba(212,175,55,0.5)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.02]"
+              >
+                Search
+                <ArrowRight size={14} />
+              </button>
+            </div>
+
+            {/* Popular queries */}
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px]">
+              <span className="font-mono uppercase tracking-[0.25em] text-white/25">Popular</span>
+              {POPULAR_QUERIES.map((q) => (
+                <button
+                  key={q}
+                  type="button"
+                  onClick={() => { setQuery(q); runSearch(q); }}
+                  className="rounded-full border border-white/[0.08] bg-white/[0.02] px-3 py-1 text-white/55 transition-colors duration-300 hover:border-champagne-400/30 hover:text-champagne-200"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
+          </motion.form>
+
+          {/* Secondary CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-10 flex flex-wrap items-center gap-4"
+            transition={{ delay: 1.35, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 flex flex-wrap items-center gap-3"
           >
             <MagneticButton
               href="/shop"
-              className="btn-luxe shine-sweep group"
+              className="btn-ghost group"
             >
               <ShoppingBag size={16} />
-              Start Shopping
+              Browse Shop
               <ArrowRight size={16} className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1" />
             </MagneticButton>
 
