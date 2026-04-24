@@ -35,7 +35,7 @@ export default function HomePage() {
   const featuredIds = new Set(featured.map((p) => p.id));
   const auctions = products.filter((p) => p.auction).slice(0, 3);
 
-  const editorial = products.find((p) => p.id === "5"); // Canon EOS R6
+  const editorial = products.find((p) => p.id === "10"); // Herman Miller Aeron
   const flashDeal = products.find((p) => p.id === "7"); // Keychron Q1 Pro (Hot)
 
   const excludeIds = new Set([

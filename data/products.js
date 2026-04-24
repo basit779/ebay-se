@@ -92,9 +92,8 @@ const products = [
     badge: "Sale",
     rating: 4.9,
     reviewCount: 203,
-    image: U("1516035069371-29a1b244cc32"),
+    image: U("1502920917128-1aa500764cbd"),
     images: [
-      U("1516035069371-29a1b244cc32"),
       U("1502920917128-1aa500764cbd"),
       U("1510127034890-ba27508e9f1c")
     ],
