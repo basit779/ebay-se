@@ -129,9 +129,9 @@ function ProductStack() {
 
       {/* Premium gold halo behind product stack */}
       <div
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-45"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60"
         style={{
-          background: "radial-gradient(circle, rgba(251,191,36,0.28), rgba(217,119,6,0.10) 40%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(251,191,36,0.30), rgba(217,119,6,0.12) 40%, transparent 70%)",
           filter: "blur(60px)"
         }}
       />
@@ -195,7 +195,7 @@ export default function Hero() {
             <motion.span
               initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
               className="block text-luxe"
             >
               Where
@@ -203,7 +203,7 @@ export default function Hero() {
             <motion.span
               initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.38, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="block text-luxe"
             >
               Luxury
@@ -211,12 +211,18 @@ export default function Hero() {
             <motion.span
               initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1, delay: 0.56, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="relative inline-block pr-2"
             >
-              <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-300 to-champagne-500 bg-clip-text text-transparent">
+              <span className="italic font-semibold bg-gradient-to-r from-champagne-100 via-champagne-400 to-champagne-600 bg-clip-text text-transparent">
                 Flows.
               </span>
+              <motion.span
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 1.4, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute -bottom-1 left-0 h-[6px] w-full origin-left rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-600 opacity-70 blur-md"
+              />
             </motion.span>
           </h1>
 
@@ -224,8 +230,8 @@ export default function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.95, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-8 max-w-lg text-base leading-relaxed text-white/70 md:text-lg"
+            transition={{ delay: 1.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-8 max-w-lg text-base leading-relaxed text-white/55 md:text-lg"
           >
             The cinematic marketplace for premium goods.
             Bid on rare collectibles, score exclusive drops,
@@ -236,7 +242,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 1.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <MagneticButton
@@ -261,8 +267,8 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-14 flex flex-wrap items-center gap-6 sm:gap-8 border-t border-white/[0.08] pt-8"
+            transition={{ delay: 1.5, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-14 flex items-center gap-8 border-t border-white/[0.08] pt-8"
           >
             {[
               { value: "2.4M+", label: "Buyers" },
@@ -274,7 +280,7 @@ export default function Hero() {
                   <span className="font-mono text-2xl font-bold tracking-tight text-white md:text-3xl">{s.value}</span>
                   {s.star && <Star size={14} className="star-filled" fill="currentColor" />}
                 </div>
-                <p className="mt-0.5 text-[11px] uppercase tracking-wider text-white/55">
+                <p className="mt-0.5 text-[11px] uppercase tracking-wider text-white/30">
                   {s.label}
                 </p>
               </div>
@@ -310,18 +316,17 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.85 }}
-        transition={{ delay: 1.4 }}
+        animate={{ opacity: 0.4 }}
+        transition={{ delay: 1.5 }}
         className="absolute bottom-6 left-1/2 z-20 hidden -translate-x-1/2 lg:block"
-        style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.65))" }}
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           className="flex flex-col items-center gap-2"
         >
-          <span className="text-[10px] uppercase tracking-[0.2em] text-white/60">Scroll</span>
-          <div className="h-8 w-[1px] bg-gradient-to-b from-white/50 to-transparent" />
+          <span className="text-[10px] uppercase tracking-[0.2em] text-white/20">Scroll</span>
+          <div className="h-8 w-[1px] bg-gradient-to-b from-white/20 to-transparent" />
         </motion.div>
       </motion.div>
     </section>

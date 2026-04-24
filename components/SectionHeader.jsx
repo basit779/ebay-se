@@ -10,7 +10,7 @@ export default function SectionHeader({
   eyebrowColor = "text-champagne-400",
   headline,
   accentWord,
-  accentGradient = "from-champagne-100 via-champagne-300 to-champagne-500",
+  accentGradient = "from-champagne-100 via-champagne-400 to-champagne-600",
   description,
   ctaLabel,
   ctaHref,

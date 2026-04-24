@@ -69,10 +69,10 @@ export default function Navbar({ onAuthOpen }) {
                   link.accent
                     ? isActive
                       ? "text-champagne-200"
-                      : "text-champagne-300/85 hover:text-champagne-200"
+                      : "text-champagne-300/75 hover:text-champagne-200"
                     : isActive
                       ? "text-white"
-                      : "text-white/70 hover:text-white"
+                      : "text-white/55 hover:text-white"
                 }`}
               >
                 {link.icon && <link.icon size={13} />}
@@ -100,11 +100,11 @@ export default function Navbar({ onAuthOpen }) {
           <Link
             href="/wishlist"
             aria-label="Wishlist"
-            className="relative hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/60 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-rose-400/30 hover:text-rose-300 sm:flex"
+            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-rose-400/30 hover:text-rose-300 sm:flex"
           >
-            <Heart size={18} />
+            <Heart size={16} />
             {wishlist.length > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-rose-500 px-1 font-mono text-[10px] font-bold text-white ring-1 ring-rose-300/50">
+              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 font-mono text-[9px] font-bold text-white">
                 {wishlist.length}
               </span>
             )}
@@ -114,9 +114,9 @@ export default function Navbar({ onAuthOpen }) {
             whileTap={{ scale: 0.92 }}
             onClick={() => setIsCartOpen(true)}
             aria-label="Open cart"
-            className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/60 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200"
+            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200"
           >
-            <ShoppingCart size={18} />
+            <ShoppingCart size={16} />
             <AnimatePresence>
               {itemCount > 0 && (
                 <motion.span
@@ -124,7 +124,7 @@ export default function Navbar({ onAuthOpen }) {
                   animate={{ scale: 1 }}
                   exit={{ scale: 0 }}
                   transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute -right-1 -top-1 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-gradient-to-br from-champagne-200 to-champagne-500 px-1 font-mono text-[10px] font-bold text-black shadow-[0_0_10px_rgba(212,175,55,0.55)] ring-1 ring-champagne-200"
+                  className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-br from-champagne-200 to-champagne-500 font-mono text-[9px] font-bold text-black shadow-[0_0_10px_rgba(212,175,55,0.6)]"
                 >
                   {itemCount}
                 </motion.span>
@@ -136,15 +136,14 @@ export default function Navbar({ onAuthOpen }) {
             {user ? (
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                aria-label="Account menu"
-                className="flex h-11 w-11 items-center justify-center rounded-xl border border-champagne-400/25 bg-champagne-400/10 text-sm font-bold text-champagne-200 transition-colors duration-300 hover:bg-champagne-400/20 hover:border-champagne-400/50"
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 text-xs font-bold text-purple-400 transition hover:bg-purple-500/20"
               >
                 {user.name[0].toUpperCase()}
               </button>
             ) : (
               <button
                 onClick={onAuthOpen}
-                className="flex h-11 items-center gap-1.5 rounded-xl border border-white/10 bg-white/[0.02] px-3.5 text-xs font-medium text-white/70 transition-colors duration-300 hover:border-champagne-400/30 hover:text-champagne-200"
+                className="flex h-9 items-center gap-1.5 rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 text-xs text-white/40 transition hover:border-cyan-500/20 hover:text-white/70"
               >
                 <User size={14} />
                 <span className="hidden sm:inline">Sign In</span>
@@ -210,9 +209,9 @@ export default function Navbar({ onAuthOpen }) {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/70 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200 md:hidden"
+            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200 md:hidden"
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
       </nav>
@@ -231,7 +230,7 @@ export default function Navbar({ onAuthOpen }) {
               <button
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close menu"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/70 transition-colors duration-300 hover:border-champagne-400/30 hover:text-champagne-200"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/70 transition hover:border-champagne-400/30 hover:text-champagne-200"
               >
                 <X size={20} />
               </button>
@@ -250,17 +249,14 @@ export default function Navbar({ onAuthOpen }) {
                     <Link
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className={`relative flex items-center gap-4 rounded-2xl px-6 py-5 font-sans text-xl font-semibold tracking-tight transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                      className={`flex items-center gap-4 rounded-2xl px-6 py-5 font-serif text-2xl transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                         isActive
                           ? "bg-champagne-400/10 text-champagne-200"
-                          : "text-white/75 hover:bg-white/[0.04] hover:text-white"
+                          : "text-white/70 hover:bg-white/[0.04] hover:text-white"
                       }`}
                     >
                       {link.icon && <link.icon size={20} />}
                       {link.label}
-                      {isActive && (
-                        <span className="absolute left-6 right-6 bottom-2 h-[2px] rounded-full bg-gradient-to-r from-champagne-200 via-champagne-400 to-champagne-500 shadow-[0_0_10px_rgba(212,175,55,0.5)]" />
-                      )}
                     </Link>
                   </motion.div>
                 );
@@ -274,12 +270,12 @@ export default function Navbar({ onAuthOpen }) {
                 <Link
                   href="/wishlist"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-4 rounded-2xl px-6 py-5 font-sans text-xl font-semibold tracking-tight text-white/75 transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.04] hover:text-white"
+                  className="flex items-center gap-4 rounded-2xl px-6 py-5 font-serif text-2xl text-white/70 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.04] hover:text-white"
                 >
                   <Heart size={20} />
                   Wishlist
                   {wishlist.length > 0 && (
-                    <span className="ml-auto flex h-6 min-w-[24px] items-center justify-center rounded-full bg-rose-500 px-1.5 font-mono text-[11px] font-bold text-white ring-1 ring-rose-300/50">
+                    <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-rose-500 font-mono text-[11px] font-bold text-white">
                       {wishlist.length}
                     </span>
                   )}
