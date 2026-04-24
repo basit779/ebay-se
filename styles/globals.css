@@ -461,31 +461,56 @@ a {
   100% { background-position: 0% 50%; }
 }
 
-/* ── FluxBid Logo Shine Sweep ─────────────────────────── */
-/* A bright diagonal highlight sweeps across the logo every
-   6 seconds — ~1s of travel, ~5s of rest. mix-blend overlay
-   brightens only the letters underneath, not the background. */
-@keyframes logo-shine-sweep {
-  0%, 80% { transform: translateX(-150%) skewX(-18deg); }
-  18%, 100% { transform: translateX(250%) skewX(-18deg); }
+/* ── FluxBid Logo — polished-gold metallic fill ──────────
+   A rich multi-stop gradient with two bright highlight peaks
+   that drift continuously across the "Flux" letters. Looks
+   like light rolling over polished metal. Pure background-
+   position animation = GPU-cheap, no layout thrash. */
+@keyframes logo-metal-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
 }
-.logo-shine-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.logo-flux-metal {
   background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255, 255, 255, 0.7) 50%,
-    transparent 60%
+    90deg,
+    #fde68a 0%,
+    #fcd34d 12%,
+    #fffbeb 22%,    /* highlight peak 1 */
+    #fcd34d 32%,
+    #d97706 48%,    /* deeper gold shadow */
+    #fcd34d 64%,
+    #fffbeb 74%,    /* highlight peak 2 */
+    #fcd34d 84%,
+    #fde68a 100%
   );
-  mix-blend-mode: overlay;
-  animation: logo-shine-sweep 6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-  animation-delay: 1.2s;
-  will-change: transform;
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: logo-metal-flow 5s linear infinite;
+  filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.35));
+  will-change: background-position;
+}
+.logo-bid-metal {
+  background: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    #f1f5f9 40%,
+    #ffffff 50%,
+    #f1f5f9 60%,
+    #ffffff 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: logo-metal-flow 7s linear infinite;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.15));
 }
 @media (prefers-reduced-motion: reduce) {
-  .logo-shine-layer { animation: none; opacity: 0; }
+  .logo-flux-metal,
+  .logo-bid-metal { animation: none; }
 }
 
 /* ── Animated border rotation ─────────────────────────── */

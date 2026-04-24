@@ -55,19 +55,14 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
 
   return (
     <motion.div
-      className={`relative inline-flex items-baseline font-black tracking-tighter ${s.text} ${s.gap} select-none overflow-hidden`}
+      className={`relative inline-flex items-baseline font-black tracking-tighter ${s.text} ${s.gap} select-none`}
       style={{ perspective: "600px" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       initial="hidden"
       animate="visible"
     >
-      {/* Premium shine sweep — diagonal highlight brightens the
-          letters every ~6s. mix-blend-overlay means it only lights up
-          pixels that already have color, so the dark page behind stays
-          dark. */}
-      <span className="logo-shine-layer" aria-hidden="true" />
-      {/* "Flux" — flowing gradient */}
+      {/* "Flux" — polished metallic gold with continuous flow */}
       <span className="relative inline-flex">
         {flux.map(({ char, offset }) => (
           <motion.span
@@ -75,19 +70,14 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
             custom={offset}
             variants={animate ? letterVariants : {}}
             animate={isHovered ? hoverWave(offset) : {}}
-            className="inline-block bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent"
-            style={{
-              backgroundSize: "200% 100%",
-              animation: "gradient-flow 3s ease infinite",
-              animationDelay: `${offset * 0.15}s`
-            }}
+            className="logo-flux-metal inline-block"
           >
             {char}
           </motion.span>
         ))}
       </span>
 
-      {/* "Bid" — solid white with glow on hover */}
+      {/* "Bid" — white metallic with soft gold glow */}
       <span className="relative inline-flex">
         {bid.map(({ char, offset }) => (
           <motion.span
@@ -95,11 +85,11 @@ export default function FluxBidLogo({ size = "md", animate = true }) {
             custom={offset}
             variants={animate ? letterVariants : {}}
             animate={isHovered ? hoverWave(offset) : {}}
-            className="inline-block text-white transition-all duration-300"
+            className="logo-bid-metal inline-block transition-all duration-300"
             style={{
-              textShadow: isHovered
-                ? "0 0 20px rgba(251,191,36,0.55), 0 0 40px rgba(251,191,36,0.25)"
-                : "none"
+              filter: isHovered
+                ? "drop-shadow(0 0 20px rgba(251,191,36,0.6)) drop-shadow(0 0 40px rgba(251,191,36,0.3))"
+                : undefined
             }}
           >
             {char}
