@@ -10,6 +10,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "ui-sans-serif", "system-ui", "sans-serif"],
         serif: ["var(--font-serif)", "Playfair Display", "ui-serif", "Georgia", "serif"],
+        display: ["var(--font-display)", "Bodoni Moda", "ui-serif", "Didot", "Georgia", "serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "monospace"]
       },
       colors: {

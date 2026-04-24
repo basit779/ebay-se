@@ -190,8 +190,8 @@ export default function Hero() {
             <span className="tracking-[0.15em] uppercase text-[10px]">Live marketplace · 48 active auctions</span>
           </motion.div>
 
-          {/* Headline — editorial serif, cinematic cascade */}
-          <h1 className="font-serif text-[44px] font-semibold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[96px] xl:text-[104px]">
+          {/* Headline — Bodoni Moda editorial, cinematic cascade */}
+          <h1 className="font-display text-[44px] font-bold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[96px] xl:text-[104px]">
             <motion.span
               initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
