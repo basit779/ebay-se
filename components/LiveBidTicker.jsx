@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Gavel } from "lucide-react";
 
 const bidders = [
@@ -13,6 +13,7 @@ function pickBidder(i) {
 }
 
 export default function LiveBidTicker({ auctions = [] }) {
+  const reduceMotion = useReducedMotion();
   if (!auctions.length) return null;
 
   // Build entries: alternating shapes — bid placed, hot lot, time alert
@@ -31,6 +32,12 @@ export default function LiveBidTicker({ auctions = [] }) {
     }
   ]);
   const doubled = [...entries, ...entries];
+  const marqueeMotion = reduceMotion
+    ? {}
+    : {
+        animate: { x: ["0%", "-50%"] },
+        transition: { duration: 50, repeat: Infinity, ease: "linear" }
+      };
 
   return (
     <section className="relative overflow-hidden border-y border-white/10 bg-white/[0.04] py-4 backdrop-blur-[20px] backdrop-saturate-150 supports-[backdrop-filter]:bg-white/[0.04]">
@@ -40,8 +47,7 @@ export default function LiveBidTicker({ auctions = [] }) {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-night to-transparent" />
 
         <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          {...marqueeMotion}
           className="flex items-center gap-10 whitespace-nowrap"
           style={{ willChange: "transform" }}
         >
@@ -64,7 +70,7 @@ export default function LiveBidTicker({ auctions = [] }) {
                   </span>
                   <span className="text-white/40">on</span>
                   <span className="font-medium text-white">{e.name}</span>
-                  <span className="font-mono text-white/30">· {e.bids} bids</span>
+                  <span className="font-mono text-white/40">· {e.bids} bids</span>
                 </>
               ) : (
                 <>
@@ -74,7 +80,7 @@ export default function LiveBidTicker({ auctions = [] }) {
                   </span>
                   <span className="text-white/50">·</span>
                   <span className="font-medium text-white">{e.name}</span>
-                  <span className="text-white/30">— <span className="font-mono">{e.bids}</span> bidders watching</span>
+                  <span className="text-white/40">— <span className="font-mono">{e.bids}</span> bidders watching</span>
                 </>
               )}
             </div>

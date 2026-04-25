@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { RevealText, FadeUp } from "@/components/TextReveal";
 
@@ -87,12 +87,12 @@ function TestimonialCard({ t, index }) {
           </div>
           <div>
             <p className="text-sm font-semibold text-white">{t.name}</p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-white/50">
               {t.role} · {t.company}
             </p>
           </div>
         </div>
-        <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-[10px] text-white/40">
+        <span className="rounded-full border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-[10px] text-white/50">
           {t.product}
         </span>
       </div>
@@ -101,7 +101,14 @@ function TestimonialCard({ t, index }) {
 }
 
 export default function TestimonialsSection() {
+  const reduceMotion = useReducedMotion();
   const doubled = [...testimonials, ...testimonials];
+  const marqueeMotion = reduceMotion
+    ? {}
+    : {
+        animate: { x: ["0%", "-50%"] },
+        transition: { duration: 60, repeat: Infinity, ease: "linear" }
+      };
 
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
@@ -142,7 +149,7 @@ export default function TestimonialsSection() {
                     <Star key={s} size={12} className="star-filled" fill="currentColor" />
                   ))}
                 </div>
-                <p className="mt-0.5 text-xs text-white/50">
+                <p className="mt-0.5 text-xs text-white/60">
                   4.9 · 12,847 reviews
                 </p>
               </div>
@@ -158,8 +165,7 @@ export default function TestimonialsSection() {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-night to-transparent" />
 
         <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          {...marqueeMotion}
           className="flex gap-5"
         >
           {doubled.map((t, i) => (

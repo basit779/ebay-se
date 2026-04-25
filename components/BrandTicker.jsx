@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 // Mock "as featured in" brand names
 const brands = [
@@ -15,12 +15,19 @@ const brands = [
 ];
 
 export default function BrandTicker() {
+  const reduceMotion = useReducedMotion();
   const doubled = [...brands, ...brands];
+  const marqueeMotion = reduceMotion
+    ? {}
+    : {
+        animate: { x: ["0%", "-50%"] },
+        transition: { duration: 30, repeat: Infinity, ease: "linear" }
+      };
 
   return (
     <section className="relative overflow-hidden border-y border-white/[0.04] bg-white/[0.01] py-10">
       <div className="mx-auto mb-6 max-w-7xl px-6">
-        <p className="text-center text-[11px] font-medium uppercase tracking-[0.3em] text-white/30">
+        <p className="text-center text-[11px] font-medium uppercase tracking-[0.3em] text-white/40">
           As featured in
         </p>
       </div>
@@ -31,14 +38,13 @@ export default function BrandTicker() {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-night to-transparent" />
 
         <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          {...marqueeMotion}
           className="flex items-center gap-16 whitespace-nowrap"
         >
           {doubled.map((brand, i) => (
             <span
               key={i}
-              className="text-2xl font-black tracking-[0.15em] text-white/20 transition-colors hover:text-white/60 md:text-3xl"
+              className="text-2xl font-black tracking-[0.15em] text-white/30 transition-colors hover:text-white/60 md:text-3xl"
             >
               {brand}
             </span>

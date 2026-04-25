@@ -67,6 +67,17 @@ a, button, [role="button"] {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Visible keyboard focus without affecting pointer interactions */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid rgba(212, 175, 55, 0.72);
+  outline-offset: 2px;
+}
+
 html,
 body {
   margin: 0;
@@ -77,6 +88,18 @@ body {
 }
 
 p { line-height: 1.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 a {
   color: inherit;

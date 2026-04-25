@@ -43,7 +43,8 @@ export default function CartDrawer() {
               </div>
               <button
                 onClick={() => setIsCartOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.03] text-white/50 transition hover:text-white"
+                aria-label="Close cart drawer"
+                className="flex h-11 w-11 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.03] text-white/50 transition hover:text-white"
               >
                 <X size={16} />
               </button>
@@ -98,7 +99,8 @@ export default function CartDrawer() {
                               <div className="flex items-center rounded-lg border border-white/[0.08] bg-white/[0.02]">
                                 <button
                                   onClick={() => incrementQuantity(item.id, -1)}
-                                  className="px-2 py-1 text-white/40 transition hover:text-white"
+                                  aria-label={`Decrease quantity for ${item.name}`}
+                                  className="px-3 py-2 text-white/40 transition hover:text-white"
                                 >
                                   <Minus size={12} />
                                 </button>
@@ -107,14 +109,16 @@ export default function CartDrawer() {
                                 </span>
                                 <button
                                   onClick={() => incrementQuantity(item.id, 1)}
-                                  className="px-2 py-1 text-white/40 transition hover:text-white"
+                                  aria-label={`Increase quantity for ${item.name}`}
+                                  className="px-3 py-2 text-white/40 transition hover:text-white"
                                 >
                                   <Plus size={12} />
                                 </button>
                               </div>
                               <button
                                 onClick={() => removeFromCart(item.id)}
-                                className="ml-auto flex h-7 w-7 items-center justify-center rounded-lg text-white/20 transition hover:bg-red-500/10 hover:text-red-400"
+                                aria-label={`Remove ${item.name} from cart`}
+                                className="ml-auto flex h-10 w-10 items-center justify-center rounded-lg text-white/20 transition hover:bg-red-500/10 hover:text-red-400"
                               >
                                 <Trash2 size={13} />
                               </button>

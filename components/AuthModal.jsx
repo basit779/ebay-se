@@ -120,8 +120,10 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
               <div className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-orange-500/20 blur-[90px]" />
 
               <button
+                type="button"
                 onClick={closeAndReset}
-                className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-white/30 transition hover:text-white/60"
+                aria-label="Close authentication modal"
+                className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-lg text-white/40 transition hover:text-white/60"
               >
                 <X size={18} />
               </button>
@@ -156,7 +158,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                     <h2 className="font-display text-2xl font-bold">
                       {mode === "login" ? "Welcome back" : "Create account"}
                     </h2>
-                    <p className="mt-1 text-sm text-white/40">
+                    <p className="mt-1 text-sm text-white/50">
                       {mode === "login"
                         ? "Sign in to your FluxBid account"
                         : "Join FluxBid for a premium experience"}
@@ -256,6 +258,8 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                           <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25" />
                           <input
                             type="text"
+                            aria-label="Full name"
+                            autoComplete="name"
                             placeholder="Full name"
                             value={form.name}
                             onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -275,6 +279,8 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                         <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25" />
                         <input
                           type="email"
+                          aria-label="Email address"
+                          autoComplete="email"
                           placeholder="Email address"
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -296,6 +302,8 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                         <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/25" />
                         <input
                           type={showPassword ? "text" : "password"}
+                          aria-label="Password"
+                          autoComplete={mode === "login" ? "current-password" : "new-password"}
                           placeholder="Password"
                           value={form.password}
                           onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -309,6 +317,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                           className="absolute right-4 top-1/2 -translate-y-1/2 text-white/25 transition hover:text-white/50"
                         >
                           {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -327,7 +336,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                     </button>
                   </form>
 
-                  <p className="relative mt-6 text-center text-sm text-white/35">
+                  <p className="relative mt-6 text-center text-sm text-white/45">
                     {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
                     <button
                       onClick={() => {

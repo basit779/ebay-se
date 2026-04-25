@@ -23,6 +23,7 @@ export default function ShopFilters({
       <div className="relative mx-auto max-w-xl">
         <Search size={15} className="absolute left-5 top-1/2 -translate-y-1/2 text-white/30" />
         <input
+          aria-label="Search marketplace"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search the marketplace…"
@@ -33,7 +34,7 @@ export default function ShopFilters({
             type="button"
             onClick={() => setSearch("")}
             aria-label="Clear search"
-            className="absolute right-3 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-white/35 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.06] hover:text-champagne-200"
+            className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full text-white/45 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-white/[0.06] hover:text-champagne-200"
           >
             <X size={13} />
           </button>
@@ -65,7 +66,7 @@ function Chip({ active, onClick, children }) {
       className={`relative rounded-full px-4 py-2 text-[12px] font-medium tracking-wide transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
         active
           ? "border border-champagne-400/45 bg-champagne-400/10 text-champagne-100 shadow-[0_8px_24px_-12px_rgba(212,175,55,0.45)]"
-          : "border border-white/10 bg-white/[0.02] text-white/55 hover:border-white/20 hover:bg-white/[0.04] hover:text-white/85"
+          : "border border-white/10 bg-white/[0.02] text-white/65 hover:border-white/20 hover:bg-white/[0.04] hover:text-white/85"
       }`}
     >
       {children}

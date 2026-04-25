@@ -86,7 +86,7 @@ export default function Footer() {
             <Link href="/" className="inline-block">
               <FluxBidLogo size="md" animate={false} />
             </Link>
-            <p className="mt-6 max-w-sm text-[15px] leading-[1.8] text-white/55">
+            <p className="mt-6 max-w-sm text-[15px] leading-[1.8] text-white/65">
               The premium marketplace for rare finds and extraordinary goods.
               Hand-verified sellers, transparent bidding, cinematic commerce.
             </p>
@@ -98,7 +98,7 @@ export default function Footer() {
                   aria-label={label}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noreferrer" : undefined}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/55 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-champagne-400/40 hover:text-champagne-300 hover:shadow-[0_10px_30px_-12px_rgba(212,175,55,0.5)]"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.02] text-white/65 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-champagne-400/40 hover:text-champagne-300 hover:shadow-[0_10px_30px_-12px_rgba(212,175,55,0.5)]"
                 >
                   {svg}
                 </a>
@@ -116,7 +116,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="group inline-flex items-center gap-2 text-[14px] text-white/55 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-200"
+                      className="group inline-flex items-center gap-2 text-[14px] text-white/65 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-200"
                     >
                       <span className="inline-block h-px w-0 bg-champagne-300 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-4" />
                       {link.label}
@@ -129,11 +129,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-24 flex flex-col items-start justify-between gap-6 border-t border-white/[0.06] pt-10 md:flex-row md:items-center">
-          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/35">
+          <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/50">
             &copy; {new Date().getFullYear()} &nbsp;·&nbsp; FluxBid &nbsp;·&nbsp; All rights reserved
           </p>
 
-          <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-white/40">
+          <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.2em] text-white/55">
             <a href="#" className="transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:text-champagne-200">
               Privacy Policy
             </a>
@@ -143,7 +143,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <p className="text-[11px] italic text-white/35">
+          <p className="text-[11px] italic text-white/50">
             Where luxury flows.
           </p>
         </div>

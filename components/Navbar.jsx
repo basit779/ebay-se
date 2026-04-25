@@ -100,7 +100,7 @@ export default function Navbar({ onAuthOpen }) {
           <Link
             href="/wishlist"
             aria-label="Wishlist"
-            className="relative hidden h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-rose-400/30 hover:text-rose-300 sm:flex"
+            className="relative hidden h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-rose-400/30 hover:text-rose-300 sm:flex"
           >
             <Heart size={16} />
             {wishlist.length > 0 && (
@@ -114,7 +114,7 @@ export default function Navbar({ onAuthOpen }) {
             whileTap={{ scale: 0.92 }}
             onClick={() => setIsCartOpen(true)}
             aria-label="Open cart"
-            className="relative flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200"
+            className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200"
           >
             <ShoppingCart size={16} />
             <AnimatePresence>
@@ -136,14 +136,14 @@ export default function Navbar({ onAuthOpen }) {
             {user ? (
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex h-9 w-9 items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 text-xs font-bold text-purple-400 transition hover:bg-purple-500/20"
+                className="flex h-11 w-11 items-center justify-center rounded-xl border border-purple-500/20 bg-purple-500/10 text-xs font-bold text-purple-400 transition hover:bg-purple-500/20"
               >
                 {user.name[0].toUpperCase()}
               </button>
             ) : (
               <button
                 onClick={onAuthOpen}
-                className="flex h-9 items-center gap-1.5 rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 text-xs text-white/40 transition hover:border-cyan-500/20 hover:text-white/70"
+                className="flex h-11 items-center gap-1.5 rounded-xl border border-white/[0.04] bg-white/[0.02] px-3.5 text-xs text-white/55 transition hover:border-cyan-500/20 hover:text-white/80"
               >
                 <User size={14} />
                 <span className="hidden sm:inline">Sign In</span>
@@ -169,7 +169,7 @@ export default function Navbar({ onAuthOpen }) {
                   >
                     <div className="border-b border-white/[0.06] px-3 py-2.5">
                       <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-[11px] text-white/30">{user.email}</p>
+                      <p className="text-[11px] text-white/45">{user.email}</p>
                     </div>
                     <Link
                       href="/account"
@@ -209,7 +209,7 @@ export default function Navbar({ onAuthOpen }) {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200 md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-white/50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-champagne-400/30 hover:text-champagne-200 md:hidden"
           >
             {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>

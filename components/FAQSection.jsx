@@ -52,7 +52,7 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
           className={`ml-6 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             isOpen
               ? "border-champagne-400/50 bg-champagne-400/12 text-champagne-200"
-              : "border-white/10 bg-white/[0.02] text-white/45 group-hover:border-champagne-400/30 group-hover:text-champagne-200"
+              : "border-white/10 bg-white/[0.02] text-white/55 group-hover:border-champagne-400/30 group-hover:text-champagne-200"
           }`}
         >
           {isOpen ? <Minus size={16} /> : <Plus size={16} />}
@@ -67,7 +67,7 @@ function FAQItem({ faq, index, isOpen, onToggle }) {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-8 text-[14px] leading-[1.8] text-white/50 md:text-[15px] md:pr-12">
+            <p className="pb-8 text-[14px] leading-[1.8] text-white/60 md:text-[15px] md:pr-12">
               {faq.a}
             </p>
           </motion.div>
@@ -99,7 +99,7 @@ export default function FAQSection() {
             </h2>
           </RevealText>
           <FadeUp delay={0.2}>
-            <p className="mt-6 text-[15px] leading-[1.8] text-white/45">
+            <p className="mt-6 text-[15px] leading-[1.8] text-white/55">
               Everything you need to know before buying, selling, or bidding.
               Can&rsquo;t find what you&rsquo;re looking for?{" "}
               <a href="#" className="text-champagne-300 underline-offset-4 hover:underline">

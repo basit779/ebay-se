@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -191,7 +192,7 @@ export default function CheckoutPage() {
           </div>
           <h1 className="mt-8 font-serif text-3xl font-semibold tracking-tight">Nothing to checkout</h1>
           <p className="mt-4 text-sm leading-[1.7] text-white/45">Add an object to your cart to continue.</p>
-          <a href="/shop" className="btn-luxe shine-sweep mt-10">Browse Marketplace</a>
+          <Link href="/shop" className="btn-luxe shine-sweep mt-10">Browse Marketplace</Link>
         </div>
       </section>
     );
@@ -226,8 +227,8 @@ export default function CheckoutPage() {
             Your order is being reviewed. A confirmation email is on its way.
           </p>
           <div className="mt-10 flex justify-center gap-3">
-            <a href="/shop" className="btn-ghost">Keep Shopping</a>
-            {user && <a href="/account" className="btn-luxe shine-sweep">View Orders</a>}
+            <Link href="/shop" className="btn-ghost">Keep Shopping</Link>
+            {user && <Link href="/account" className="btn-luxe shine-sweep">View Orders</Link>}
           </div>
         </motion.div>
       </section>
