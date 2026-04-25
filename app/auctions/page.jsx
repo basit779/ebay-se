@@ -40,7 +40,7 @@ export default function AuctionsPage() {
           >
             <Flame size={18} className="text-[#f5af02]" />
             <p className="text-sm text-[#f5af02]">
-              <span className="font-semibold">{endingSoon[0].name}</span> auction ends soon — don't miss out!
+              <span className="font-semibold">{endingSoon[0].name}</span> auction ends soon — don&apos;t miss out!
             </p>
             <Clock size={14} className="ml-auto text-[#f5af02]/60" />
           </motion.div>

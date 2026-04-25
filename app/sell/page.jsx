@@ -299,7 +299,7 @@ export default function SellLanding() {
           </div>
 
           <p className="mt-8 text-xs text-white/35">
-            Fees kick in after our first 1,000 sellers — that means right now, it's still 0%.
+            Fees kick in after our first 1,000 sellers — that means right now, it&apos;s still 0%.
           </p>
         </motion.div>
       </div>

@@ -13,7 +13,7 @@ export default function EditorialSpotlight({ product }) {
     <section className="relative mx-auto max-w-7xl px-6 py-16 md:px-8 md:py-20">
       <FadeUp>
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">
-          Editor's Pick
+          Editor&apos;s Pick
         </p>
       </FadeUp>
       <RevealText delay={0.1}>
@@ -21,7 +21,7 @@ export default function EditorialSpotlight({ product }) {
           <span className="text-luxe">The one you</span>
           <br />
           <span className="font-display-italic font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-orange-500 bg-clip-text text-transparent">
-            won't regret.
+            won&apos;t regret.
           </span>
         </h2>
       </RevealText>

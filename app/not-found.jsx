@@ -12,13 +12,13 @@ export default function NotFound() {
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-neon-purple">
               Not Found
             </p>
-            <h2 className="mt-2 text-3xl font-bold md:text-4xl">Page doesn't exist</h2>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">Page doesn&apos;t exist</h2>
           </div>
         </div>
       </div>
       <p className="mt-4 max-w-md text-sm text-white/40">
-        The page you're looking for may have been moved or doesn't exist.
-        Let's get you back on track.
+        The page you&apos;re looking for may have been moved or doesn&apos;t exist.
+        Let&apos;s get you back on track.
       </p>
       <div className="mt-8 flex gap-3">
         <Link

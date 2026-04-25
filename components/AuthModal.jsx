@@ -187,7 +187,7 @@ export default function AuthModal({ isOpen, onClose, defaultAccountType = "buyer
                     Back to sign in
                   </button>
                   <p className="pt-2 text-center text-[11px] leading-relaxed text-white/30">
-                    Didn't get it? Check spam, or make sure the email is correct and resend.
+                    Didn&apos;t get it? Check spam, or make sure the email is correct and resend.
                   </p>
                 </div>
               ) : (
